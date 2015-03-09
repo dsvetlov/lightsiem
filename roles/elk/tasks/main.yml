@@ -21,12 +21,33 @@
   tags:
         - configuration
 
+- name: Place Logstash patterns file for snort
+  copy: src=snort.pattern dest=/opt/logstash/patterns/snort
+  notify:
+        - restart logstash
+  tags:
+        - configure
+
+- name: Place Logstash patterns file for IDMEF
+  copy: src=idmef.pattern dest=/opt/logstash/patterns/idmef
+  notify:
+        - restart logstash
+  tags:
+        - configure
+
 - name: Place Logstash input config for ossec
   copy: src=20-ossec.conf dest=/etc/logstash/conf.d/20-ossec.conf
   notify:
         - restart logstash
   tags:
         - configuration
+
+- name: Place Logstash input config for snort
+  copy: src=30-snort.conf dest=/etc/logstash/conf.d/30-snort.conf
+  notify:
+        - restart logstash
+  tags:
+        - configure
 
 - name: Place Logstash output config for elasticsearch
   copy: src=99-output.conf dest=/etc/logstash/conf.d/99-output.conf
@@ -86,6 +107,12 @@
 - name: Place OSSEC dashboard
   copy: src=ossec.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/default.json
   tags: configuration
+
+- name: Place OSSEC FIM dashboard
+  copy: src=fim.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/fim.json
+  tags: configure
+  notify:
+        - restart kibana
 
 - name: AutoStart Kibana
   command: systemctl enable kibana.service

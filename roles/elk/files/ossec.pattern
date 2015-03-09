@@ -6,7 +6,7 @@ OSSEC_SYSCHECK_LOCATION syscheck
 
 OSSEC_LOG_ANALYSIS Location: %{OSSEC_HOST}->%{PATH:Alert.Source.Ident}; (?:srcip: %{IPORHOST:Alert.Source.Node.Address}; )?(?:user: %{USERNAME:Alert.Source.User.Ident}; )?(?:%{SYSLOGBASE:syslogbase} )?%{GREEDYDATA:syslog_message}
 
-OSSEC_SYSCHEK Location: %{OSSEC_HOST}->%{OSSEC_SYSCHECK_LOCATION:Alert.Source.Ident}; (?:Previous MD5: '%{DATA:ossec_previous_md5}'; )?(?:Current MD5: '%{DATA:ossec_current_md5}'; )?(?:Previous SHA1: '%{DATA:ossec_previous_sha1}'; )?(?:Current SHA1: '%{DATA:ossec_current_sha1}'; )?(?:Integrity checksum changed for: '%{PATH:Alert.Target.File.Path}')?
+OSSEC_SYSCHEK Location: %{OSSEC_HOST}->%{OSSEC_SYSCHECK_LOCATION:Alert.Source.Ident}; (File '%{PATH:Alert.Target.File.Path}' was deleted. Unable to retrieve checksum.)?(?:Previous MD5: '%{DATA:Alert.Target.File.chksum.md5prev}'; )?(?:Current MD5: '%{DATA:Alert.Target.File.chksum.md5cur}'; )?(?:Previous SHA1: '%{DATA:Alert.Target.File.chksum.SHAprev}'; )?(?:Current SHA1: '%{DATA:Alert.Target.File.chksum.SHAcur}'; )?(?:Integrity checksum changed for: '%{PATH:Alert.Target.File.Path}')?
 
 OSSEC_MONITOR Location: %{OSSEC_HOST}->(ossec-monitord|ossec|ossec-logcollector|%{DATA:Location}); %{GREEDYDATA:syslog_message}
 
@@ -15,6 +15,3 @@ OSSEC_HOST (\(%{HOST:Alert.Source.Node.Name}\) %{IPORHOST:Alert.Source.Node.Addr
 
 OSSEC_HEADER %{SYSLOG5424PRI}%{SYSLOGTIMESTAMP:Alert.CreateTime} %{SYSLOGHOST:Alert.Analyzer.Node.Name} %{DATA:Alert.Analyzer.Name}: Alert Level: %{BASE10NUM:Alert.Analyzer.Level}; Rule: %{BASE10NUM:Alert.Classification.Ident} - %{DATA:Alert.Classification.Text};
 OSSEC_MESSAGE %{OSSEC_HEADER} (?:%{OSSEC_LOG_ANALYSIS}|%{OSSEC_SYSCHEK}|%{OSSEC_MONITOR})
-
-IDMEF_ALERT %{OSSEC_MESSAGE}
-IDMEF_MESSAGE %{IDMEF_ALERT}
