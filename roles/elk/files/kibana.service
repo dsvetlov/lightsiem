@@ -1,0 +1,10 @@
+[Unit]
+Description=Kibana Authentication Proxy with Kiabana
+
+[Service]
+ExecStart=/usr/bin/node /opt/kibana-authentication-proxy/app.js
+StandartOutput=syslog
+SyslogIdentifier=Kibana
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,94 @@
+- name: Install packages
+  yum: name={{item}} state=present
+  with_items:
+        - java
+        - https://download.elasticsearch.org/logstash/logstash/packages/centos/logstash-1.4.2-1_2c0f5a1.noarch.rpm
+        - https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.4.noarch.rpm
+        - http://fedora-mirror01.rbc.ru/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+        - nodejs
+        - unzip
+        - npm
+
+- name: Open port in firewalld for Logstash OSSEC input
+  firewalld: port=9000/udp permanent=true state=enabled
+  tags:
+        - configuration
+
+- name: Place Logstash patterns file for ossec
+  copy: src=ossec.pattern dest=/opt/logstash/patterns/ossec
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
+- name: Place Logstash input config for ossec
+  copy: src=20-ossec.conf dest=/etc/logstash/conf.d/20-ossec.conf
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
+- name: Place Logstash output config for elasticsearch
+  copy: src=99-output.conf dest=/etc/logstash/conf.d/99-output.conf
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
+- name: Add logstash to autostart
+  command: chkconfig logstash on
+
+- name: Place Elasticsearch config file
+  copy: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
+  notify:
+        - restart elasticsearch
+  tags:
+        - configuration
+
+- name: Add elasticsearch to autostart
+  command: chkconfig elasticsearch on
+
+- name: Download Kibana Authentication Proxy
+  get_url: url=https://github.com/fangli/kibana-authentication-proxy/archive/master.zip dest=/tmp/kap.zip
+
+- name: Unzip Kibana Authentication Proxy
+  unarchive: src=/tmp/kap.zip dest=/opt copy=no
+
+- name: Rename Kibana Authentication Proxy folder
+  shell: rm -rf /opt/kibana-authentication-proxy/ && mv /opt/kibana-authentication-proxy-master /opt/kibana-authentication-proxy
+
+- name: Download Kibana 3
+  get_url: url=https://github.com/elasticsearch/kibana/archive/kibana3.zip dest=/tmp/kibana.zip
+
+- name: Unzip Kibana 3
+  unarchive: src=/tmp/kibana.zip dest=/opt/kibana-authentication-proxy/ copy=no
+
+- name: Rename Kibana 3 folder
+  shell: rm -rf /opt/kibana-authentication-proxy/kibana && mv /opt/kibana-authentication-proxy/kibana-kibana3 /opt/kibana-authentication-proxy/kibana
+
+- name: Install Express module for Node.js
+  shell: cd /opt/kibana-authentication-proxy/ && npm install express
+
+- name: Open port in firewalld for Kibana
+  firewalld: port=80/tcp permanent=true state=enabled
+  tags:
+        - configuration
+
+- name: Place systemd unit file for Kibana
+  copy: src=kibana.service dest=/etc/systemd/system/kibana.service
+
+- name: Place config for Kibana Authentication Proxy
+  copy: src=config.js dest=/opt/kibana-authentication-proxy/config.js
+  notify:
+        - restart kibana
+  tags: configuration
+
+- name: Place OSSEC dashboard
+  copy: src=ossec.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/default.json
+  tags: configuration
+
+- name: AutoStart Kibana
+  command: systemctl enable kibana.service
+
+- name: Start Kiabana
+  command: systemctl start kibana.service
