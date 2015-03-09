@@ -9,7 +9,7 @@ yum install http://fedora-mirror01.rbc.ru/pub/epel/7/x86_64/e/epel-release-7-5.n
 Install Ansible and additional packages
 ```
 yum install ansible -y
-yum install wget unzip
+yum install wget unzip -y
 ```
 Download latest playbook code and unpack it
 ```

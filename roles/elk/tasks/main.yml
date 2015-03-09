@@ -13,6 +13,8 @@
   firewalld: port=9000/udp permanent=true state=enabled
   tags:
         - configuration
+  notify:
+        - restart firewalld
 
 - name: Place Logstash patterns file for ossec
   copy: src=ossec.pattern dest=/opt/logstash/patterns/ossec
@@ -94,6 +96,8 @@
   firewalld: port=80/tcp permanent=true state=enabled
   tags:
         - configuration
+  notify:
+        - restart firewalld
 
 - name: Place systemd unit file for Kibana
   copy: src=kibana.service dest=/etc/systemd/system/kibana.service
