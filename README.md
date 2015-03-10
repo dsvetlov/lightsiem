@@ -20,3 +20,20 @@ Run playbook
 ```
 ansible-playbook lightsiem-master/lightsiem-install.yml
 ```
+On your OSSEC server enable ability to send alerts via syslog
+```
+/var/ossec/bin/ossec-control enable client-syslog
+```
+Then add in /var/ossec/etc/ossec.conf this lines to send ossec alerts via sysslog in logstash
+```
+<ossec_config>
+
+...
+
+   <syslog_output>
+   <server>192.168.1.8</server>
+   <port>9000</port>
+   <format>default</format>
+   </syslog_output>
+...
+</ossec_config>
