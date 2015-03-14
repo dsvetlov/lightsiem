@@ -37,3 +37,11 @@ Then add in /var/ossec/etc/ossec.conf this lines to send ossec alerts via sysslo
    </syslog_output>
 ...
 </ossec_config>
+Forward snort log to LightSIEM via IETF-syslog format (RFC 5424).
+Example configuration for rsyslogd.
+```
+if $programname == 'snort' then {
+   *.* @( o )192.168.1.8:9010;RSYSLOG_SyslogProtocol23Format
+   &stop
+}
+```

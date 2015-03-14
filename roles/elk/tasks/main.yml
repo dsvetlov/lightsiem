@@ -23,6 +23,13 @@
   tags:
         - configuration
 
+- name: Open port in firewalld for Logstash Snort input
+  firewalld: port=9010/udp permanent=true state=enabled
+  tags:
+        - configuration
+  notify:
+        - restart firewalld
+
 - name: Place Logstash patterns file for snort
   copy: src=snort.pattern dest=/opt/logstash/patterns/snort
   notify:
