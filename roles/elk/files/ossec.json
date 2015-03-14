@@ -4,7 +4,7 @@
     "query": {
       "list": {
         "0": {
-          "query": "Alert.Analyzer.Level:[0 TO 5]",
+          "query": "Alert.Analyzer.Level.Normalized.Normalized:[0 TO 5]",
           "alias": "",
           "color": "#629E51",
           "id": 0,
@@ -19,7 +19,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "Alert.Analyzer.Level:[6 TO 8]"
+          "query": "Alert.Analyzer.Level.Normalized:[6 TO 8]"
         },
         "2": {
           "id": 2,
@@ -28,7 +28,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "Alert.Analyzer.Level:[9 TO 11]"
+          "query": "Alert.Analyzer.Level.Normalized:[9 TO 11]"
         },
         "3": {
           "id": 3,
@@ -37,7 +37,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "Alert.Analyzer.Level:[12 TO 15]"
+          "query": "Alert.Analyzer.Level.Normalized:[12 TO 15]"
         },
         "4": {
           "id": 4,
@@ -111,7 +111,7 @@
               "editable": true,
               "type": "terms",
               "tmode": "terms",
-              "field": "Alert.Analyzer.Level",
+              "field": "Alert.Analyzer.Level.Normalized",
               "size": 16,
               "order": "term",
               "chart": "bar",
@@ -146,7 +146,7 @@
               "type": "histogram",
               "mode": "mean",
               "time_field": "@timestamp",
-              "value_field": "Alert.Analyzer.Level",
+              "value_field": "Alert.Analyzer.Level.Normalized",
               "x-axis": true,
               "y-axis": true,
               "scale": 1,
@@ -223,7 +223,7 @@
               "type": "histogram",
               "mode": "mean",
               "time_field": "@timestamp",
-              "value_field": "Alert.Analyzer.Level",
+              "value_field": "Alert.Analyzer.Level.Normalized",
               "x-axis": true,
               "y-axis": true,
               "scale": 1,
@@ -678,7 +678,7 @@
           "fields": [
             "Alert.CreateTime",
             "Alert.Source.Node.Name",
-            "Alert.Analyzer.Level",
+            "Alert.Analyzer.Level.Normalized",
             "Alert.Classification.Text",
             "Alert.Sourse.rawmessage"
           ],
@@ -730,11 +730,11 @@
       "history": [
         "tags:_grokparsefailure",
         "*",
-        "Alert.Analyzer.Level:12 TO 15]",
-        "Alert.Analyzer.Level:[9 TO 11]",
-        "Alert.Analyzer.Level:[6 TO 8]",
-        "Alert.Analyzer.Level:[0 TO 5]",
-        "Alert.Analyzer.Level:[0 to 5]"
+        "Alert.Analyzer.Level.Normalized:12 TO 15]",
+        "Alert.Analyzer.Level.Normalized:[9 TO 11]",
+        "Alert.Analyzer.Level.Normalized:[6 TO 8]",
+        "Alert.Analyzer.Level.Normalized:[0 TO 5]",
+        "Alert.Analyzer.Level.Normalized:[0 to 5]"
       ],
       "remember": 10,
       "enable": true
