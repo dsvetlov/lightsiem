@@ -1,5 +1,6 @@
 # LightSIEM
 Lightweight and sexy Security Information and Event Managment system for OSSEC, Snort and other IDS/IPS
+https://github.com/dsvetlov/lightsiem/blob/master/screenshot.png
 # Installation
 LightSIEM now distributing as ansible playbook for RHEL/CentOS/Oracle Linix 7.x.
 Install EPEL repository
