@@ -31,7 +31,7 @@ Then add in /var/ossec/etc/ossec.conf this lines to send ossec alerts via sysslo
 ...
 
    <syslog_output>
-   <server>192.168.1.8</server>
+   <server>address of LightSIEM server</server>
    <port>9000</port>
    <format>default</format>
    </syslog_output>
@@ -42,7 +42,8 @@ Forward snort log to LightSIEM via IETF-syslog format (RFC 5424).
 Example configuration for rsyslogd.
 ```
 if $programname == 'snort' then {
-   *.* @( o )192.168.1.8:9010;RSYSLOG_SyslogProtocol23Format
+   *.* @( o )<address of LightSIEM server>:9010;RSYSLOG_SyslogProtocol23Format
    &stop
 }
 ```
+Now point your web-browser to port 80 of your LightSIEM server. Default login and password is admin/admin.
