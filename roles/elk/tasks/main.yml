@@ -99,6 +99,11 @@
 - name: Install Express module for Node.js
   shell: cd /opt/kibana-authentication-proxy/ && npm install express
 
+- name: A litle patch Kibana
+  copy: src=module.html dest=/opt/kibana-authentication-proxy/kibana/src/app/panels/table/module.html
+  notify:
+        - restart kibana
+
 - name: Open port in firewalld for Kibana
   firewalld: port=80/tcp permanent=true state=enabled
   tags:
