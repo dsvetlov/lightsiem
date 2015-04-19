@@ -35,14 +35,14 @@
   notify:
         - restart logstash
   tags:
-        - configure
+        - configuration
 
 - name: Place Logstash patterns file for IDMEF
   copy: src=idmef.pattern dest=/opt/logstash/patterns/idmef
   notify:
         - restart logstash
   tags:
-        - configure
+        - configuration
 
 - name: Place Logstash input config for ossec
   copy: src=20-ossec.conf dest=/etc/logstash/conf.d/20-ossec.conf
@@ -56,7 +56,7 @@
   notify:
         - restart logstash
   tags:
-        - configure
+        - configuration
 
 - name: Place Logstash output config for elasticsearch
   copy: src=99-output.conf dest=/etc/logstash/conf.d/99-output.conf
@@ -126,7 +126,7 @@
 
 - name: Place OSSEC FIM dashboard
   copy: src=fim.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/fim.json
-  tags: configure
+  tags: configuration
   notify:
         - restart kibana
 
