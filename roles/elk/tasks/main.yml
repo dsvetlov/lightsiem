@@ -4,7 +4,7 @@
         - java
         - https://download.elasticsearch.org/logstash/logstash/packages/centos/logstash-1.4.2-1_2c0f5a1.noarch.rpm
         - https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.4.noarch.rpm
-        - http://fedora-mirror01.rbc.ru/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+        - epel-release
         - nodejs
         - unzip
         - npm
