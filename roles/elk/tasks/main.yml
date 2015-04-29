@@ -58,8 +58,29 @@
   tags:
         - configuration
 
+- name: Place Logstash input config for snort
+  copy: src=40-cisco.conf dest=/etc/logstash/conf.d/40-cisco.conf
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
+- name: Open port in firewalld for Logstash Cisco input
+  firewalld: port=9020/udp permanent=true state=enabled
+  tags:
+        - configuration
+  notify:
+        - restart firewalld
+
 - name: Place Logstash output config for elasticsearch
   copy: src=99-output.conf dest=/etc/logstash/conf.d/99-output.conf
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
+- name: Place Logstash template for elasticsearch output
+  copy: src=elasticsearch-template.json dest=/opt/logstash/lib/logstash/outputs/elasticsearch/elasticsearch-template.json
   notify:
         - restart logstash
   tags:
