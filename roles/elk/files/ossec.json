@@ -714,7 +714,7 @@
             "Alert.Source.Node.Name",
             "Alert.Analyzer.Level.Normalized",
             "Alert.Classification.Text",
-            "Alert.Sourse.rawmessage"
+            "Alert.Source.rawmessage"
           ],
           "localTime": true,
           "timeField": "@timestamp",
