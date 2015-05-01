@@ -4,7 +4,7 @@
     "query": {
       "list": {
         "0": {
-          "query": "Alert.Analyzer.Level.Normalized.Normalized:[0 TO 5]",
+          "query": "Alert.Analyzer.Level.Normalized:[0 TO 5]",
           "alias": "",
           "color": "#629E51",
           "id": 0,
