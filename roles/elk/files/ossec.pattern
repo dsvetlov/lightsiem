@@ -4,14 +4,23 @@ OSSEC_USER user: %{USERNAME:user};
 
 OSSEC_SYSCHECK_LOCATION syscheck
 
-OSSEC_LOG_ANALYSIS Location: %{OSSEC_HOST}->%{PATH:Alert.Source.Ident}; (?:srcip: %{IPORHOST:Alert.Source.Node.Address}; )?(?:user: %{USERNAME:Alert.Source.User.Ident}; )?(?:%{SYSLOGBASE:syslogbase} )?%{GREEDYDATA:syslog_message}
+PATHORIPORHOST (?:%{PATH}|%{IPORHOST})
 
-OSSEC_SYSCHEK Location: %{OSSEC_HOST}->%{OSSEC_SYSCHECK_LOCATION:Alert.Source.Ident}; (File '%{PATH:Alert.Target.File.Path}' was deleted. Unable to retrieve checksum.)?(?:Previous MD5: '%{DATA:Alert.Target.File.chksum.md5prev}'; )?(?:Current MD5: '%{DATA:Alert.Target.File.chksum.md5cur}'; )?(?:Previous SHA1: '%{DATA:Alert.Target.File.chksum.SHAprev}'; )?(?:Current SHA1: '%{DATA:Alert.Target.File.chksum.SHAcur}'; )?(?:Integrity checksum changed for: '%{PATH:Alert.Target.File.Path}')?
+OSSEC_LOG_ANALYSIS_LOCATION (Location: %{OSSEC_AGENT_HOST}->%{PATHORIPORHOST:Alert.Source.Ident};|Location: %{OSSEC_HYBRID_SERVER_HOST}->%{PATH}\|%{OSSEC_AGENT_HOST}->%{PATHORIPORHOST:Alert.Source.Ident};)
 
-OSSEC_MONITOR Location: %{OSSEC_HOST}->(ossec-monitord|ossec|ossec-logcollector|%{DATA:Location}); %{GREEDYDATA:syslog_message}
+OSSEC_LOG_ANALYSIS %{OSSEC_LOG_ANALYSIS_LOCATION} (?:srcip: %{IPORHOST:Alert.Source.Node.Address}; )?(?:user: %{USERNAME:Alert.Source.User.Ident}; )?(?:%{SYSLOGBASE:syslogbase} )?%{GREEDYDATA:syslog_message}
+
+OSSEC_SYSCHEK Location: %{OSSEC_AGENT_HOST}->%{OSSEC_SYSCHECK_LOCATION:Alert.Source.Ident}; (File '%{PATH:Alert.Target.File.Path}' was deleted. Unable to retrieve checksum.)?(?:Previous MD5: '%{DATA:Alert.Target.File.chksum.md5prev}'; )?(?:Current MD5: '%{DATA:Alert.Target.File.chksum.md5cur}'; )?(?:Previous SHA1: '%{DATA:Alert.Target.File.chksum.SHAprev}'; )?(?:Current SHA1: '%{DATA:Alert.Target.File.chksum.SHAcur}'; )?(?:Integrity checksum changed for: '%{PATH:Alert.Target.File.Path}')?
+
+OSSEC_MONITOR Location: %{OSSEC_AGENT_HOST}->(ossec-monitord|ossec|ossec-logcollector|%{DATA:Location}); %{GREEDYDATA:syslog_message}
 
 
-OSSEC_HOST (\(%{HOST:Alert.Source.Node.Name}\) %{IPORHOST:Alert.Source.Node.Address}|%{HOST:Alert.Source.Node.Name})
+OSSEC_AGENT_HOST (\(%{HOST:Alert.Sensor.Node.Name}\) %{IPORHOST:Alert.Sensor.Node.Address}|%{HOST:Alert.Sensor.Node.Name})
+
+OSSEC_HYBRID_SERVER_HOST (\(%{HOST:Alert.Analyzer.Analyzer.Node.Name}\) %{IPORHOST:Alert.Analyzer.Analyzer.Node.Address}|%{HOST:Alert.Analyzer.Analyzer.Node.Name})
+
+OSSEC_SERVER_HOST (\(%{HOST:Alert.Analyzer.Node.Name}\) %{IPORHOST:Alert.Analyzer.Node.Address}|%{HOST:Alert.Analyzer.Node.Name})
 
 OSSEC_HEADER %{SYSLOG5424PRI}%{SYSLOGTIMESTAMP:Alert.CreateTime} %{SYSLOGHOST:Alert.Analyzer.Node.Name} %{DATA:Alert.Analyzer.Name}: Alert Level: %{BASE10NUM:Alert.Analyzer.Level}; Rule: %{BASE10NUM:Alert.Classification.Ident} - %{DATA:Alert.Classification.Text};
+
 OSSEC_MESSAGE %{OSSEC_HEADER} (?:%{OSSEC_LOG_ANALYSIS}|%{OSSEC_SYSCHEK}|%{OSSEC_MONITOR})
