@@ -309,7 +309,7 @@
               "height": "150px",
               "editable": true,
               "type": "terms",
-              "field": "Alert.Source.Node.Name",
+              "field": "Alert.Sensor.Node.Name",
               "exclude": [],
               "missing": true,
               "other": true,
@@ -339,7 +339,7 @@
               "tmode": "terms",
               "tstat": "total",
               "valuefield": "",
-              "title": "Alerts per host"
+              "title": "Alerts per sensor"
             },
             {
               "loading": false,
