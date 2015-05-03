@@ -87,39 +87,6 @@
   },
   "rows": [
     {
-      "title": "Map",
-      "height": "600px",
-      "editable": true,
-      "collapse": false,
-      "collapsable": true,
-      "panels": [
-        {
-          "error": false,
-          "span": 12,
-          "editable": true,
-          "type": "bettermap",
-          "loadingEditor": false,
-          "field": "Alert.Source.Node.Geoip.location",
-          "size": 1000,
-          "spyable": true,
-          "tooltip": "Alert.Source.Node.Address",
-          "queries": {
-            "mode": "all",
-            "ids": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5
-            ]
-          },
-          "title": "Alert source locations"
-        }
-      ],
-      "notice": false
-    },
-    {
       "title": "Alerts dashboard",
       "height": "150px",
       "editable": true,
@@ -589,6 +556,39 @@
             }
           ],
           "title": "Alerts"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Map",
+      "height": "600px",
+      "editable": true,
+      "collapse": true,
+      "collapsable": true,
+      "panels": [
+        {
+          "error": false,
+          "span": 12,
+          "editable": true,
+          "type": "bettermap",
+          "loadingEditor": false,
+          "field": "Alert.Source.Node.Geoip.location",
+          "size": 1000,
+          "spyable": true,
+          "tooltip": "Alert.Source.Node.Address",
+          "queries": {
+            "mode": "all",
+            "ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "title": "Alert source locations"
         }
       ],
       "notice": false
