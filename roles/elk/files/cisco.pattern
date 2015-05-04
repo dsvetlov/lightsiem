@@ -1,0 +1,2 @@
+#%ASA-7-710005
+CISCO_EVENTID %ASA-%{INT:Alert.Analyzer.Level}-%{POSINT:Alert.Classification.Ident}
