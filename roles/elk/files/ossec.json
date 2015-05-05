@@ -711,10 +711,11 @@
           "overflow": "min-height",
           "fields": [
             "Alert.CreateTime",
-            "Alert.Source.Node.Name",
+            "Alert.Sensor.Node.Name",
             "Alert.Analyzer.Level.Normalized",
             "Alert.Classification.Text",
-            "Alert.Source.rawmessage"
+            "Alert.Source.rawmessage",
+			"Alert.Source.Node.Address"
           ],
           "localTime": true,
           "timeField": "@timestamp",
