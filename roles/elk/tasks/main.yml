@@ -158,6 +158,12 @@
   notify:
         - restart kibana
 
+- name: Place Cisco dashboard
+  copy: src=cisco.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/cisco.json
+  tags: configuration
+  notify:
+        - restart kibana
+
 - name: AutoStart Kibana
   command: systemctl enable kibana.service
 
