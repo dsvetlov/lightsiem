@@ -1,2 +1,4 @@
 #%ASA-7-710005
 CISCO_EVENTID %ASA-%{INT:Alert.Analyzer.Level}-%{POSINT:Alert.Classification.Ident}
+CISCO_TIMESTAMP %{MONTH} %{MONTHDAY} %{YEAR} %{TIME}
+CISCO_HEADER %{SYSLOG5424PRI}(?:%{CISCO_TIMESTAMP:timestamp}: )%{CISCO_EVENTID:Alert.Classification.Text}:

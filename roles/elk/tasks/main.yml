@@ -79,6 +79,13 @@
   notify:
         - restart firewalld
 
+- name: Place Logstash common config
+  copy: src=95-common.conf dest=/etc/logstash/conf.d/95-common.conf
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
 - name: Place Logstash output config for elasticsearch
   copy: src=99-output.conf dest=/etc/logstash/conf.d/99-output.conf
   notify:
