@@ -1,0 +1,940 @@
+{
+  "title": "OSSEC_cisco",
+  "services": {
+    "query": {
+      "list": {
+        "0": {
+          "query": "Alert.Classification.Ident:[111001 TO 111009]",
+          "alias": "Config",
+          "color": "#0A50A1",
+          "id": 0,
+          "pin": true,
+          "type": "lucene",
+          "enable": true
+        },
+        "1": {
+          "id": 1,
+          "color": "#E5AC0E",
+          "alias": "",
+          "pin": true,
+          "type": "lucene",
+          "enable": false,
+          "query": "Alert.Analyzer.Level.Normalized:[6 TO 8]"
+        },
+        "2": {
+          "id": 2,
+          "color": "#E0752D",
+          "alias": "",
+          "pin": true,
+          "type": "lucene",
+          "enable": false,
+          "query": "Alert.Analyzer.Level.Normalized:[9 TO 11]"
+        },
+        "3": {
+          "id": 3,
+          "color": "#BF1B00",
+          "alias": "",
+          "pin": true,
+          "type": "lucene",
+          "enable": false,
+          "query": "Alert.Analyzer.Level.Normalized:[12 TO 15]"
+        },
+        "4": {
+          "id": 4,
+          "color": "#7EB26D",
+          "alias": "",
+          "pin": true,
+          "type": "lucene",
+          "enable": false,
+          "query": "*"
+        },
+        "5": {
+          "id": 5,
+          "color": "#58140C",
+          "alias": "",
+          "pin": true,
+          "type": "lucene",
+          "enable": false,
+          "query": "tags:_grokparsefailure"
+        },
+        "6": {
+          "id": 6,
+          "color": "#BA43A9",
+          "alias": "Auth",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "Alert.Classification.Ident:[113000 TO 113999]"
+        },
+        "7": {
+          "id": 7,
+          "color": "#705DA0",
+          "alias": "",
+          "pin": false,
+          "type": "lucene",
+          "enable": true,
+          "query": "*"
+        }
+      },
+      "ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    "filter": {
+      "list": {
+        "0": {
+          "type": "time",
+          "field": "@timestamp",
+          "from": "now-6h",
+          "to": "now",
+          "mandate": "must",
+          "active": true,
+          "alias": "",
+          "id": 0
+        },
+        "1": {
+          "type": "field",
+          "field": "type",
+          "query": "\"cisco\"",
+          "mandate": "must",
+          "active": true,
+          "alias": "",
+          "id": 1
+        }
+      },
+      "ids": [
+        0,
+        1
+      ]
+    }
+  },
+  "rows": [
+    {
+      "title": "Cisco Devices",
+      "height": "150px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "error": false,
+          "span": 3,
+          "editable": true,
+          "type": "terms",
+          "loadingEditor": false,
+          "field": "Alert.Source.User.Name",
+          "exclude": [],
+          "missing": false,
+          "other": true,
+          "size": 10,
+          "order": "count",
+          "style": {
+            "font-size": "10pt"
+          },
+          "donut": false,
+          "tilt": false,
+          "labels": true,
+          "arrangement": "horizontal",
+          "chart": "table",
+          "counter_pos": "above",
+          "spyable": true,
+          "queries": {
+            "mode": "all",
+            "ids": [
+              0,
+              6,
+              7
+            ]
+          },
+          "tmode": "terms",
+          "tstat": "total",
+          "valuefield": "",
+          "title": "Users"
+        },
+        {
+          "error": false,
+          "span": 3,
+          "editable": true,
+          "type": "terms",
+          "loadingEditor": false,
+          "field": "Alert.Sensor.Node.Name",
+          "exclude": [],
+          "missing": false,
+          "other": true,
+          "size": 10,
+          "order": "count",
+          "style": {
+            "font-size": "10pt"
+          },
+          "donut": false,
+          "tilt": false,
+          "labels": true,
+          "arrangement": "horizontal",
+          "chart": "table",
+          "counter_pos": "above",
+          "spyable": true,
+          "queries": {
+            "mode": "all",
+            "ids": [
+              0,
+              6,
+              7
+            ]
+          },
+          "tmode": "terms",
+          "tstat": "total",
+          "valuefield": "",
+          "title": "Devices"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Alerts dashboard",
+      "height": "150px",
+      "editable": true,
+      "collapse": true,
+      "collapsable": true,
+      "panels": [
+        {
+          "error": false,
+          "span": 4,
+          "editable": true,
+          "type": "column",
+          "loadingEditor": false,
+          "panels": [
+            {
+              "loading": false,
+              "error": false,
+              "sizeable": false,
+              "draggable": false,
+              "removable": false,
+              "span": 10,
+              "height": "150px",
+              "editable": true,
+              "type": "terms",
+              "tmode": "terms",
+              "field": "Alert.Analyzer.Level.Normalized",
+              "size": 16,
+              "order": "term",
+              "chart": "bar",
+              "counter_pos": "below",
+              "arrangement": "horizontal",
+              "missing": true,
+              "other": true,
+              "exclude": [],
+              "style": {
+                "font-size": "10pt"
+              },
+              "donut": false,
+              "tilt": false,
+              "labels": true,
+              "spyable": true,
+              "queries": {
+                "mode": "selected",
+                "ids": []
+              },
+              "tstat": "total",
+              "valuefield": "",
+              "title": "Alert per level"
+            },
+            {
+              "loading": false,
+              "sizeable": false,
+              "draggable": false,
+              "removable": false,
+              "span": 10,
+              "height": "150px",
+              "editable": true,
+              "type": "histogram",
+              "mode": "mean",
+              "time_field": "@timestamp",
+              "value_field": "Alert.Analyzer.Level.Normalized",
+              "x-axis": true,
+              "y-axis": true,
+              "scale": 1,
+              "y_format": "none",
+              "grid": {
+                "max": null,
+                "min": 0
+              },
+              "queries": {
+                "mode": "selected",
+                "ids": [
+                  4
+                ]
+              },
+              "annotate": {
+                "enable": false,
+                "query": "*",
+                "size": 20,
+                "field": "_type",
+                "sort": [
+                  "_score",
+                  "desc"
+                ]
+              },
+              "auto_int": false,
+              "resolution": 1,
+              "interval": "1h",
+              "intervals": [
+                "auto",
+                "1s",
+                "1m",
+                "5m",
+                "10m",
+                "30m",
+                "1h",
+                "3h",
+                "12h",
+                "1d",
+                "1w",
+                "1y"
+              ],
+              "lines": false,
+              "fill": 0,
+              "linewidth": 3,
+              "points": false,
+              "pointradius": 5,
+              "bars": true,
+              "stack": true,
+              "spyable": true,
+              "zoomlinks": true,
+              "options": true,
+              "legend": true,
+              "show_query": true,
+              "interactive": true,
+              "legend_counts": true,
+              "timezone": "browser",
+              "percentage": false,
+              "zerofill": true,
+              "derivative": false,
+              "tooltip": {
+                "value_type": "cumulative",
+                "query_as_alias": true
+              },
+              "title": "Average level per hour"
+            },
+            {
+              "loading": false,
+              "sizeable": false,
+              "draggable": false,
+              "removable": false,
+              "span": 10,
+              "height": "150px",
+              "editable": true,
+              "type": "histogram",
+              "mode": "mean",
+              "time_field": "@timestamp",
+              "value_field": "Alert.Analyzer.Level.Normalized",
+              "x-axis": true,
+              "y-axis": true,
+              "scale": 1,
+              "y_format": "none",
+              "grid": {
+                "max": null,
+                "min": 0
+              },
+              "queries": {
+                "mode": "selected",
+                "ids": [
+                  4
+                ]
+              },
+              "annotate": {
+                "enable": false,
+                "query": "*",
+                "size": 20,
+                "field": "_type",
+                "sort": [
+                  "_score",
+                  "desc"
+                ]
+              },
+              "auto_int": false,
+              "resolution": 100,
+              "interval": "1d",
+              "intervals": [
+                "auto",
+                "1s",
+                "1m",
+                "5m",
+                "10m",
+                "30m",
+                "1h",
+                "3h",
+                "12h",
+                "1d",
+                "1w",
+                "1y"
+              ],
+              "lines": false,
+              "fill": 0,
+              "linewidth": 3,
+              "points": false,
+              "pointradius": 5,
+              "bars": true,
+              "stack": true,
+              "spyable": true,
+              "zoomlinks": true,
+              "options": true,
+              "legend": true,
+              "show_query": true,
+              "interactive": true,
+              "legend_counts": true,
+              "timezone": "browser",
+              "percentage": false,
+              "zerofill": true,
+              "derivative": false,
+              "tooltip": {
+                "value_type": "cumulative",
+                "query_as_alias": true
+              },
+              "title": "Average level per day"
+            }
+          ],
+          "title": "Alerts Level"
+        },
+        {
+          "error": false,
+          "span": 4,
+          "editable": true,
+          "type": "column",
+          "loadingEditor": false,
+          "panels": [
+            {
+              "loading": false,
+              "error": false,
+              "sizeable": false,
+              "draggable": false,
+              "removable": false,
+              "span": 10,
+              "height": "150px",
+              "editable": true,
+              "type": "terms",
+              "field": "Alert.Sensor.Node.Name",
+              "exclude": [],
+              "missing": true,
+              "other": true,
+              "size": 10,
+              "order": "count",
+              "style": {
+                "font-size": "10pt"
+              },
+              "donut": false,
+              "tilt": false,
+              "labels": true,
+              "arrangement": "vertical",
+              "chart": "bar",
+              "counter_pos": "below",
+              "spyable": true,
+              "queries": {
+                "mode": "all",
+                "ids": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6
+                ]
+              },
+              "tmode": "terms",
+              "tstat": "total",
+              "valuefield": "",
+              "title": "Alerts per sensor"
+            },
+            {
+              "loading": false,
+              "error": false,
+              "sizeable": false,
+              "draggable": false,
+              "removable": false,
+              "span": 10,
+              "height": "150px",
+              "editable": true,
+              "type": "terms",
+              "field": "Alert.Sourse.Process.Name",
+              "exclude": [],
+              "missing": true,
+              "other": true,
+              "size": 10,
+              "order": "count",
+              "style": {
+                "font-size": "10pt"
+              },
+              "donut": false,
+              "tilt": false,
+              "labels": true,
+              "arrangement": "vertical",
+              "chart": "bar",
+              "counter_pos": "below",
+              "spyable": true,
+              "queries": {
+                "mode": "all",
+                "ids": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6
+                ]
+              },
+              "tmode": "terms",
+              "tstat": "total",
+              "valuefield": "",
+              "title": "alerts per program"
+            }
+          ],
+          "title": "Alerts sources"
+        },
+        {
+          "error": false,
+          "span": 4,
+          "editable": true,
+          "type": "column",
+          "loadingEditor": false,
+          "panels": [
+            {
+              "loading": false,
+              "error": false,
+              "sizeable": false,
+              "draggable": false,
+              "removable": false,
+              "span": 10,
+              "height": "150px",
+              "editable": true,
+              "type": "terms",
+              "field": "Alert.Target.File.Path",
+              "exclude": [],
+              "missing": false,
+              "other": true,
+              "size": 10,
+              "order": "count",
+              "style": {
+                "font-size": "10pt"
+              },
+              "donut": false,
+              "tilt": false,
+              "labels": true,
+              "arrangement": "horizontal",
+              "chart": "table",
+              "counter_pos": "above",
+              "spyable": true,
+              "queries": {
+                "mode": "all",
+                "ids": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6
+                ]
+              },
+              "tmode": "terms",
+              "tstat": "total",
+              "valuefield": "",
+              "title": "changed files"
+            },
+            {
+              "loading": false,
+              "error": false,
+              "sizeable": false,
+              "draggable": false,
+              "removable": false,
+              "span": 10,
+              "height": "150px",
+              "editable": true,
+              "type": "terms",
+              "field": "Alert.Classification.Text",
+              "exclude": [],
+              "missing": true,
+              "other": true,
+              "size": 10,
+              "order": "count",
+              "style": {
+                "font-size": "10pt"
+              },
+              "donut": false,
+              "tilt": false,
+              "labels": true,
+              "arrangement": "vertical",
+              "chart": "bar",
+              "counter_pos": "below",
+              "spyable": true,
+              "queries": {
+                "mode": "all",
+                "ids": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6
+                ]
+              },
+              "tmode": "terms",
+              "tstat": "total",
+              "valuefield": "",
+              "title": "Alerts type"
+            },
+            {
+              "loading": false,
+              "sizeable": false,
+              "draggable": false,
+              "removable": false,
+              "span": 10,
+              "height": "150px",
+              "editable": true,
+              "type": "histogram",
+              "mode": "count",
+              "time_field": "@timestamp",
+              "value_field": null,
+              "x-axis": true,
+              "y-axis": true,
+              "scale": 1,
+              "y_format": "none",
+              "grid": {
+                "max": null,
+                "min": 0
+              },
+              "queries": {
+                "mode": "selected",
+                "ids": [
+                  5
+                ]
+              },
+              "annotate": {
+                "enable": false,
+                "query": "*",
+                "size": 20,
+                "field": "_type",
+                "sort": [
+                  "_score",
+                  "desc"
+                ]
+              },
+              "auto_int": true,
+              "resolution": 100,
+              "interval": "1h",
+              "intervals": [
+                "auto",
+                "1s",
+                "1m",
+                "5m",
+                "10m",
+                "30m",
+                "1h",
+                "3h",
+                "12h",
+                "1d",
+                "1w",
+                "1y"
+              ],
+              "lines": false,
+              "fill": 0,
+              "linewidth": 3,
+              "points": false,
+              "pointradius": 5,
+              "bars": true,
+              "stack": true,
+              "spyable": true,
+              "zoomlinks": true,
+              "options": true,
+              "legend": true,
+              "show_query": true,
+              "interactive": true,
+              "legend_counts": true,
+              "timezone": "browser",
+              "percentage": false,
+              "zerofill": true,
+              "derivative": false,
+              "tooltip": {
+                "value_type": "cumulative",
+                "query_as_alias": true
+              },
+              "title": "Parse failure"
+            }
+          ],
+          "title": "Alerts"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Map",
+      "height": "600px",
+      "editable": true,
+      "collapse": true,
+      "collapsable": true,
+      "panels": [
+        {
+          "error": false,
+          "span": 12,
+          "editable": true,
+          "type": "bettermap",
+          "loadingEditor": false,
+          "field": "Alert.Source.Node.Geoip.location",
+          "size": 1000,
+          "spyable": true,
+          "tooltip": "Alert.Source.Node.Address",
+          "queries": {
+            "mode": "all",
+            "ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "title": "Alert source locations"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Graph",
+      "height": "350px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 12,
+          "editable": true,
+          "group": [
+            "default"
+          ],
+          "type": "histogram",
+          "mode": "count",
+          "time_field": "@timestamp",
+          "value_field": null,
+          "auto_int": true,
+          "resolution": 100,
+          "interval": "5m",
+          "fill": 3,
+          "linewidth": 3,
+          "timezone": "browser",
+          "spyable": true,
+          "zoomlinks": true,
+          "bars": true,
+          "stack": true,
+          "points": false,
+          "lines": false,
+          "legend": true,
+          "x-axis": true,
+          "y-axis": true,
+          "percentage": false,
+          "interactive": true,
+          "queries": {
+            "mode": "all",
+            "ids": [
+              0,
+              6,
+              7
+            ]
+          },
+          "title": "Events over time",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1M",
+            "1y"
+          ],
+          "options": true,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "pointradius": 5,
+          "show_query": true,
+          "legend_counts": true,
+          "zerofill": true,
+          "derivative": false
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Events",
+      "height": "350px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "title": "All events",
+          "error": false,
+          "span": 12,
+          "editable": true,
+          "group": [
+            "default"
+          ],
+          "type": "table",
+          "size": 100,
+          "pages": 5,
+          "offset": 0,
+          "sort": [
+            "Alert.CreateTime",
+            "asc"
+          ],
+          "style": {
+            "font-size": "9pt"
+          },
+          "overflow": "min-height",
+          "fields": [
+            "Alert.CreateTime",
+            "Alert.Sensor.Node.Name",
+            "message"
+          ],
+          "localTime": true,
+          "timeField": "@timestamp",
+          "highlight": [],
+          "sortable": true,
+          "header": true,
+          "paging": true,
+          "spyable": true,
+          "queries": {
+            "mode": "selected",
+            "ids": []
+          },
+          "field_list": false,
+          "status": "Stable",
+          "trimFactor": 800,
+          "normTimes": true,
+          "all_fields": true
+        }
+      ],
+      "notice": false
+    }
+  ],
+  "editable": true,
+  "failover": false,
+  "index": {
+    "interval": "day",
+    "pattern": "[logstash-]YYYY.MM.DD",
+    "default": "NO_TIME_FILTER_OR_INDEX_PATTERN_NOT_MATCHED",
+    "warm_fields": true
+  },
+  "style": "dark",
+  "panel_hints": true,
+  "pulldowns": [
+    {
+      "type": "query",
+      "collapse": false,
+      "notice": false,
+      "query": "*",
+      "pinned": true,
+      "history": [
+        "Alert.Classification.Ident:[109000 TO 109999]",
+        "tags:_grokparsefailure",
+        "*",
+        "Alert.Analyzer.Level.Normalized:[12 TO 15]",
+        "Alert.Analyzer.Level.Normalized:[9 TO 11]",
+        "Alert.Analyzer.Level.Normalized:[6 TO 8]",
+        "Alert.Classification.Ident:[111001 TO 111009]",
+        "Alert.Classification.Ident:[111001 TO 111008]",
+        "Alert.Analyzer.Level.Normalized:[0 TO 5]",
+        "Alert.Classification.Ident:[1 TO 5]"
+      ],
+      "remember": 10,
+      "enable": true
+    },
+    {
+      "type": "filtering",
+      "collapse": false,
+      "notice": true,
+      "enable": true
+    }
+  ],
+  "nav": [
+    {
+      "type": "timepicker",
+      "collapse": false,
+      "notice": false,
+      "status": "Stable",
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ],
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "timefield": "@timestamp",
+      "now": true,
+      "filter_id": 0,
+      "enable": true
+    }
+  ],
+  "loader": {
+    "save_gist": false,
+    "save_elasticsearch": true,
+    "save_local": true,
+    "save_default": true,
+    "save_temp": true,
+    "save_temp_ttl_enable": true,
+    "save_temp_ttl": "30d",
+    "load_gist": true,
+    "load_elasticsearch": true,
+    "load_elasticsearch_size": 20,
+    "load_local": true,
+    "hide": false
+  },
+  "refresh": false
+}
