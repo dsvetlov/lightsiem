@@ -17,7 +17,7 @@ OSSEC_MONITOR Location: %{OSSEC_AGENT_HOST}->(ossec-monitord|ossec|ossec-logcoll
 
 OSSEC_AGENT_HOST (\(%{HOST:Alert.Sensor.Node.Name}\) %{IPORHOST:Alert.Sensor.Node.Address}|%{HOST:Alert.Sensor.Node.Name})
 
-OSSEC_HYBRID_SERVER_HOST (\(%{HOST:Alert.Analyzer.Analyzer.Node.Name}\) %{IPORHOST:Alert.Analyzer.Analyzer.Node.Address}|%{HOST:Alert.Analyzer.Analyzer.Node.Name})
+OSSEC_HYBRID_SERVER_HOST (\(%{HOST:Alert.Analyzer.Hybrid.Node.Name}\) %{IPORHOST:Alert.Analyzer.Hybrid.Node.Address}|%{HOST:Alert.Analyzer.Hybrid.Node.Name})
 
 OSSEC_SERVER_HOST (\(%{HOST:Alert.Analyzer.Node.Name}\) %{IPORHOST:Alert.Analyzer.Node.Address}|%{HOST:Alert.Analyzer.Node.Name})
 
