@@ -1,12 +1,12 @@
 {
-  "title": "OSSEC",
+  "title": "OSSEC_cisco",
   "services": {
     "query": {
       "list": {
         "0": {
-          "query": "Alert.Analyzer.Level.Normalized:[0 TO 5]",
-          "alias": "",
-          "color": "#629E51",
+          "query": "Alert.Classification.Ident:[111001 TO 111009]",
+          "alias": "Config",
+          "color": "#0A50A1",
           "id": 0,
           "pin": true,
           "type": "lucene",
@@ -18,7 +18,7 @@
           "alias": "",
           "pin": true,
           "type": "lucene",
-          "enable": true,
+          "enable": false,
           "query": "Alert.Analyzer.Level.Normalized:[6 TO 8]"
         },
         "2": {
@@ -27,7 +27,7 @@
           "alias": "",
           "pin": true,
           "type": "lucene",
-          "enable": true,
+          "enable": false,
           "query": "Alert.Analyzer.Level.Normalized:[9 TO 11]"
         },
         "3": {
@@ -36,7 +36,7 @@
           "alias": "",
           "pin": true,
           "type": "lucene",
-          "enable": true,
+          "enable": false,
           "query": "Alert.Analyzer.Level.Normalized:[12 TO 15]"
         },
         "4": {
@@ -45,7 +45,7 @@
           "alias": "",
           "pin": true,
           "type": "lucene",
-          "enable": true,
+          "enable": false,
           "query": "*"
         },
         "5": {
@@ -54,8 +54,26 @@
           "alias": "",
           "pin": true,
           "type": "lucene",
-          "enable": true,
+          "enable": false,
           "query": "tags:_grokparsefailure"
+        },
+        "6": {
+          "id": 6,
+          "color": "#BA43A9",
+          "alias": "Auth",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "Alert.Classification.Ident:[113000 TO 113999]"
+        },
+        "7": {
+          "id": 7,
+          "color": "#705DA0",
+          "alias": "",
+          "pin": false,
+          "type": "lucene",
+          "enable": true,
+          "query": "*"
         }
       },
       "ids": [
@@ -64,7 +82,9 @@
         2,
         3,
         4,
-        5
+        5,
+        6,
+        7
       ]
     },
     "filter": {
@@ -72,25 +92,115 @@
         "0": {
           "type": "time",
           "field": "@timestamp",
-          "from": "now-5m",
+          "from": "now-6h",
           "to": "now",
           "mandate": "must",
           "active": true,
           "alias": "",
           "id": 0
+        },
+        "1": {
+          "type": "field",
+          "field": "type",
+          "query": "\"cisco\"",
+          "mandate": "must",
+          "active": true,
+          "alias": "",
+          "id": 1
         }
       },
       "ids": [
-        0
+        0,
+        1
       ]
     }
   },
   "rows": [
     {
-      "title": "Alerts dashboard",
+      "title": "Cisco Devices",
       "height": "150px",
       "editable": true,
       "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "error": false,
+          "span": 3,
+          "editable": true,
+          "type": "terms",
+          "loadingEditor": false,
+          "field": "Alert.Source.User.Name",
+          "exclude": [],
+          "missing": false,
+          "other": true,
+          "size": 10,
+          "order": "count",
+          "style": {
+            "font-size": "10pt"
+          },
+          "donut": false,
+          "tilt": false,
+          "labels": true,
+          "arrangement": "horizontal",
+          "chart": "table",
+          "counter_pos": "above",
+          "spyable": true,
+          "queries": {
+            "mode": "all",
+            "ids": [
+              0,
+              6,
+              7
+            ]
+          },
+          "tmode": "terms",
+          "tstat": "total",
+          "valuefield": "",
+          "title": "Users"
+        },
+        {
+          "error": false,
+          "span": 3,
+          "editable": true,
+          "type": "terms",
+          "loadingEditor": false,
+          "field": "Alert.Sensor.Node.Name",
+          "exclude": [],
+          "missing": false,
+          "other": true,
+          "size": 10,
+          "order": "count",
+          "style": {
+            "font-size": "10pt"
+          },
+          "donut": false,
+          "tilt": false,
+          "labels": true,
+          "arrangement": "horizontal",
+          "chart": "table",
+          "counter_pos": "above",
+          "spyable": true,
+          "queries": {
+            "mode": "all",
+            "ids": [
+              0,
+              6,
+              7
+            ]
+          },
+          "tmode": "terms",
+          "tstat": "total",
+          "valuefield": "",
+          "title": "Devices"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Alerts dashboard",
+      "height": "150px",
+      "editable": true,
+      "collapse": true,
       "collapsable": true,
       "panels": [
         {
@@ -333,7 +443,8 @@
                   2,
                   3,
                   4,
-                  5
+                  5,
+                  6
                 ]
               },
               "tmode": "terms",
@@ -351,7 +462,7 @@
               "height": "150px",
               "editable": true,
               "type": "terms",
-              "field": "Alert.Source.Process.Name",
+              "field": "Alert.Sourse.Process.Name",
               "exclude": [],
               "missing": true,
               "other": true,
@@ -375,7 +486,8 @@
                   2,
                   3,
                   4,
-                  5
+                  5,
+                  6
                 ]
               },
               "tmode": "terms",
@@ -427,7 +539,8 @@
                   2,
                   3,
                   4,
-                  5
+                  5,
+                  6
                 ]
               },
               "tmode": "terms",
@@ -469,7 +582,8 @@
                   2,
                   3,
                   4,
-                  5
+                  5,
+                  6
                 ]
               },
               "tmode": "terms",
@@ -515,7 +629,7 @@
               },
               "auto_int": true,
               "resolution": 100,
-              "interval": "1s",
+              "interval": "1h",
               "intervals": [
                 "auto",
                 "1s",
@@ -612,7 +726,7 @@
           "value_field": null,
           "auto_int": true,
           "resolution": 100,
-          "interval": "1s",
+          "interval": "5m",
           "fill": 3,
           "linewidth": 3,
           "timezone": "browser",
@@ -628,12 +742,11 @@
           "percentage": false,
           "interactive": true,
           "queries": {
-            "mode": "selected",
+            "mode": "all",
             "ids": [
               0,
-              1,
-              2,
-              3
+              6,
+              7
             ]
           },
           "title": "Events over time",
@@ -702,8 +815,8 @@
           "pages": 5,
           "offset": 0,
           "sort": [
-            "@timestamp",
-            "desc"
+            "Alert.CreateTime",
+            "asc"
           ],
           "style": {
             "font-size": "9pt"
@@ -712,10 +825,7 @@
           "fields": [
             "Alert.CreateTime",
             "Alert.Sensor.Node.Name",
-            "Alert.Analyzer.Level.Normalized",
-            "Alert.Classification.Text",
-            "Alert.Source.rawmessage",
-			"Alert.Source.Node.Address"
+            "message"
           ],
           "localTime": true,
           "timeField": "@timestamp",
@@ -725,19 +835,12 @@
           "paging": true,
           "spyable": true,
           "queries": {
-            "mode": "all",
-            "ids": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5
-            ]
+            "mode": "selected",
+            "ids": []
           },
-          "field_list": true,
+          "field_list": false,
           "status": "Stable",
-          "trimFactor": 300,
+          "trimFactor": 800,
           "normTimes": true,
           "all_fields": true
         }
@@ -763,20 +866,23 @@
       "query": "*",
       "pinned": true,
       "history": [
+        "Alert.Classification.Ident:[109000 TO 109999]",
         "tags:_grokparsefailure",
         "*",
-        "Alert.Analyzer.Level.Normalized:12 TO 15]",
+        "Alert.Analyzer.Level.Normalized:[12 TO 15]",
         "Alert.Analyzer.Level.Normalized:[9 TO 11]",
         "Alert.Analyzer.Level.Normalized:[6 TO 8]",
+        "Alert.Classification.Ident:[111001 TO 111009]",
+        "Alert.Classification.Ident:[111001 TO 111008]",
         "Alert.Analyzer.Level.Normalized:[0 TO 5]",
-        "Alert.Analyzer.Level.Normalized:[0 to 5]"
+        "Alert.Classification.Ident:[1 TO 5]"
       ],
       "remember": 10,
       "enable": true
     },
     {
       "type": "filtering",
-      "collapse": true,
+      "collapse": false,
       "notice": true,
       "enable": true
     }
@@ -830,5 +936,5 @@
     "load_local": true,
     "hide": false
   },
-  "refresh": "5m"
+  "refresh": false
 }

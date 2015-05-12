@@ -44,6 +44,13 @@
   tags:
         - configuration
 
+- name: Place Logstash patterns file for Cisco
+  copy: src=cisco.pattern dest=/opt/logstash/patterns/cisco
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
 - name: Place Logstash input config for ossec
   copy: src=20-ossec.conf dest=/etc/logstash/conf.d/20-ossec.conf
   notify:
@@ -58,8 +65,36 @@
   tags:
         - configuration
 
+- name: Place Logstash input config for Cisco
+  copy: src=40-cisco.conf dest=/etc/logstash/conf.d/40-cisco.conf
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
+- name: Open port in firewalld for Logstash Cisco input
+  firewalld: port=9020/udp permanent=true state=enabled
+  tags:
+        - configuration
+  notify:
+        - restart firewalld
+
+- name: Place Logstash common config
+  copy: src=95-common.conf dest=/etc/logstash/conf.d/95-common.conf
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
 - name: Place Logstash output config for elasticsearch
   copy: src=99-output.conf dest=/etc/logstash/conf.d/99-output.conf
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
+- name: Place Logstash template for elasticsearch output
+  copy: src=elasticsearch-template.json dest=/opt/logstash/lib/logstash/outputs/elasticsearch/elasticsearch-template.json
   notify:
         - restart logstash
   tags:
@@ -126,6 +161,12 @@
 
 - name: Place OSSEC FIM dashboard
   copy: src=fim.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/fim.json
+  tags: configuration
+  notify:
+        - restart kibana
+
+- name: Place Cisco dashboard
+  copy: src=cisco.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/cisco.json
   tags: configuration
   notify:
         - restart kibana
