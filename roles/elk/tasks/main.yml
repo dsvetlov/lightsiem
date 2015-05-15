@@ -2,7 +2,7 @@
   yum: name={{item}} state=present
   with_items:
         - java
-        - https://download.elasticsearch.org/logstash/logstash/packages/centos/logstash-1.4.2-1_2c0f5a1.noarch.rpm
+        - http://download.elastic.co/logstash/logstash/packages/centos/logstash-1.5.0-1.noarch.rpm
         - https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.4.noarch.rpm
         - epel-release
         - nodejs
