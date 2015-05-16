@@ -710,7 +710,7 @@
           },
           "overflow": "min-height",
           "fields": [
-            "Alert.CreateTime",
+            "Alert.ReceiveTime",
             "Alert.Sensor.Node.Name",
             "Alert.Analyzer.Level.Normalized",
             "Alert.Classification.Text",
@@ -718,7 +718,7 @@
             "Alert.Source.Node.Address"
           ],
           "localTime": true,
-          "timeField": "Alert.CreateTime",
+          "timeField": "Alert.ReceiveTime",
           "highlight": [],
           "sortable": true,
           "header": true,
