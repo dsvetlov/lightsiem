@@ -11,6 +11,7 @@
 
 - name: Open port in firewalld for Logstash OSSEC input
   firewalld: port=9000/udp permanent=true state=enabled
+  ignore_errors: yes
   tags:
         - configuration
   notify:
@@ -25,6 +26,7 @@
 
 - name: Open port in firewalld for Logstash Snort input
   firewalld: port=9010/udp permanent=true state=enabled
+  ignore_errors: yes
   tags:
         - configuration
   notify:
@@ -74,6 +76,7 @@
 
 - name: Open port in firewalld for Logstash Cisco input
   firewalld: port=9020/udp permanent=true state=enabled
+  ignore_errors: yes
   tags:
         - configuration
   notify:
@@ -141,6 +144,7 @@
 
 - name: Open port in firewalld for Kibana
   firewalld: port=80/tcp permanent=true state=enabled
+  ignore_errors: yes
   tags:
         - configuration
   notify:
