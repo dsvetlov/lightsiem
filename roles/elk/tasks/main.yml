@@ -18,7 +18,7 @@
         - restart firewalld
 
 - name: Place Logstash patterns file for ossec
-  copy: src=ossec.pattern dest=/opt/logstash/patterns/ossec
+  copy: src=ossec.pattern dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/ossec
   notify:
         - restart logstash
   tags:
@@ -33,21 +33,21 @@
         - restart firewalld
 
 - name: Place Logstash patterns file for snort
-  copy: src=snort.pattern dest=/opt/logstash/patterns/snort
+  copy: src=snort.pattern dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/snort
   notify:
         - restart logstash
   tags:
         - configuration
 
 - name: Place Logstash patterns file for IDMEF
-  copy: src=idmef.pattern dest=/opt/logstash/patterns/idmef
+  copy: src=idmef.pattern dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/idmef
   notify:
         - restart logstash
   tags:
         - configuration
 
 - name: Place Logstash patterns file for Cisco
-  copy: src=cisco.pattern dest=/opt/logstash/patterns/cisco
+  copy: src=cisco.pattern dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/cisco
   notify:
         - restart logstash
   tags:
@@ -97,7 +97,7 @@
         - configuration
 
 - name: Place Logstash template for elasticsearch output
-  copy: src=elasticsearch-template.json dest=/opt/logstash/lib/logstash/outputs/elasticsearch/elasticsearch-template.json
+  copy: src=elasticsearch-template.json dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-output-elasticsearch-0.2.4-java/lib/logstash/outputs/elasticsearch/elasticsearch-template.json
   notify:
         - restart logstash
   tags:
