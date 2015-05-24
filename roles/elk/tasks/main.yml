@@ -32,6 +32,14 @@
   notify:
         - restart firewalld
 
+- name: Open port in firewalld for Logstash Snort full via lumberjack input
+  firewalld: port=9011/tcp permanent=true state=enabled
+  ignore_errors: yes
+  tags:
+        - configuration
+  notify:
+        - restart firewalld
+
 - name: Place Logstash patterns file for snort
   copy: src=snort.pattern dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/snort
   notify:
