@@ -1,4 +1,10 @@
 #%ASA-7-710005
-CISCO_EVENTID %ASA-%{INT:Alert.Analyzer.Level}-%{POSINT:Alert.Classification.Ident}
+CISCO_ASA_EVENTID %ASA-%{INT:Alert.Analyzer.Level}-%{POSINT:Alert.Classification.Ident}
+CISCO_IOS_EVENTID %{DATA:Alert.Group.Text}-%{INT:Alert.Analyzer.Level}-%{DATA:Alert.Classification.Ident}
+
 CISCO_TIMESTAMP %{MONTH} %{MONTHDAY} %{YEAR} %{TIME}
-CISCO_HEADER %{SYSLOG5424PRI}(?:%{CISCO_TIMESTAMP:timestamp}: )%{CISCO_EVENTID:Alert.Classification.Text}:
+#14:17:41 MSK Mon May 25 2015
+CISCO_IOS_TIMESTAMP %{TIME} %{WORD:Timezone} %{DAY} %{MONTH} %{MONTHDAY} %{YEAR}
+CISCO_HEADER %{CISCO_ASA_HEADER_ORIGINAL}|%{CISCO_ASAORIOS_HEDAER_FORWARDED5424}
+CISCO_ASA_HEADER_ORIGINAL %{SYSLOG5424PRI}(?:%{CISCO_TIMESTAMP:timestamp}: )%{CISCO_ASA_EVENTID:Alert.Classification.Text}:
+CISCO_ASAORIOS_HEDAER_FORWARDED5424 %{SYSLOG5424PRI}%{NONNEGINT} +(?:%{TIMESTAMP_ISO8601:syslog5424_ts}|-) +(?:%{HOSTNAME:Alert.Analyzer.Node.Address}|-) +(?:%{CISCO_ASA_EVENTID:Alert.Classification.Text}|-) +(?:%{WORD:syslog5424_proc}|-) +(?:%{WORD:syslog5424_msgid}|-) +(?:%{SYSLOG5424SD:syslog5424_sd}|-|)
