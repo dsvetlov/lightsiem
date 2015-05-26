@@ -1,11 +1,11 @@
-SNORT_MESSAGE (%{SYSLOG5424BASE}|%{SYSLOGBASE2}) \[%{DATA:Alert.Classification.Ident}\] %{DATA:Alert.Classification.Text} \[Classification: %{DATA:Alert.Group.Text}\] \[Priority: %{BASE10NUM:Alert.Analyzer.Level}\] \{%{DATA:Alert.Protocol}\} %{IPORHOST:Alert.Source.Node.Address}(?::%{NONNEGINT:Alert.Source.Node.Port})? -> %{IPORHOST:Alert.Destination.Node.Address}(?::%{NONNEGINT:Alert.Destination.Node.Port})?
+SNORT_MESSAGE (%{SYSLOG5424BASE}|%{SYSLOGBASE2}) \[%{DATA:Alert.Classification.Ident}\] %{DATA:Alert.Classification.Text} \[Classification: %{DATA:Alert.Group.Text}\] \[Priority: %{BASE10NUM:Alert.Analyzer.Level}\] \{%{DATA:Alert.Protocol}\} %{IPORHOST:Alert.Source.Node.Address}(?::%{NONNEGINT:Alert.Source.Node.Port})? -> %{IPORHOST:Alert.Target.Node.Address}(?::%{NONNEGINT:Alert.Target.Node.Port})?
 
-SNORT_S5_ERROR (%{SYSLOG5424BASE}|%{SYSLOGBASE2}) %{DATA:Alert.Classification.Ident}: %{DATA:Alert.Classification.Text} %{IPORHOST:Alert.Source.Node.Address} %{NONNEGINT:Alert.Source.Node.Port} --> %{IPORHOST:Alert.Destination.Node.Address}
+SNORT_S5_ERROR (%{SYSLOG5424BASE}|%{SYSLOGBASE2}) %{DATA:Alert.Classification.Ident}: %{DATA:Alert.Classification.Text} %{IPORHOST:Alert.Source.Node.Address} %{NONNEGINT:Alert.Source.Node.Port} --> %{IPORHOST:Alert.Target.Node.Address}
 
 SNORT_DATE %{MONTHNUM}/%{MONTHDAY}-%{TIME}
 SNORT_MESSAGE_LINE1 \[\*\*\] \[%{DATA:Alert.Classification.Ident}\] %{DATA:Alert.Classification.Text} \[\*\*\]
 SNORT_MESSAGE_LINE2 \[Classification: %{DATA:Alert.Group.Text}\] \[Priority: %{BASE10NUM:Alert.Analyzer.Level}\]
-SNORT_MESSAGE_LINE3 %{DATA:Snort_date} %{IPORHOST:Alert.Source.Node.Address}(?::%{NONNEGINT:Alert.Source.Node.Port})? -> %{IPORHOST:Alert.Destination.Node.Address}(?::%{NONNEGINT:Alert.Destination.Node.Port})?
+SNORT_MESSAGE_LINE3 %{DATA:Snort_date} %{IPORHOST:Alert.Source.Node.Address}(?::%{NONNEGINT:Alert.Source.Node.Port})? -> %{IPORHOST:Alert.Target.Node.Address}(?::%{NONNEGINT:Alert.Target.Node.Port})?
 SNORT_MESSAGE_LINES_CAPTURE %{GREEDYDATA:Alert.Additional.Capture}
 SNORT_MESSAGE_LINE_REFERENCE \[Xref =\> %{DATA:Alert.Classification.Reference}\]
 SNORT_MESSAGE_FULL (?m)%{SNORT_MESSAGE_LINE1}[.\r\n]%{SNORT_MESSAGE_LINE2}[.\r\n]*%{SNORT_MESSAGE_LINE3}[.\r\n](%{SNORT_MESSAGE_LINES_CAPTURE}%{SNORT_MESSAGE_LINE_REFERENCE}|%{SNORT_MESSAGE_LINES_CAPTURE})

@@ -135,7 +135,7 @@
           "editable": true,
           "type": "terms",
           "loadingEditor": false,
-          "field": "Alert.Destination.Node.Address",
+          "field": "Alert.Target.Node.Address",
           "exclude": [],
           "missing": false,
           "other": true,
