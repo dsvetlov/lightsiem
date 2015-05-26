@@ -160,6 +160,8 @@
 
 - name: Place systemd unit file for Kibana
   copy: src=kibana.service dest=/etc/systemd/system/kibana.service
+  ignore_errors: yes
+  tags: configuration
 
 - name: Place config for Kibana Authentication Proxy
   copy: src=config.js dest=/opt/kibana-authentication-proxy/config.js
