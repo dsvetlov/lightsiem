@@ -99,7 +99,7 @@
           "editable": true,
           "type": "terms",
           "loadingEditor": false,
-          "field": "Alert.Source.Node.Address",
+          "field": "Alert.Source.Node.Name",
           "exclude": [],
           "missing": false,
           "other": true,
@@ -135,7 +135,7 @@
           "editable": true,
           "type": "terms",
           "loadingEditor": false,
-          "field": "Alert.Target.Node.Address",
+          "field": "Alert.Target.Node.Name",
           "exclude": [],
           "missing": false,
           "other": true,
@@ -730,7 +730,7 @@
           "field": "Alert.Source.Node.Geoip.location",
           "size": 1000,
           "spyable": true,
-          "tooltip": "Alert.Source.Node.Address",
+          "tooltip": "Alert.Source.Node.Name",
           "queries": {
             "mode": "all",
             "ids": [
@@ -869,7 +869,7 @@
             "Alert.Analyzer.Level.Normalized",
             "Alert.Classification.Text",
             "Alert.Source.rawmessage",
-            "Alert.Source.Node.Address"
+            "Alert.Source.Node.Name"
           ],
           "localTime": true,
           "timeField": "Alert.ReceiveTime",
