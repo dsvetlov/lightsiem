@@ -8,6 +8,13 @@
         - nodejs
         - unzip
         - npm
+        - dnsmasq
+
+- name: AutoStart dnsmasq
+  command: systemctl enable dnsmasq
+
+- name: Start dnsmasq
+  command: systemctl start dnsmasq
 
 - name: Open port in firewalld for Logstash OSSEC input
   firewalld: port=9000/udp permanent=true state=enabled
