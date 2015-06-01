@@ -6,7 +6,7 @@ SYSCHECK syscheck
 
 PATHORIP (?:%{PATH}|%{IP})
 
-OSSEC_LOG_ANALYSIS_LOCATION (Location: %{OSSEC_AGENT_HOST}->%{PATHORIP:Alert.Source.Ident};|Location: %{OSSEC_HYBRID_SERVER_HOST}->%{PATH}\|%{OSSEC_AGENT_HOST}->%{PATHORIP:Alert.Source.Ident};)
+OSSEC_LOG_ANALYSIS_LOCATION (Location: %{OSSEC_AGENT_HOST}\-\>%{PATHORIP:Alert.Source.Ident};|Location: %{OSSEC_HYBRID_SERVER_HOST}\-\>%{PATH}\|%{OSSEC_AGENT_HOST}\-\>%{PATHORIP:Alert.Source.Ident};)
 
 OSSEC_SYSCHECK_LOCATION (Location: %{OSSEC_AGENT_HOST}->%{SYSCHECK:Alert.Source.Ident};|Location: %{OSSEC_HYBRID_SERVER_HOST}->%{PATH}\|%{OSSEC_AGENT_HOST}->%{SYSCHECK:Alert.Source.Ident};)
 
@@ -26,3 +26,6 @@ OSSEC_SERVER_HOST (\(%{HOST:Alert.Analyzer.Node.Name}\) %{IPORHOST:Alert.Analyze
 OSSEC_HEADER %{SYSLOG5424PRI}%{SYSLOGTIMESTAMP:Alert.CreateTime} %{SYSLOGHOST:Alert.Analyzer.Node.Name} %{DATA:Alert.Analyzer.Name}: Alert Level: %{BASE10NUM:Alert.Analyzer.Level}; Rule: %{BASE10NUM:Alert.Classification.Ident} - %{DATA:Alert.Classification.Text};
 
 OSSEC_MESSAGE %{OSSEC_HEADER} (?:%{OSSEC_LOG_ANALYSIS}|%{OSSEC_SYSCHECK}|%{OSSEC_MONITOR})
+
+#OSSEC_MESSAGE_FULL (?m)\*\* Alert %{DATA:Alert.CreateTime}: \- %{DATA:Alert.Group.Text}\n%{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_LOG_ANALYSIS_LOCATION}\nRule: %{BASE10NUM:Alert.Classification.Ident} \(level %{BASE10NUM:Alert.Analyzer.Level}\) -> %{DATA:Alert.Classification.Text}\n%{GREEDYDATA:remaining_message}
+OSSEC_MESSAGE_FULL (?m)\*\* Alert %{DATA:Alert.CreateTime}: \- %{DATA:Alert.Group.Text}\n%{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->%{PATHORIP:Alert.Source.Ident}\nRule: %{BASE10NUM:Alert.Classification.Ident} \(level %{BASE10NUM:Alert.Analyzer.Level}\) -> '%{DATA:Alert.Classification.Text}'\n%{GREEDYDATA:syslog_message}
