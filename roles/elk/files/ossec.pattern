@@ -4,6 +4,8 @@ OSSEC_USER user: %{USERNAME:user};
 
 SYSCHECK syscheck
 
+MONITORD ossec-monitord
+
 PATHORIP (?:%{PATH}|%{IP})
 
 OSSEC_LOG_ANALYSIS_LOCATION (Location: %{OSSEC_AGENT_HOST}\-\>%{PATHORIP:Alert.Source.Ident};|Location: %{OSSEC_HYBRID_SERVER_HOST}\-\>%{PATH}\|%{OSSEC_AGENT_HOST}\-\>%{PATHORIP:Alert.Source.Ident};)
@@ -28,4 +30,52 @@ OSSEC_HEADER %{SYSLOG5424PRI}%{SYSLOGTIMESTAMP:Alert.CreateTime} %{SYSLOGHOST:Al
 OSSEC_MESSAGE %{OSSEC_HEADER} (?:%{OSSEC_LOG_ANALYSIS}|%{OSSEC_SYSCHECK}|%{OSSEC_MONITOR})
 
 #OSSEC_MESSAGE_FULL (?m)\*\* Alert %{DATA:Alert.CreateTime}: \- %{DATA:Alert.Group.Text}\n%{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_LOG_ANALYSIS_LOCATION}\nRule: %{BASE10NUM:Alert.Classification.Ident} \(level %{BASE10NUM:Alert.Analyzer.Level}\) -> %{DATA:Alert.Classification.Text}\n%{GREEDYDATA:remaining_message}
-OSSEC_MESSAGE_FULL (?m)\*\* Alert %{DATA:Alert.CreateTime}: \- %{DATA:Alert.Group.Text}\n%{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->%{PATHORIP:Alert.Source.Ident}\nRule: %{BASE10NUM:Alert.Classification.Ident} \(level %{BASE10NUM:Alert.Analyzer.Level}\) -> '%{DATA:Alert.Classification.Text}'\n%{GREEDYDATA:syslog_message}
+OSSEC_MESSAGE_FULL_HEADER %{OSSEC_MESSAGE_FULL_LINE1}\n%{OSSEC_MESSAGE_FULL_LINE2}\n%{OSSEC_MESSAGE_FULL_LINE3}
+OSSEC_MESSAGE_FULL (?m)%{OSSEC_MESSAGE_FULL_HEADER}\n%{OSSEC_MESSAGE_FULL_SYSCHECK}
+
+#** Alert 1433185454.0: - syslog,sshd,authentication_success,
+#** Alert 1432491131.3554: mail  - ossec,
+OSSEC_MESSAGE_FULL_LINE1 \*\* Alert %{DATA:Alert.CreateTime}: %{WORD}?%{SPACE}\- %{DATA:Alert.Group.Text}
+
+#2015 Jun 01 19:04:14 hw1->/var/log/secure
+#2015 May 24 17:30:14 hw1->syscheck
+2015 May 24 18:12:11 hw1->ossec-monitord
+OSSEC_MESSAGE_FULL_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->(%{PATHORIP:Alert.Source.Ident}|%{SYSCHECK}|%{MONITORD})
+
+#Rule: 5715 (level 3) -> 'SSHD authentication success.'
+OSSEC_MESSAGE_FULL_LINE3 Rule: %{BASE10NUM:Alert.Classification.Ident} \(level %{BASE10NUM:Alert.Analyzer.Level}\) -> '%{DATA:Alert.Classification.Text}'
+
+OSSEC_MESSAGE_FULL_SYSCHECK (%{OSSEC_MESSAGE_FULL_SYSCHECK_FILE}\n(%{OSSEC_MESSAGE_FULL_SYSCHECK_FILE}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_OLDMD5}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_CURMD5}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_OLDSHA}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_CURSHA}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_DIFF})?|%{OSSEC_MESSAGE_FULL_SYSCHECK_DELETE}|%{OSSEC_MESSAGE_FULL_SYSCHECK_READD})
+
+#Integrity checksum changed for: '/etc/nsswitch.conf'
+OSSEC_MESSAGE_FULL_SYSCHECK_FILE Integrity checksum changed for: '%{PATH:Alert.Target.File.Path}'
+
+#Size changed from '1465' to '1336'
+OSSEC_MESSAGE_FULL_SYSCHECK_FILE Size changed from '%{BASE10NUM:Alert.Target.File.oldsize}' to '%{BASE10NUM:Alert.Target.File.newsize}'
+
+#Old md5sum was: '3a38cfbb74aec4b3b011bb0ee3ce7828'
+OSSEC_MESSAGE_FULL_SYSCHECK_OLDMD5 Old md5sum was: '%{DATA:Alert.Target.File.chksum.md5prev}'
+
+#New md5sum is : '8a3cf0d94719677115db91589e73c54e'
+OSSEC_MESSAGE_FULL_SYSCHECK_CURMD5 New md5sum is : '%{DATA:Alert.Target.File.chksum.md5cur}'
+
+#Old sha1sum was: '63386c46e9f5dc88643ca09a731f7a8321287f2a'
+OSSEC_MESSAGE_FULL_SYSCHECK_OLDSHA Old sha1sum was: '%{DATA:Alert.Target.File.chksum.SHAprev}'
+
+#New sha1sum is : 'a19587b1386ac676ceebeff5a71d9e035fef4caf'
+OSSEC_MESSAGE_FULL_SYSCHECK_CURSHA New sha1sum is : '%{DATA:Alert.Target.File.chksum.SHAcur}'
+
+#What changed:
+#1,2c1,2
+#< # up nothing. Note that if the search failed due to some other reason
+#< # (like no NIS server responding) then the search continues with the
+#---
+#> #123
+#> #123
+OSSEC_MESSAGE_FULL_SYSCHECK_DIFF What changed:\n%{GREEDYDATA:Alert.Target.File.Diff}
+
+#File '%.756s' was deleted. Unable to retrieve checksum.
+OSSEC_MESSAGE_FULL_SYSCHECK_DELETE File '%{PATH:Alert.Target.File.Path}' was deleted. Unable to retrieve checksum.
+
+#File '%.756s' was re-added.
+OSSEC_MESSAGE_FULL_SYSCHECK_READD File '%{PATH:Alert.Target.File.Path}' was re-added.
