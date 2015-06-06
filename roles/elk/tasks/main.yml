@@ -194,6 +194,8 @@
 
 - name: AutoStart Kibana
   command: systemctl enable kibana.service
+  ignore_errors: yes
 
 - name: Start Kiabana
   command: systemctl start kibana.service
+  ignore_errors: yes
