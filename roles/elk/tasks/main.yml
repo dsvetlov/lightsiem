@@ -11,10 +11,10 @@
         - dnsmasq
 
 - name: AutoStart dnsmasq
-  command: systemctl enable dnsmasq
+  command: chkconfig dnsmasq on
 
 - name: Start dnsmasq
-  command: systemctl start dnsmasq
+  command: service dnsmasq start
 
 - name: Open port in firewalld for Logstash OSSEC input
   firewalld: port=9000/udp permanent=true state=enabled
