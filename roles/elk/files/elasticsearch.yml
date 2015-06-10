@@ -205,7 +205,7 @@ network.bind_host: 127.0.0.1
 # Set the address other nodes will use to communicate with this node. If not
 # set, it is automatically derived. It must point to an actual IP address.
 #
-#network.publish_host: 192.168.0.1
+network.publish_host: 127.0.0.1
 
 # Set both 'bind_host' and 'publish_host':
 #
