@@ -4,11 +4,12 @@
         - java
         - http://download.elastic.co/logstash/logstash/packages/centos/logstash-1.5.0-1.noarch.rpm
         - https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.4.noarch.rpm
-        - epel-release
-        - nodejs
-        - unzip
-        - npm
         - dnsmasq
+        - epel-release
+#        - nodejs
+#        - unzip
+#        - npm
+
 
 - name: AutoStart dnsmasq
   command: chkconfig dnsmasq on
@@ -131,71 +132,71 @@
 - name: Add elasticsearch to autostart
   command: chkconfig elasticsearch on
 
-- name: Download Kibana Authentication Proxy
-  get_url: url=https://github.com/fangli/kibana-authentication-proxy/archive/master.zip dest=/tmp/kap.zip
+#- name: Download Kibana Authentication Proxy
+#  get_url: url=https://github.com/fangli/kibana-authentication-proxy/archive/master.zip dest=/tmp/kap.zip
 
-- name: Unzip Kibana Authentication Proxy
-  unarchive: src=/tmp/kap.zip dest=/opt copy=no
+#- name: Unzip Kibana Authentication Proxy
+#  unarchive: src=/tmp/kap.zip dest=/opt copy=no
 
-- name: Rename Kibana Authentication Proxy folder
-  shell: rm -rf /opt/kibana-authentication-proxy/ && mv /opt/kibana-authentication-proxy-master /opt/kibana-authentication-proxy
+#- name: Rename Kibana Authentication Proxy folder
+#  shell: rm -rf /opt/kibana-authentication-proxy/ && mv /opt/kibana-authentication-proxy-master /opt/kibana-authentication-proxy
 
-- name: Download Kibana 3
-  get_url: url=https://github.com/elasticsearch/kibana/archive/kibana3.zip dest=/tmp/kibana.zip
+#- name: Download Kibana 3
+#  get_url: url=https://github.com/elasticsearch/kibana/archive/kibana3.zip dest=/tmp/kibana.zip
 
-- name: Unzip Kibana 3
-  unarchive: src=/tmp/kibana.zip dest=/opt/kibana-authentication-proxy/ copy=no
+#- name: Unzip Kibana 3
+#  unarchive: src=/tmp/kibana.zip dest=/opt/kibana-authentication-proxy/ copy=no
 
-- name: Rename Kibana 3 folder
-  shell: rm -rf /opt/kibana-authentication-proxy/kibana && mv /opt/kibana-authentication-proxy/kibana-kibana3 /opt/kibana-authentication-proxy/kibana
+#- name: Rename Kibana 3 folder
+#  shell: rm -rf /opt/kibana-authentication-proxy/kibana && mv /opt/kibana-authentication-proxy/kibana-kibana3 /opt/kibana-authentication-proxy/kibana
 
-- name: Install Express module for Node.js
-  shell: cd /opt/kibana-authentication-proxy/ && npm install express
+#- name: Install Express module for Node.js
+#  shell: cd /opt/kibana-authentication-proxy/ && npm install express
 
-- name: A litle patch Kibana
-  copy: src=module.html dest=/opt/kibana-authentication-proxy/kibana/src/app/panels/table/module.html
-  notify:
-        - restart kibana
+#- name: A litle patch Kibana
+#  copy: src=module.html dest=/opt/kibana-authentication-proxy/kibana/src/app/panels/table/module.html
+#  notify:
+#        - restart kibana
 
-- name: Open port in firewalld for Kibana
-  firewalld: port=80/tcp permanent=true state=enabled
-  ignore_errors: yes
-  tags:
-        - configuration
-  notify:
-        - restart firewalld
+#- name: Open port in firewalld for Kibana
+#  firewalld: port=80/tcp permanent=true state=enabled
+#  ignore_errors: yes
+#  tags:
+#        - configuration
+#  notify:
+#        - restart firewalld
 
-- name: Place systemd unit file for Kibana
-  copy: src=kibana.service dest=/etc/systemd/system/kibana.service
-  ignore_errors: yes
-  tags: configuration
+#- name: Place systemd unit file for Kibana
+#  copy: src=kibana.service dest=/etc/systemd/system/kibana.service
+#  ignore_errors: yes
+#  tags: configuration
 
-- name: Place config for Kibana Authentication Proxy
-  copy: src=config.js dest=/opt/kibana-authentication-proxy/config.js
-  notify:
-        - restart kibana
-  tags: configuration
+#- name: Place config for Kibana Authentication Proxy
+#  copy: src=config.js dest=/opt/kibana-authentication-proxy/config.js
+#  notify:
+#        - restart kibana
+#  tags: configuration
 
-- name: Place OSSEC dashboard
-  copy: src=ossec.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/default.json
-  tags: configuration
+#- name: Place OSSEC dashboard
+#  copy: src=ossec.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/default.json
+#  tags: configuration
 
-- name: Place OSSEC FIM dashboard
-  copy: src=fim.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/fim.json
-  tags: configuration
-  notify:
-        - restart kibana
+#- name: Place OSSEC FIM dashboard
+#  copy: src=fim.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/fim.json
+#  tags: configuration
+#  notify:
+#        - restart kibana
 
-- name: Place Cisco dashboard
-  copy: src=cisco.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/cisco.json
-  tags: configuration
-  notify:
-        - restart kibana
+#- name: Place Cisco dashboard
+#  copy: src=cisco.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/cisco.json
+#  tags: configuration
+#  notify:
+#        - restart kibana
 
-- name: AutoStart Kibana
-  command: systemctl enable kibana.service
-  ignore_errors: yes
+#- name: AutoStart Kibana
+#  command: systemctl enable kibana.service
+#  ignore_errors: yes
 
-- name: Start Kiabana
-  command: systemctl start kibana.service
-  ignore_errors: yes
+#- name: Start Kiabana
+#  command: systemctl start kibana.service
+#  ignore_errors: yes
