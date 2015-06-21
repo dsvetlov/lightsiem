@@ -104,6 +104,13 @@
   tags:
         - configuration
 
+- name: Place Logstash output config for email
+  copy: src=98-mail.conf dest=/etc/logstash/conf.d/98-mail.conf
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
 - name: Place Logstash output config for elasticsearch
   copy: src=99-output.conf dest=/etc/logstash/conf.d/99-output.conf
   notify:
