@@ -179,5 +179,9 @@ OSSEC_MESSAGE_FULL_HEADER %{OSSEC_MESSAGE_FULL_LINE1}\n%{OSSEC_MESSAGE_FULL_LINE
 
 
 
-#2015 May 24 18:12:11 hw1->ossec-logcollector
+#** Alert 1434932371.94243012: - ossec,
+#2015 Jun 22 03:19:31 (hw1) 1.7.2.4->ossec-logcollector
+#Rule: 591 (level 3) -> 'Log file rotated.'
+#ossec: File rotated (inode changed): '/var/log/messages'.
+
 #OSSEC_MESSAGE_FULL_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->(%{PATHORIP:Alert.Source.Ident}|%{SYSCHECK}|%{MONITORD}|%{EVENTLOG})
