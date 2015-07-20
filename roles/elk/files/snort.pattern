@@ -14,16 +14,16 @@ SNORT_MESSAGE_FULL (?m)%{SNORT_MESSAGE_LINE1}[.\r\n]%{SNORT_MESSAGE_LINE2}[.\r\n
 #Use this line in barnyrd.conf output log_syslog_full: sensor_name snortIds1-eth2, server 192.168.1.15, protocol tcp, port 9012, operation_mode complete, payload_encoding ascii
 #|| [SNORTIDS[LOG]: [snortIds1-eth2] ] || 2015-06-20 13:46:27.541+003 2 [129:12:1] stream5: TCP Small Segment Threshold Exceeded || bad-unknown || 6 2.8.1.2 2.8.1.1 4 20 0 81 45056 2 0 1831 0 || 43395 9011 3638166799 3232151186 8 0 24 137 5660 0 || 95 ..&gt;..K.P.Y....E..Q..@.@..'... ......#3....................-L..-L.$.....t...SH..iOC~.K`..s=..... ||
 
-SNORT_BARNYARD_MESSAGE || %{SNORT_BARNYARD_HEADER} || %{SNORT_BARNYARD_ALERT} || %{SNORT_BARNYARD_GROUP} || %{SNORT_BARNYARD_IPHEADER} || %{SNORT_BARNYARD_TCPHEADER} || %{GREEDYDATA:Alert.Additional.Capture} ||
+SNORT_BARNYARD_MESSAGE \|\\u0000\| %{SNORT_BARNYARD_HEADER} \|\| %{SNORT_BARNYARD_ALERT} \|\| %{SNORT_BARNYARD_GROUP} \|\| %{SNORT_BARNYARD_IPHEADER} \|\| %{SNORT_BARNYARD_TCPHEADER} \|\| %{GREEDYDATA:Alert.Additional.Capture} \|\|
 
 #[SNORTIDS[LOG]: [snortIds1-eth2] ]
-SNORT_BARNYARD_HEADER [SNORTIDS[LOG]: [%{DATA:Alert.Sensor.Node.Address}] ]
+SNORT_BARNYARD_HEADER \[SNORTIDS\[LOG\]: \[%{DATA:Alert.Sensor.Node.Address}\] \]
 
 #2015-06-20 13:46:27.541+003 2 [129:12:1] stream5: TCP Small Segment Threshold Exceeded
 SNORT_BARNYARD_ALERT %{TIMESTAMP_ISO8601:syslog5424_ts} %{BASE10NUM:Alert.Analyzer.Level} \[%{DATA:Alert.Classification.Ident}\] %{GREEDYDATA:Alert.Classification.Text}
 
 #bad-unknown
-SNORT_BARNYARD_GROUP %{DATA:Alert.Group.Text}
+SNORT_BARNYARD_GROUP %{GREEDYDATA:Alert.Group.Text}
 
 #6 2.8.1.2 2.8.1.1 4 20 0 81 45056 2 0 1831 0
 SNORT_BARNYARD_IPHEADER %{BASE10NUM:Alert.Protocol.Number} %{IPORHOST:Alert.Source.Node.Address} %{IPORHOST:Alert.Target.Node.Address} %{GREEDYDATA:Alert.Protocol.Ip.Options}
