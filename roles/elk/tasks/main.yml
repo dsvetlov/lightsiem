@@ -97,6 +97,14 @@
   notify:
         - restart firewalld
 
+- name: Open port in firewalld for Logstash Snort Barnyard2 input
+  firewalld: port=9012/tcp permanent=true state=enabled
+  ignore_errors: yes
+  tags:
+        - configuration
+  notify:
+        - restart firewalld
+
 - name: Place Logstash common config
   copy: src=95-common.conf dest=/etc/logstash/conf.d/95-common.conf
   notify:
