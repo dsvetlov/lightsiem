@@ -30,3 +30,11 @@ SNORT_BARNYARD_IPHEADER %{BASE10NUM:Alert.Protocol.Number} %{IPORHOST:Alert.Sour
 
 #43395 9011 3638166799 3232151186 8 0 24 137 5660 0
 SNORT_BARNYARD_TCPHEADER %{NONNEGINT:Alert.Source.Node.Port} %{NONNEGINT:Alert.Target.Node.Port} %{DATA:Alert.Protocol.Tcp.Options}
+
+#35691 60000 75 44849
+SNORT_BARNYARD_UDPHEADER %{NONNEGINT:Alert.Source.Node.Port} %{NONNEGINT:Alert.Target.Node.Port} %{DATA:Alert.Protocol.Udp.Options}
+
+SNORT_BARNYARD_ICMPHEADER %{NONNEGINT:Alert.Source.Icmp.Type} %{NONNEGINT:Alert.Source.Icmp.Code} %{DATA:Alert.Protocol.Icmp.Options}
+
+#default protocol header
+SNORT_BARNYARD_DEFAULTHEADER %{GREEDYDATA:Alert.Header}
