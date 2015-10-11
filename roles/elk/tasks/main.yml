@@ -97,6 +97,21 @@
   notify:
         - restart firewalld
 
+- name: Place Logstash input config for auditd
+  copy: src=50-auditd.conf dest=/etc/logstash/conf.d/50-auditd.conf
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
+- name: Open port in firewalld for Logstash auditd via lumberjack input
+  firewalld: port=9030/tcp permanent=true state=enabled
+  ignore_errors: yes
+  tags:
+        - configuration
+  notify:
+        - restart firewalld
+
 - name: Place Logstash common config
   copy: src=95-common.conf dest=/etc/logstash/conf.d/95-common.conf
   notify:
