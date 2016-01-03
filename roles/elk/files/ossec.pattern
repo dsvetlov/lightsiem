@@ -14,9 +14,13 @@ ROOTCHECK rootcheck
 
 REGCHECK syscheck-registry
 
+LOGCOLL ossec-logcollector
+
 WINPCUSER %{USER}\$$
 
 PATHORIP (?:%{PATH}|%{IP})
+
+OSSECCNF ossec.conf
 
 OSSEC_LOG_ANALYSIS_LOCATION (Location: %{OSSEC_AGENT_HOST}\-\>%{PATHORIP:Alert.Source.Ident};|Location: %{OSSEC_HYBRID_SERVER_HOST}\-\>%{PATH}\|%{OSSEC_AGENT_HOST}\-\>%{PATHORIP:Alert.Source.Ident};)
 
@@ -42,7 +46,7 @@ OSSEC_MESSAGE %{OSSEC_HEADER} (?:%{OSSEC_LOG_ANALYSIS}|%{OSSEC_SYSCHECK}|%{OSSEC
 
 
 
-OSSEC_MESSAGE_FULL (?m)%{OSSEC_MESSAGE_FULL_LINE1}\n(%{OSSEC_MESSAGE_FULL_SYSCHECK}|%{OSSEC_MESSAGE_FULL_LOGANALYSIS}|%{OSSEC_MESSAGE_FULL_OSSEC}|%{OSSEC_MESSAGE_FULL_ROOTCHECK}|%{OSSEC_MESSAGE_FULL_MONITOR}|%{OSSEC_MESSAGE_FULL_REGCHECK}|%{GREEDYDATA:ossec_unparsed})
+OSSEC_MESSAGE_FULL (?m)%{OSSEC_MESSAGE_FULL_LINE1}\n(%{OSSEC_MESSAGE_FULL_SYSCHECK}|%{OSSEC_MESSAGE_FULL_LOGANALYSIS}|%{OSSEC_MESSAGE_FULL_OSSEC}|%{OSSEC_MESSAGE_FULL_ROOTCHECK}|%{OSSEC_MESSAGE_FULL_MONITOR}|%{OSSEC_MESSAGE_FULL_REGCHECK}|%{OSSEC_MESSAGE_FULL_COMMDIFF}|%{OSSEC_MESSAGE_FULL_LOGROT}|%{GREEDYDATA:ossec_unparsed})
 
 #** Alert 1433185454.0: - syslog,sshd,authentication_success,
 #** Alert 1432491131.3554: mail  - ossec,
@@ -53,15 +57,29 @@ OSSEC_MESSAGE_FULL_LINE3 Rule: %{BASE10NUM:Alert.Classification.Ident} \(level %
 
 
 
+#** Alert 1434978880.656548181: mail  - ossec,syscheck,
+#2015 Jun 22 16:14:40 (hw1) 1.2.3.4->syscheck
+#Rule: 553 (level 7) -> 'File deleted. Unable to retrieve checksum.'
+#File 'C:\D2554EDC-751F-4796-86D8-AE7005A6626F.vsv' was deleted. Unable to retrieve checksum.
+
+#** Alert 1434970725.557259530: mail  - ossec,syscheck,
+#2015 Jun 22 13:58:45 hw1->syscheck
+#Rule: 552 (level 7) -> 'Integrity checksum changed again (3rd time).'
+#Integrity checksum changed for: 'ossec.conf'
+#Size changed from '7896' to '7889'
+#Old md5sum was: '035182ab6f0c688260144ac08513fe00'
+#New md5sum is : 'ff541deeea8e01f671a961973f048ba4'
+#Old sha1sum was: '1263b2226d6e6e44f33b67bccc80ca76e9e614df'
+#New sha1sum is : '8a254b233c1b56479af4088feef82764c6c02eb9'
 
 
-OSSEC_MESSAGE_FULL_SYSCHECK %{OSSEC_MESSAGE_FULL_SYSCHECK_LINE2}\n%{OSSEC_MESSAGE_FULL_LINE3}\n%{OSSEC_MESSAGE_FULL_SYSCHECK_FILE}\n((%{OSSEC_MESSAGE_FULL_SYSCHECK_SIZE}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_OLDMD5}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_CURMD5}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_OLDSHA}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_CURSHA}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_DIFF})?|%{OSSEC_MESSAGE_FULL_SYSCHECK_DELETE}|%{OSSEC_MESSAGE_FULL_SYSCHECK_READD})
+OSSEC_MESSAGE_FULL_SYSCHECK %{OSSEC_MESSAGE_FULL_SYSCHECK_LINE2}\n%{OSSEC_MESSAGE_FULL_LINE3}\n(%{OSSEC_MESSAGE_FULL_SYSCHECK_FILE}\n(%{OSSEC_MESSAGE_FULL_SYSCHECK_SIZE}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_OLDMD5}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_CURMD5}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_OLDSHA}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_CURSHA}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_DIFF})?|%{OSSEC_MESSAGE_FULL_SYSCHECK_DELETE}|%{OSSEC_MESSAGE_FULL_SYSCHECK_READD})
 
 #2015 May 24 17:30:14 hw1->syscheck
 OSSEC_MESSAGE_FULL_SYSCHECK_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->%{SYSCHECK}
 
 #Integrity checksum changed for: '/etc/nsswitch.conf'
-OSSEC_MESSAGE_FULL_SYSCHECK_FILE Integrity checksum changed for: '%{PATH:Alert.Target.File.Path}'
+OSSEC_MESSAGE_FULL_SYSCHECK_FILE Integrity checksum changed for: '(%{PATH:Alert.Target.File.Path}|%{OSSECCNF:Alert.Target.File.Path})'
 
 #Size changed from '1465' to '1336'
 OSSEC_MESSAGE_FULL_SYSCHECK_SIZE Size changed from '%{BASE10NUM:Alert.Target.File.oldsize}' to '%{BASE10NUM:Alert.Target.File.newsize}'
@@ -136,24 +154,62 @@ OSSEC_MESSAGE_FULL_MONITOR %{OSSEC_MESSAGE_FULL_MONITOR_LINE2}\n%{OSSEC_MESSAGE_
 OSSEC_MESSAGE_FULL_MONITOR_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->%{MONITORD}
 
 
+#** Alert 1432491131.3554: mail  - ossec,
+#2015 Jun 22 20:36:17 (scsd2751) 10.27.0.0->syscheck-registry
+#Rule: 594 (level 5) -> 'Registry Integrity Checksum Changed'
+#Integrity checksum changed for: 'HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer'
+#Old md5sum was: '8a910682b266581de21ee47d91d68cb9'
+#New md5sum is : 'd41d8cd98f00b204e9800998ecf8427e'
+#Old sha1sum was: '3867ddf9386c0bba82e57dc314ef8951930b4284'
+#New sha1sum is : 'da39a3ee5e6b4b0d3255bfef95601890afd80709'
 
+#** Alert 1435081492.890926762: - ossec,syscheck,
+#2015 Jun 23 20:44:52 (HOST) 1.7.2.8->syscheck-registry
+#Rule: 598 (level 5) -> 'Registry Entry Added to the System'
+#New file 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\VMSMP\Parameters\SwitchList\212B8031-E106-4512-9365-DABCB1F95925\D308F1A8-8ADC-45BC-B2DD-C7C2B54881FC' added to the file system.
 
-OSSEC_MESSAGE_FULL_REGCHECK %{OSSEC_MESSAGE_FULL_REGCHECK_LINE2}\n%{OSSEC_MESSAGE_FULL_LINE3}\n%{GREEDYDATA:syslog_message}
+OSSEC_MESSAGE_FULL_REGCHECK %{OSSEC_MESSAGE_FULL_REGCHECK_LINE2}\n%{OSSEC_MESSAGE_FULL_LINE3}\n(%{OSSEC_MESSAGE_FULL_REGCHECK_REGPATH}\n(%{OSSEC_MESSAGE_FULL_SYSCHECK_OLDMD5}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_CURMD5}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_OLDSHA}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_CURSHA})?|%{OSSEC_MESSAGE_FULL_REGCHECK_NEWREGPATH})
 
 ##2015 May 24 18:12:11 hw1->syscheck-registry
-OSSEC_MESSAGE_FULL_REGCHECK_LINE2 OSSEC_MESSAGE_FULL_MONITOR_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->%{REGCHECK}
+OSSEC_MESSAGE_FULL_REGCHECK_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->%{REGCHECK}
+
+#Integrity checksum changed for: 'HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer'
+OSSEC_MESSAGE_FULL_REGCHECK_REGPATH Integrity checksum changed for: '%{DATA:Alert.Target.File.Path}'
+
+#New file 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\VMSMP\Parameters\SwitchList\212B8031\D308F1A8' added to the file system.
+OSSEC_MESSAGE_FULL_REGCHECK_NEWREGPATH New file '%{DATA:Alert.Target.File.Path}' added to the file system.
+
+
+#** Alert 1435051355.484034070: mail  - ossec,
+#2015 Jun 23 12:22:35 (host) 1.2.1.1->netstat -tan |grep LISTEN |grep -v 127.0.0.1 | sort
+#Rule: 533 (level 7) -> 'Listened ports status (netstat) changed (new port opened or closed).'
+#ossec: output: 'netstat -tan |grep LISTEN |grep -v 127.0.0.1 | sort':
+#tcp6       0      0 :::22                   :::*                    LISTEN
+#Previous output:
+#ossec: output: 'netstat -tan |grep LISTEN |grep -v 127.0.0.1 | sort':
+#tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN
+#tcp6       0      0 :::22                   :::*                    LISTEN
+
+OSSEC_MESSAGE_FULL_COMMDIFF %{OSSEC_MESSAGE_FULL_COMMDIFF_LINE2}\n%{OSSEC_MESSAGE_FULL_LINE3}\n%{OSSEC_MESSAGE_FULL_COMMDIFF_DIFF}
+
+#2015 Jun 23 12:22:35 (host) 1.2.1.1->netstat -tan |grep LISTEN |grep -v 127.0.0.1 | sort
+OSSEC_MESSAGE_FULL_COMMDIFF_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->%{GREEDYDATA:Alert.Target.Commad}
+
+OSSEC_MESSAGE_FULL_COMMDIFF_DIFF ossec: output: %{GREEDYDATA:Alert.Target.Command.Diff}
 
 
 
+#** Alert 1434932371.94243012: - ossec,
+#2015 Jun 22 03:19:31 (hw1) 1.7.2.4->ossec-logcollector
+#Rule: 591 (level 3) -> 'Log file rotated.'
+#ossec: File rotated (inode changed): '/var/log/messages'.
 
+OSSEC_MESSAGE_FULL_LOGROT %{OSSEC_MESSAGE_FULL_LOGROT_LINE2}\n%{OSSEC_MESSAGE_FULL_LINE3}\n%{OSSEC_MESSAGE_FULL_LOGROT_FILE}
 
+##2015 Jun 22 03:19:31 (hw1) 1.7.2.4->ossec-logcollector
+OSSEC_MESSAGE_FULL_LOGROT_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->%{LOGCOLL}
 
-OSSEC_MESSAGE_FULL_HEADER %{OSSEC_MESSAGE_FULL_LINE1}\n%{OSSEC_MESSAGE_FULL_LINE2}\n%{OSSEC_MESSAGE_FULL_LINE3}
+#ossec: File rotated (inode changed): '/var/log/messages'.
+OSSEC_MESSAGE_FULL_LOGROT_FILE ossec\: File rotated \(inode changed\)\: '%{DATA:Alert.Target.File.Path}'.
 
-
-
-
-
-
-#2015 May 24 18:12:11 hw1->ossec-logcollector
 #OSSEC_MESSAGE_FULL_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->(%{PATHORIP:Alert.Source.Ident}|%{SYSCHECK}|%{MONITORD}|%{EVENTLOG})
