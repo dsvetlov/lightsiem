@@ -1,8 +1,8 @@
 [Unit]
-Description=Kibana Authentication Proxy with Kiabana
+Description=Kibana 4
 
 [Service]
-ExecStart=/usr/bin/node /opt/kibana-authentication-proxy/app.js
+ExecStart=/opt/lightsiem/kibana4/bin/kibana
 StandartOutput=syslog
 SyslogIdentifier=Kibana
 

@@ -1,170 +1,50 @@
+- name: Place Elasticsearch repo file
+  copy: src=repos/elasticsearch.repo dest=/etc/yum.repos.d/
+
+- name: Place Logstash repo file
+  copy: src=repos/logstash.repo dest=/etc/yum.repos.d/
+
+- name: Import GPG key
+  command: rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
+
 - name: Install packages
   yum: name={{item}} state=present
   with_items:
-        - java
-        - http://download.elastic.co/logstash/logstash/packages/centos/logstash-1.5.0-1.noarch.rpm
-        - https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.4.noarch.rpm
-        - epel-release
-        - nodejs
-        - unzip
-        - npm
-        - dnsmasq
+    - elasticsearch-2.1.0
+    - java
+    - wget
+    - epel-release
+    - logstash
+    - dnsmasq
 
-- name: AutoStart dnsmasq
-  command: chkconfig dnsmasq on
+- name: Add elasticsearch to aoutostart
+  command: systemctl enable elasticsearch.service
+  notify:
+    - restart elasticsearch
 
-- name: Start dnsmasq
-  command: service dnsmasq start
+- name: Create directory for LightIEM components
+  file: path=/opt/lightsiem/ state=directory mode=0755
 
-- name: Open port in firewalld for Logstash OSSEC input
-  firewalld: port=9000/udp permanent=true state=enabled
+- name: Create directory for Logstash patterns
+  file: path=/opt/lightsiem/patterns state=directory mode=0755
+
+- name: Download Kibana 4 package
+  get_url: url=https://download.elastic.co/kibana/kibana/kibana-4.3.1-linux-x64.tar.gz dest=/tmp
+
+- name: Unpack Kibana 4
+  unarchive: src=/tmp/kibana-4.3.1-linux-x64.tar.gz dest=/opt/lightsiem/
   ignore_errors: yes
-  tags:
-        - configuration
-  notify:
-        - restart firewalld
 
-- name: Place Logstash patterns file for ossec
-  copy: src=ossec.pattern dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/ossec
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-- name: Open port in firewalld for Logstash Snort input
-  firewalld: port=9010/udp permanent=true state=enabled
+- name: Rename Kibana 4 folder
+  command: mv /opt/lightsiem/kibana-4.3.1-linux-x64 /opt/lightsiem/kibana4/
   ignore_errors: yes
-  tags:
-        - configuration
-  notify:
-        - restart firewalld
 
-- name: Open port in firewalld for Logstash Snort full via lumberjack input
-  firewalld: port=9011/tcp permanent=true state=enabled
-  ignore_errors: yes
-  tags:
-        - configuration
-  notify:
-        - restart firewalld
-
-- name: Place Logstash patterns file for snort
-  copy: src=snort.pattern dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/snort
-  notify:
-        - restart logstash
+- name: Place Kibana 4 config
+  copy: src=kibana-config.yml dest=/opt/lightsiem/kibana4/config/kibana.yml
   tags:
         - configuration
 
-- name: Place Logstash patterns file for IDMEF
-  copy: src=idmef.pattern dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/idmef
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-- name: Place Logstash patterns file for Cisco
-  copy: src=cisco.pattern dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/cisco
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-- name: Place Logstash input config for ossec
-  copy: src=20-ossec.conf dest=/etc/logstash/conf.d/20-ossec.conf
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-- name: Place Logstash input config for snort
-  copy: src=30-snort.conf dest=/etc/logstash/conf.d/30-snort.conf
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-- name: Place Logstash input config for Cisco
-  copy: src=40-cisco.conf dest=/etc/logstash/conf.d/40-cisco.conf
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-- name: Open port in firewalld for Logstash Cisco input
-  firewalld: port=9020/udp permanent=true state=enabled
-  ignore_errors: yes
-  tags:
-        - configuration
-  notify:
-        - restart firewalld
-
-- name: Place Logstash common config
-  copy: src=95-common.conf dest=/etc/logstash/conf.d/95-common.conf
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-- name: Place Logstash output config for email
-  copy: src=98-mail.conf dest=/etc/logstash/conf.d/98-mail.conf
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-- name: Place Logstash output config for elasticsearch
-  copy: src=99-output.conf dest=/etc/logstash/conf.d/99-output.conf
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-- name: Place Logstash template for elasticsearch output
-  copy: src=elasticsearch-template.json dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-output-elasticsearch-0.2.4-java/lib/logstash/outputs/elasticsearch/elasticsearch-template.json
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-- name: Add logstash to autostart
-  command: chkconfig logstash on
-
-- name: Place Elasticsearch config file
-  copy: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
-  notify:
-        - restart elasticsearch
-  tags:
-        - configuration
-
-- name: Add elasticsearch to autostart
-  command: chkconfig elasticsearch on
-
-- name: Download Kibana Authentication Proxy
-  get_url: url=https://github.com/fangli/kibana-authentication-proxy/archive/master.zip dest=/tmp/kap.zip
-
-- name: Unzip Kibana Authentication Proxy
-  unarchive: src=/tmp/kap.zip dest=/opt copy=no
-
-- name: Rename Kibana Authentication Proxy folder
-  shell: rm -rf /opt/kibana-authentication-proxy/ && mv /opt/kibana-authentication-proxy-master /opt/kibana-authentication-proxy
-
-- name: Download Kibana 3
-  get_url: url=https://github.com/elasticsearch/kibana/archive/kibana3.zip dest=/tmp/kibana.zip
-
-- name: Unzip Kibana 3
-  unarchive: src=/tmp/kibana.zip dest=/opt/kibana-authentication-proxy/ copy=no
-
-- name: Rename Kibana 3 folder
-  shell: rm -rf /opt/kibana-authentication-proxy/kibana && mv /opt/kibana-authentication-proxy/kibana-kibana3 /opt/kibana-authentication-proxy/kibana
-
-- name: Install Express module for Node.js
-  shell: cd /opt/kibana-authentication-proxy/ && npm install express
-
-- name: A litle patch Kibana
-  copy: src=module.html dest=/opt/kibana-authentication-proxy/kibana/src/app/panels/table/module.html
-  notify:
-        - restart kibana
-
-- name: Open port in firewalld for Kibana
+- name: Open port in firewalld for Kibana 4
   firewalld: port=80/tcp permanent=true state=enabled
   ignore_errors: yes
   tags:
@@ -175,29 +55,6 @@
 - name: Place systemd unit file for Kibana
   copy: src=kibana.service dest=/etc/systemd/system/kibana.service
   ignore_errors: yes
-  tags: configuration
-
-- name: Place config for Kibana Authentication Proxy
-  copy: src=config.js dest=/opt/kibana-authentication-proxy/config.js
-  notify:
-        - restart kibana
-  tags: configuration
-
-- name: Place OSSEC dashboard
-  copy: src=ossec.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/default.json
-  tags: configuration
-
-- name: Place OSSEC FIM dashboard
-  copy: src=fim.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/fim.json
-  tags: configuration
-  notify:
-        - restart kibana
-
-- name: Place Cisco dashboard
-  copy: src=cisco.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/cisco.json
-  tags: configuration
-  notify:
-        - restart kibana
 
 - name: AutoStart Kibana
   command: systemctl enable kibana.service
@@ -206,3 +63,255 @@
 - name: Start Kiabana
   command: systemctl start kibana.service
   ignore_errors: yes
+
+- name: Place Logstash input config for Cisco
+  copy: src=logstash-conf.d/40-cisco.conf dest=/etc/logstash/conf.d/40-cisco.conf
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
+- name: Place Logstash patterns file for Cisco
+  copy: src=logstash-patterns/cisco.pattern dest=/opt/lightsiem/patterns/cisco
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
+
+- name: Open port in firewalld for Logstash Cisco input
+  firewalld: port=9020/udp permanent=true state=enabled
+  ignore_errors: yes
+  tags:
+        - configuration
+  notify:
+        - restart firewalld
+
+- name: Place Logstash common config
+  copy: src=logstash-conf.d/99-output.conf dest=/etc/logstash/conf.d/99-output.conf
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
+- name: Place Logstash output config for elasticsearch
+  copy: src=logstash-conf.d/95-common.conf dest=/etc/logstash/conf.d/95-common.conf
+  notify:
+        - restart logstash
+  tags:
+        - configuration
+
+- name: AutoStart dnsmasq
+  command: chkconfig dnsmasq on
+
+- name: Start dnsmasq
+  command: service dnsmasq start
+
+#- name: Install packages
+#  yum: name={{item}} state=present
+#  with_items:
+#        - java
+#        - http://download.elastic.co/logstash/logstash/packages/centos/logstash-1.5.0-1.noarch.rpm
+#        - https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.4.noarch.rpm
+#        - epel-release
+#        - nodejs
+#        - unzip
+#        - npm
+#        - dnsmasq
+#
+#- name: AutoStart dnsmasq
+#  command: chkconfig dnsmasq on
+#
+#- name: Start dnsmasq
+#  command: service dnsmasq start
+#
+#- name: Open port in firewalld for Logstash OSSEC input
+#  firewalld: port=9000/udp permanent=true state=enabled
+#  ignore_errors: yes
+#  tags:
+#        - configuration
+#  notify:
+#        - restart firewalld
+#
+#- name: Place Logstash patterns file for ossec
+#  copy: src=ossec.pattern dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/ossec
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: Open port in firewalld for Logstash Snort input
+#  firewalld: port=9010/udp permanent=true state=enabled
+#  ignore_errors: yes
+#  tags:
+#        - configuration
+#  notify:
+#        - restart firewalld
+#
+#- name: Open port in firewalld for Logstash Snort full via lumberjack input
+#  firewalld: port=9011/tcp permanent=true state=enabled
+#  ignore_errors: yes
+#  tags:
+#        - configuration
+#  notify:
+#        - restart firewalld
+#
+#- name: Place Logstash patterns file for snort
+#  copy: src=snort.pattern dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/snort
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: Place Logstash patterns file for IDMEF
+#  copy: src=idmef.pattern dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/idmef
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: Place Logstash patterns file for Cisco
+#  copy: src=cisco.pattern dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/cisco
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: Place Logstash input config for ossec
+#  copy: src=20-ossec.conf dest=/etc/logstash/conf.d/20-ossec.conf
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: Place Logstash input config for snort
+#  copy: src=30-snort.conf dest=/etc/logstash/conf.d/30-snort.conf
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: Place Logstash input config for Cisco
+#  copy: src=40-cisco.conf dest=/etc/logstash/conf.d/40-cisco.conf
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: Open port in firewalld for Logstash Cisco input
+#  firewalld: port=9020/udp permanent=true state=enabled
+#  ignore_errors: yes
+#  tags:
+#        - configuration
+#  notify:
+#        - restart firewalld
+#
+#- name: Place Logstash common config
+#  copy: src=95-common.conf dest=/etc/logstash/conf.d/95-common.conf
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: Place Logstash output config for email
+#  copy: src=98-mail.conf dest=/etc/logstash/conf.d/98-mail.conf
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: Place Logstash output config for elasticsearch
+#  copy: src=99-output.conf dest=/etc/logstash/conf.d/99-output.conf
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: Place Logstash template for elasticsearch output
+#  copy: src=elasticsearch-template.json dest=/opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-output-elasticsearch-0.2.4-java/lib/logstash/outputs/elasticsearch/elasticsearch-template.json
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: Add logstash to autostart
+#  command: chkconfig logstash on
+#
+#- name: Place Elasticsearch config file
+#  copy: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
+#  notify:
+#        - restart elasticsearch
+#  tags:
+#        - configuration
+#
+#- name: Add elasticsearch to autostart
+#  command: chkconfig elasticsearch on
+#
+#- name: Download Kibana Authentication Proxy
+#  get_url: url=https://github.com/fangli/kibana-authentication-proxy/archive/master.zip dest=/tmp/kap.zip
+#
+#- name: Unzip Kibana Authentication Proxy
+#  unarchive: src=/tmp/kap.zip dest=/opt copy=no
+#
+#- name: Rename Kibana Authentication Proxy folder
+#  shell: rm -rf /opt/kibana-authentication-proxy/ && mv /opt/kibana-authentication-proxy-master /opt/kibana-authentication-proxy
+#
+#- name: Download Kibana 3
+#  get_url: url=https://github.com/elasticsearch/kibana/archive/kibana3.zip dest=/tmp/kibana.zip
+#
+#- name: Unzip Kibana 3
+#  unarchive: src=/tmp/kibana.zip dest=/opt/kibana-authentication-proxy/ copy=no
+#
+#- name: Rename Kibana 3 folder
+#  shell: rm -rf /opt/kibana-authentication-proxy/kibana && mv /opt/kibana-authentication-proxy/kibana-kibana3 /opt/kibana-authentication-proxy/kibana
+#
+#- name: Install Express module for Node.js
+#  shell: cd /opt/kibana-authentication-proxy/ && npm install express
+#
+#- name: A litle patch Kibana
+#  copy: src=module.html dest=/opt/kibana-authentication-proxy/kibana/src/app/panels/table/module.html
+#  notify:
+#        - restart kibana
+#
+#- name: Open port in firewalld for Kibana
+#  firewalld: port=80/tcp permanent=true state=enabled
+#  ignore_errors: yes
+#  tags:
+#        - configuration
+#  notify:
+#        - restart firewalld
+#
+#- name: Place systemd unit file for Kibana
+#  copy: src=kibana.service dest=/etc/systemd/system/kibana.service
+#  ignore_errors: yes
+#  tags: configuration
+#
+#- name: Place config for Kibana Authentication Proxy
+#  copy: src=config.js dest=/opt/kibana-authentication-proxy/config.js
+#  notify:
+#        - restart kibana
+#  tags: configuration
+#
+#- name: Place OSSEC dashboard
+#  copy: src=ossec.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/default.json
+#  tags: configuration
+#
+#- name: Place OSSEC FIM dashboard
+#  copy: src=fim.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/fim.json
+#  tags: configuration
+#  notify:
+#        - restart kibana
+#
+#- name: Place Cisco dashboard
+#  copy: src=cisco.json dest=/opt/kibana-authentication-proxy/kibana/src/app/dashboards/cisco.json
+#  tags: configuration
+#  notify:
+#        - restart kibana
+#
+#- name: AutoStart Kibana
+#  command: systemctl enable kibana.service
+#  ignore_errors: yes
+#
+#- name: Start Kiabana
+#  command: systemctl start kibana.service
+#  ignore_errors: yes
