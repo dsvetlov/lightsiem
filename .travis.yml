@@ -1,13 +1,17 @@
----
+
 sudo: required
+env:
+  - CONTAINER_ID=$(mktemp)
 
 services:
   - docker
 
 before_install:
-  # Fetch base image and build new container
+  - sudo apt-get update
+  # Pull containers
   - sudo docker pull centos:7
-  - sudo docker build --rm=true --tag=travispoc .
+  # Customize containers
+  - sudo docker build --rm=true --file=Dockerfile.centos --tag=centos:ansible .
 
 script:
   # Run container in detached state
@@ -41,7 +45,7 @@ script:
 #
 #install:
 #  - pip install ansible
-  - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
+#  - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
 #
 #script:
 #  - ansible-playbook -i localhost lightsiem-install.yml --syntax-check
