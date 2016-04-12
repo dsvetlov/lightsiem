@@ -10,5 +10,7 @@ env:
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
 
 before_install:
-  - sudo  yum update -y && reboot
-  - sudo  yum install epel-release
+  - sudo apt-get update -qq
+
+install:
+  - pip install ansible
