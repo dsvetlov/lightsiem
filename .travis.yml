@@ -1,0 +1,7 @@
+---
+language: python
+python: "2.7"
+
+before_install:
+  - yum update -y && reboot
+  - yum install epel-release
