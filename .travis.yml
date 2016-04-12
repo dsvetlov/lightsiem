@@ -14,7 +14,7 @@ before_install:
 
 install:
   - pip install ansible
-  - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
+#  - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
 
 script:
   - ansible-playbook -i localhost lightsiem-install.yml --syntax-check
