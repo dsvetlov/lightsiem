@@ -15,11 +15,11 @@ before_install:
 
 script:
   # Run container in detached state
-  - sudo docker run --detach --privileged --volume="${PWD}":/etc/ansible:ro --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro centos:ansible /usr/lib/systemd/systemd > /tmp/container_id
+  - sudo docker run --detach --privileged --volume="${PWD}":/etc/ansible/lightsiem:ro --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro centos:ansible /usr/lib/systemd/systemd > /tmp/container_id
   # Check syntax of ansible playbook
-  - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook -i localhost /etc/ansible/lightsiem-install.yml --syntax-check
+  - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook  /etc/ansible/lightsiem/lightsiem-install.yml --syntax-check
   # Run ansible playbook
-  - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook  /etc/ansible/lightsiem-install.yml
+  - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook  /etc/ansible/lightsiem/lightsiem-install.yml
   # Clean up
   - sudo docker stop "$(cat /tmp/container_id)"
 
