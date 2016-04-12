@@ -26,20 +26,20 @@ OSSEC_LOG_ANALYSIS_LOCATION (Location: %{OSSEC_AGENT_HOST}\-\>%{PATHORIP:[Alert]
 
 OSSEC_SYSCHECK_LOCATION (Location: %{OSSEC_AGENT_HOST}->%{SYSCHECK:[Alert][Source][Ident]};|Location: %{OSSEC_HYBRID_SERVER_HOST}->%{PATH}\|%{OSSEC_AGENT_HOST}->%{SYSCHECK:[Alert][Source][Ident]};)
 
-OSSEC_LOG_ANALYSIS %{OSSEC_LOG_ANALYSIS_LOCATION} (?:srcip: %{IPORHOST:Alert.Source.Node.Address}; )?(?:user: %{USERNAME:Alert.Source.User.Ident}; )?(?:%{SYSLOGBASE:syslogbase} )?%{GREEDYDATA:syslog_message}
+OSSEC_LOG_ANALYSIS %{OSSEC_LOG_ANALYSIS_LOCATION} (?:srcip: %{IPORHOST:[Alert][Source][Node][Address]}; )?(?:user: %{USERNAME:[Alert][Source][User][Ident]}; )?(?:%{SYSLOGBASE:syslogbase} )?%{GREEDYDATA:syslog_message}
 
-OSSEC_SYSCHECK %{OSSEC_SYSCHECK_LOCATION} (File '%{PATH:Alert.Target.File.Path}' was deleted. Unable to retrieve checksum.)?(?:Previous MD5: '%{DATA:Alert.Target.File.chksum.md5prev}'; )?(?:Current MD5: '%{DATA:Alert.Target.File.chksum.md5cur}'; )?(?:Previous SHA1: '%{DATA:Alert.Target.File.chksum.SHAprev}'; )?(?:Current SHA1: '%{DATA:Alert.Target.File.chksum.SHAcur}'; )?(?:Integrity checksum changed for: '%{PATH:Alert.Target.File.Path}')?
+OSSEC_SYSCHECK %{OSSEC_SYSCHECK_LOCATION} (File '%{PATH:[Alert][Target][File][Path]}' was deleted. Unable to retrieve checksum.)?(?:Previous MD5: '%{DATA:[Alert][Target][File][chksum][md5prev]}'; )?(?:Current MD5: '%{DATA:[Alert][Target][File][chksum][md5cur]}'; )?(?:Previous SHA1: '%{DATA:[Alert][Target][File][chksum][SHAprev]}'; )?(?:Current SHA1: '%{DATA:[Alert][Target][File][chksum][SHAcur]}'; )?(?:Integrity checksum changed for: '%{PATH:[Alert][Target][File][Path]}')?
 
 OSSEC_MONITOR Location: %{OSSEC_AGENT_HOST}->(ossec-monitord|ossec|ossec-logcollector|%{DATA:Location}); %{GREEDYDATA:syslog_message}
 
 
-OSSEC_AGENT_HOST (\(%{HOST:Alert.Sensor.Node.Name}\) %{IPORHOST:Alert.Sensor.Node.Address}|%{HOST:Alert.Sensor.Node.Name})
+OSSEC_AGENT_HOST (\(%{HOST:[Alert][Sensor][Node][Name]}\) %{IPORHOST:[Alert][Sensor][Node][Address]}|%{HOST:[Alert][Sensor][Node][Name]})
 
-OSSEC_HYBRID_SERVER_HOST (\(%{HOST:Alert.Analyzer.Analyzer.Node.Name}\) %{IPORHOST:Alert.Analyzer.Analyzer.Node.Address}|%{HOST:Alert.Analyzer.Analyzer.Node.Name})
+OSSEC_HYBRID_SERVER_HOST (\(%{HOST:[Alert][Analyzer][Analyzer][Node][Name]}\) %{IPORHOST:[Alert][Analyzer][Analyzer][Node][Address]}|%{HOST:[Alert][Analyzer][Analyzer][Node][Name]})
 
-OSSEC_SERVER_HOST (\(%{HOST:Alert.Analyzer.Node.Name}\) %{IPORHOST:Alert.Analyzer.Node.Address}|%{HOST:Alert.Analyzer.Node.Name})
+OSSEC_SERVER_HOST (\(%{HOST:[Alert][Analyzer][Node][Name]}\) %{IPORHOST:[Alert][Analyzer][Node][Address]}|%{HOST:[Alert][Analyzer][Node][Name]})
 
-OSSEC_HEADER %{SYSLOG5424PRI}%{SYSLOGTIMESTAMP:Alert.CreateTime} %{SYSLOGHOST:Alert.Analyzer.Node.Name} %{DATA:Alert.Analyzer.Name}: Alert Level: %{BASE10NUM:Alert.Analyzer.Level}; Rule: %{BASE10NUM:Alert.Classification.Ident} - %{DATA:Alert.Classification.Text};
+OSSEC_HEADER %{SYSLOG5424PRI}%{SYSLOGTIMESTAMP:[Alert][CreateTime]} %{SYSLOGHOST:[Alert][Analyzer][Node][Name]} %{DATA:[Alert][Analyzer][Name]}: Alert Level: %{BASE10NUM:[Alert][Analyzer][Level]}; Rule: %{BASE10NUM:[Alert][Classification][Ident]} - %{DATA:[Alert][Classification][Text]};
 
 OSSEC_MESSAGE %{OSSEC_HEADER} (?:%{OSSEC_LOG_ANALYSIS}|%{OSSEC_SYSCHECK}|%{OSSEC_MONITOR})
 
@@ -50,10 +50,10 @@ OSSEC_MESSAGE_FULL (?m)%{OSSEC_MESSAGE_FULL_LINE1}\n(%{OSSEC_MESSAGE_FULL_SYSCHE
 
 #** Alert 1433185454.0: - syslog,sshd,authentication_success,
 #** Alert 1432491131.3554: mail  - ossec,
-OSSEC_MESSAGE_FULL_LINE1 \*\* Alert %{DATA:Alert.CreateTime}: %{WORD}?%{SPACE}\- %{DATA:Alert.Group.Text}
+OSSEC_MESSAGE_FULL_LINE1 \*\* Alert %{DATA:[Alert][CreateTime]}: %{WORD}?%{SPACE}\- %{DATA:[Alert][Group][Text]}
 
 #Rule: 5715 (level 3) -> 'SSHD authentication success.'
-OSSEC_MESSAGE_FULL_LINE3 Rule: %{BASE10NUM:Alert.Classification.Ident} \(level %{BASE10NUM:Alert.Analyzer.Level}\) -> '%{DATA:Alert.Classification.Text}'
+OSSEC_MESSAGE_FULL_LINE3 Rule: %{BASE10NUM:[Alert][Classification][Ident]} \(level %{BASE10NUM:[Alert][Analyzer][Level]}\) -> '%{DATA:[Alert][Classification][Text]}'
 
 
 
@@ -79,22 +79,22 @@ OSSEC_MESSAGE_FULL_SYSCHECK %{OSSEC_MESSAGE_FULL_SYSCHECK_LINE2}\n%{OSSEC_MESSAG
 OSSEC_MESSAGE_FULL_SYSCHECK_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->%{SYSCHECK}
 
 #Integrity checksum changed for: '/etc/nsswitch.conf'
-OSSEC_MESSAGE_FULL_SYSCHECK_FILE Integrity checksum changed for: '(%{PATH:Alert.Target.File.Path}|%{OSSECCNF:Alert.Target.File.Path})'
+OSSEC_MESSAGE_FULL_SYSCHECK_FILE Integrity checksum changed for: '(%{PATH:[Alert][Target][File][Path]}|%{OSSECCNF:[Alert][Target][File][Path]})'
 
 #Size changed from '1465' to '1336'
-OSSEC_MESSAGE_FULL_SYSCHECK_SIZE Size changed from '%{BASE10NUM:Alert.Target.File.oldsize}' to '%{BASE10NUM:Alert.Target.File.newsize}'
+OSSEC_MESSAGE_FULL_SYSCHECK_SIZE Size changed from '%{BASE10NUM:[Alert][Target][File][oldsize]}' to '%{BASE10NUM:[Alert][Target][File][newsize]}'
 
 #Old md5sum was: '3a38cfbb74aec4b3b011bb0ee3ce7828'
-OSSEC_MESSAGE_FULL_SYSCHECK_OLDMD5 Old md5sum was: '%{DATA:Alert.Target.File.chksum.md5prev}'
+OSSEC_MESSAGE_FULL_SYSCHECK_OLDMD5 Old md5sum was: '%{DATA:[Alert][Target][File][chksum][md5prev]}'
 
 #New md5sum is : '8a3cf0d94719677115db91589e73c54e'
-OSSEC_MESSAGE_FULL_SYSCHECK_CURMD5 New md5sum is : '%{DATA:Alert.Target.File.chksum.md5cur}'
+OSSEC_MESSAGE_FULL_SYSCHECK_CURMD5 New md5sum is : '%{DATA:[Alert][Target][File][chksum][md5cur]}'
 
 #Old sha1sum was: '63386c46e9f5dc88643ca09a731f7a8321287f2a'
-OSSEC_MESSAGE_FULL_SYSCHECK_OLDSHA Old sha1sum was: '%{DATA:Alert.Target.File.chksum.SHAprev}'
+OSSEC_MESSAGE_FULL_SYSCHECK_OLDSHA Old sha1sum was: '%{DATA:[Alert][Target][File][chksum][SHAprev]}'
 
 #New sha1sum is : 'a19587b1386ac676ceebeff5a71d9e035fef4caf'
-OSSEC_MESSAGE_FULL_SYSCHECK_CURSHA New sha1sum is : '%{DATA:Alert.Target.File.chksum.SHAcur}'
+OSSEC_MESSAGE_FULL_SYSCHECK_CURSHA New sha1sum is : '%{DATA:[Alert][Target][File][chksum][SHAcur]}'
 
 #What changed:
 #1,2c1,2
@@ -103,13 +103,13 @@ OSSEC_MESSAGE_FULL_SYSCHECK_CURSHA New sha1sum is : '%{DATA:Alert.Target.File.ch
 #---
 #> #123
 #> #123
-OSSEC_MESSAGE_FULL_SYSCHECK_DIFF What changed:\n%{GREEDYDATA:Alert.Target.File.Diff}
+OSSEC_MESSAGE_FULL_SYSCHECK_DIFF What changed:\n%{GREEDYDATA:[Alert][Target][File][Diff]}
 
 #File '%.756s' was deleted. Unable to retrieve checksum.
-OSSEC_MESSAGE_FULL_SYSCHECK_DELETE File '%{PATH:Alert.Target.File.Path}' was deleted. Unable to retrieve checksum.
+OSSEC_MESSAGE_FULL_SYSCHECK_DELETE File '%{PATH:[Alert][Target][File][Path]}' was deleted. Unable to retrieve checksum.
 
 #File '%.756s' was re-added.
-OSSEC_MESSAGE_FULL_SYSCHECK_READD File '%{PATH:Alert.Target.File.Path}' was re-added.
+OSSEC_MESSAGE_FULL_SYSCHECK_READD File '%{PATH:[Alert][Target][File][Path]}' was re-added.
 
 
 
@@ -119,13 +119,13 @@ OSSEC_MESSAGE_FULL_LOGANALYSIS %{OSSEC_MESSAGE_FULL_LOGANALYSIS_LINE2}\n%{OSSEC_
 
 #2015 Jun 01 19:04:14 hw1->/var/log/secure
 #2015 May 24 18:12:11 hw1->WinEvtLog
-OSSEC_MESSAGE_FULL_LOGANALYSIS_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->(%{PATHORIP:Alert.Source.Ident}|%{EVENTLOG})
+OSSEC_MESSAGE_FULL_LOGANALYSIS_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->(%{PATHORIP:[Alert][Source][Ident]}|%{EVENTLOG})
 
 #User: root
-OSSEC_MESSAGE_FULL_LOGANALYSIS_USER User: (%{USERNAME:Alert.Source.User.Ident}|%{WINPCUSER:Alert.Source.User.Ident})
+OSSEC_MESSAGE_FULL_LOGANALYSIS_USER User: (%{USERNAME:[Alert][Source][User][Ident]}|%{WINPCUSER:[Alert][Source][User][Ident]})
 
 #Src IP: 192.168.1.33
-OSSEC_MESSAGE_FULL_LOGANALYSIS_SRCIP Src IP: %{IPORHOST:Alert.Source.Node.Address}
+OSSEC_MESSAGE_FULL_LOGANALYSIS_SRCIP Src IP: %{IPORHOST:[Alert][Source][Node][Address]}
 
 
 
@@ -174,10 +174,10 @@ OSSEC_MESSAGE_FULL_REGCHECK %{OSSEC_MESSAGE_FULL_REGCHECK_LINE2}\n%{OSSEC_MESSAG
 OSSEC_MESSAGE_FULL_REGCHECK_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->%{REGCHECK}
 
 #Integrity checksum changed for: 'HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer'
-OSSEC_MESSAGE_FULL_REGCHECK_REGPATH Integrity checksum changed for: '%{DATA:Alert.Target.File.Path}'
+OSSEC_MESSAGE_FULL_REGCHECK_REGPATH Integrity checksum changed for: '%{DATA:[Alert][Target][File][Path]}'
 
 #New file 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\VMSMP\Parameters\SwitchList\212B8031\D308F1A8' added to the file system.
-OSSEC_MESSAGE_FULL_REGCHECK_NEWREGPATH New file '%{DATA:Alert.Target.File.Path}' added to the file system.
+OSSEC_MESSAGE_FULL_REGCHECK_NEWREGPATH New file '%{DATA:[Alert][Target][File][Path]}' added to the file system.
 
 
 #** Alert 1435051355.484034070: mail  - ossec,
@@ -193,9 +193,9 @@ OSSEC_MESSAGE_FULL_REGCHECK_NEWREGPATH New file '%{DATA:Alert.Target.File.Path}'
 OSSEC_MESSAGE_FULL_COMMDIFF %{OSSEC_MESSAGE_FULL_COMMDIFF_LINE2}\n%{OSSEC_MESSAGE_FULL_LINE3}\n%{OSSEC_MESSAGE_FULL_COMMDIFF_DIFF}
 
 #2015 Jun 23 12:22:35 (host) 1.2.1.1->netstat -tan |grep LISTEN |grep -v 127.0.0.1 | sort
-OSSEC_MESSAGE_FULL_COMMDIFF_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->%{GREEDYDATA:Alert.Target.Commad}
+OSSEC_MESSAGE_FULL_COMMDIFF_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->%{GREEDYDATA:[Alert][Target][Commad]}
 
-OSSEC_MESSAGE_FULL_COMMDIFF_DIFF ossec: output: %{GREEDYDATA:Alert.Target.Command.Diff}
+OSSEC_MESSAGE_FULL_COMMDIFF_DIFF ossec: output: %{GREEDYDATA:[Alert][Target][Command][Diff]}
 
 
 
@@ -210,6 +210,6 @@ OSSEC_MESSAGE_FULL_LOGROT %{OSSEC_MESSAGE_FULL_LOGROT_LINE2}\n%{OSSEC_MESSAGE_FU
 OSSEC_MESSAGE_FULL_LOGROT_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->%{LOGCOLL}
 
 #ossec: File rotated (inode changed): '/var/log/messages'.
-OSSEC_MESSAGE_FULL_LOGROT_FILE ossec\: File rotated \(inode changed\)\: '%{DATA:Alert.Target.File.Path}'.
+OSSEC_MESSAGE_FULL_LOGROT_FILE ossec\: File rotated \(inode changed\)\: '%{DATA:[Alert][Target][File][Path]}'.
 
-#OSSEC_MESSAGE_FULL_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->(%{PATHORIP:Alert.Source.Ident}|%{SYSCHECK}|%{MONITORD}|%{EVENTLOG})
+#OSSEC_MESSAGE_FULL_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} %{OSSEC_AGENT_HOST}->(%{PATHORIP:[Alert][Source][Ident]}|%{SYSCHECK}|%{MONITORD}|%{EVENTLOG})
