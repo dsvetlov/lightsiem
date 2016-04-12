@@ -20,32 +20,9 @@ script:
   - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook  /etc/ansible/lightsiem/lightsiem-install.yml --syntax-check
   # Run ansible playbook
   - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook  /etc/ansible/lightsiem/lightsiem-install.yml
+  #
+  - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup | grep "127.0.0.1:9200"
+  - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup | grep "127.0.0.1:53"
   # Clean up
   - sudo docker stop "$(cat /tmp/container_id)"
 
-
-#notifications:
-#  email: false
-#
-#
-#
-#
-#sudo: required
-#language: python
-#python: "2.7"
-#
-#env:
-#  - distribution: centos
-#    version: 7
-#    init: /usr/lib/systemd/systemd
-#    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-#
-#before_install:
-#  - sudo apt-get update -qq
-#
-#install:
-#  - pip install ansible
-#  - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
-#
-#script:
-#  - ansible-playbook -i localhost lightsiem-install.yml --syntax-check
