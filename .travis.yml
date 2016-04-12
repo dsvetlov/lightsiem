@@ -22,6 +22,8 @@ script:
   - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook  /etc/ansible/lightsiem/lightsiem-install.yml
   #
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup
+  - sudo docker exec "$(cat /tmp/container_id)" ps aux
+  - sudo docker exec "$(cat /tmp/container_id)" iptables -L
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup | grep "127.0.0.1:9200"
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup | grep "127.0.0.1:53"
   # Clean up
