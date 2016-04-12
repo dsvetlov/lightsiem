@@ -2,6 +2,12 @@
 language: python
 python: "2.7"
 
+env:
+  - distribution: centos
+    version: 7
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+
 before_install:
   - yum update -y && reboot
   - yum install epel-release
