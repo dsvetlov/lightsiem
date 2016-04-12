@@ -1,8 +1,5 @@
 - name: Place Elasticsearch repo file
-  copy: src=repos/elasticsearch.repo dest=/etc/yum.repos.d/
-
-- name: Place Logstash repo file
-  copy: src=repos/logstash.repo dest=/etc/yum.repos.d/
+  copy: src=repos/elastico.repo dest=/etc/yum.repos.d/
 
 - name: Import GPG key
   command: rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
@@ -10,103 +7,101 @@
 - name: Install packages
   yum: name={{item}} state=present
   with_items:
-    - elasticsearch-2.1.0
+    - elasticsearch
     - java
     - wget
     - epel-release
     - logstash
     - dnsmasq
+    - kibana
 
-- name: Add elasticsearch to aoutostart
-  command: systemctl enable elasticsearch.service
+- name: Add software to autostart to autostart
+  command: systemctl enable {{item}}
+  with_items:
+    - elasticsearch
+    - logstash
+    - dnsmasq
+    - kibana
   notify:
     - restart elasticsearch
+    - restart logstash
+    - restart kibana
 
-- name: Create directory for LightIEM components
-  file: path=/opt/lightsiem/ state=directory mode=0755
-
-- name: Create directory for Logstash patterns
-  file: path=/opt/lightsiem/patterns state=directory mode=0755
-
-- name: Download Kibana 4 package
-  get_url: url=https://download.elastic.co/kibana/kibana/kibana-4.3.1-linux-x64.tar.gz dest=/tmp
-
-- name: Unpack Kibana 4
-  unarchive: src=/tmp/kibana-4.3.1-linux-x64.tar.gz dest=/opt/lightsiem/
-  ignore_errors: yes
-
-- name: Rename Kibana 4 folder
-  command: mv /opt/lightsiem/kibana-4.3.1-linux-x64 /opt/lightsiem/kibana4/
-  ignore_errors: yes
-
-- name: Place Kibana 4 config
-  copy: src=kibana-config.yml dest=/opt/lightsiem/kibana4/config/kibana.yml
-  tags:
-        - configuration
-
-- name: Open port in firewalld for Kibana 4
-  firewalld: port=80/tcp permanent=true state=enabled
-  ignore_errors: yes
-  tags:
-        - configuration
-  notify:
-        - restart firewalld
-
-- name: Place systemd unit file for Kibana
-  copy: src=kibana.service dest=/etc/systemd/system/kibana.service
-  ignore_errors: yes
-
-- name: AutoStart Kibana
-  command: systemctl enable kibana.service
-  ignore_errors: yes
-
-- name: Start Kiabana
-  command: systemctl start kibana.service
-  ignore_errors: yes
-
-- name: Place Logstash input config for Cisco
-  copy: src=logstash-conf.d/40-cisco.conf dest=/etc/logstash/conf.d/40-cisco.conf
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-- name: Place Logstash patterns file for Cisco
-  copy: src=logstash-patterns/cisco.pattern dest=/opt/lightsiem/patterns/cisco
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-
-- name: Open port in firewalld for Logstash Cisco input
-  firewalld: port=9020/udp permanent=true state=enabled
-  ignore_errors: yes
-  tags:
-        - configuration
-  notify:
-        - restart firewalld
-
-- name: Place Logstash common config
-  copy: src=logstash-conf.d/99-output.conf dest=/etc/logstash/conf.d/99-output.conf
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-- name: Place Logstash output config for elasticsearch
-  copy: src=logstash-conf.d/95-common.conf dest=/etc/logstash/conf.d/95-common.conf
-  notify:
-        - restart logstash
-  tags:
-        - configuration
-
-- name: AutoStart dnsmasq
-  command: chkconfig dnsmasq on
-
-- name: Start dnsmasq
-  command: service dnsmasq start
-
+#- name: Create directory for LightIEM components
+#  file: path=/opt/lightsiem/ state=directory mode=0755
+#
+#- name: Create directory for Logstash patterns
+#  file: path=/opt/lightsiem/patterns state=directory mode=0755
+#
+#
+#- name: Place Kibana 4 config
+#  copy: src=kibana-config.yml dest=/opt/lightsiem/kibana4/config/kibana.yml
+#  tags:
+#        - configuration
+#
+#- name: Open port in firewalld for Kibana 4
+#  firewalld: port=80/tcp permanent=true state=enabled
+#  ignore_errors: yes
+#  tags:
+#        - configuration
+#  notify:
+#        - restart firewalld
+#
+#- name: Place systemd unit file for Kibana
+#  copy: src=kibana.service dest=/etc/systemd/system/kibana.service
+#  ignore_errors: yes
+#
+#- name: AutoStart Kibana
+#  command: systemctl enable kibana.service
+#  ignore_errors: yes
+#
+#- name: Start Kiabana
+#  command: systemctl start kibana.service
+#  ignore_errors: yes
+#
+#- name: Place Logstash input config for Cisco
+#  copy: src=logstash-conf.d/40-cisco.conf dest=/etc/logstash/conf.d/40-cisco.conf
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: Place Logstash patterns file for Cisco
+#  copy: src=logstash-patterns/cisco.pattern dest=/opt/lightsiem/patterns/cisco
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#
+#- name: Open port in firewalld for Logstash Cisco input
+#  firewalld: port=9020/udp permanent=true state=enabled
+#  ignore_errors: yes
+#  tags:
+#        - configuration
+#  notify:
+#        - restart firewalld
+#
+#- name: Place Logstash common config
+#  copy: src=logstash-conf.d/99-output.conf dest=/etc/logstash/conf.d/99-output.conf
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: Place Logstash output config for elasticsearch
+#  copy: src=logstash-conf.d/95-common.conf dest=/etc/logstash/conf.d/95-common.conf
+#  notify:
+#        - restart logstash
+#  tags:
+#        - configuration
+#
+#- name: AutoStart dnsmasq
+#  command: chkconfig dnsmasq on
+#
+#- name: Start dnsmasq
+#  command: service dnsmasq start
+#
 #- name: Install packages
 #  yum: name={{item}} state=present
 #  with_items:
