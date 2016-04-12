@@ -20,7 +20,8 @@ script:
   - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook  /etc/ansible/lightsiem/lightsiem-install.yml --syntax-check
   # Run ansible playbook
   - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook  /etc/ansible/lightsiem/lightsiem-install.yml
-  #
+
+  - sleep 100
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup
   - sudo docker exec "$(cat /tmp/container_id)" ps aux
   - sudo docker exec "$(cat /tmp/container_id)" iptables -L
