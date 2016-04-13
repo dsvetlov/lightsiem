@@ -1,7 +1,10 @@
-
+language: ruby
 sudo: required
 env:
   - CONTAINER_ID=$(mktemp)
+
+rvm:
+    - "1.9.3"
 
 services:
   - docker
@@ -12,8 +15,10 @@ before_install:
   - sudo docker pull centos:7
   # Customize containers
   - sudo docker build --rm=true --file=Dockerfile.centos --tag=centos:ansible .
+  - gem install jls-grok
 
 script:
+  - ruby test/test.rb
   # Run container in detached state
   - sudo docker run --detach --privileged --volume="${PWD}":/etc/ansible/lightsiem:ro --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro centos:ansible /usr/lib/systemd/systemd > /tmp/container_id
   # Check syntax of ansible playbook
