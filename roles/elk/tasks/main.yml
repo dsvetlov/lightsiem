@@ -28,6 +28,14 @@
     - restart kibana
     - restart dnsmasq
 
+- name: Add dnsmasq config
+  copy: src=dnsmasq.conf dest=/etc/dnsmasq.d/lightsiem.conf
+  tags:
+    - configuration
+  notify:
+    - restart dnsmasq
+
+
 #- name: Create directory for LightIEM components
 #  file: path=/opt/lightsiem/ state=directory mode=0755
 #
