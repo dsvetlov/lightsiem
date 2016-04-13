@@ -7,6 +7,9 @@
 - name: restart kibana
   service: name=kibana state=restarted
 
+- name: restart dnsmasq
+  service: name=dnsmasq state=restarted
+
 - name: restart firewalld
   service: name=firewalld state=restarted
 

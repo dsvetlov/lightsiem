@@ -26,6 +26,7 @@
     - restart elasticsearch
     - restart logstash
     - restart kibana
+    - restart dnsmasq
 
 #- name: Create directory for LightIEM components
 #  file: path=/opt/lightsiem/ state=directory mode=0755
