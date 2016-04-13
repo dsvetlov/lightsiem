@@ -30,7 +30,7 @@ class TestGrokPatterns < MiniTest::Unit::TestCase
             @grok.add_patterns_from_file(@@upstream_pattern_dir + '/' + file)
         end
         Dir.new(@@local_pattern_dir).each do |file|
-            next if file !~ /\.grok$/
+            next if file !~ /\.pattern$/
             @grok.add_patterns_from_file(@@local_pattern_dir + '/' + file)
         end
     end
