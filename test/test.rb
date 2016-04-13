@@ -18,6 +18,7 @@ class TestGrokPatterns < MiniTest::Unit::TestCase
     @@upstream_pattern_dir = @@test_dir + '/logstash-patterns-core/patterns'
     @@local_pattern_dir = File.dirname(File.expand_path(@@test_dir))
     @@local_pattern_dir = @@local_pattern_dir + '/roles/elk/files/logstash-patterns'
+    print @@local_pattern_dir
 
     # Prepare a grok object.
     #
