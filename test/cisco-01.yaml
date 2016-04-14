@@ -1,5 +1,5 @@
 pattern: CISCO_ASA_EVENTID
 data: "%ASA-7-710005"
 results:
-    Alert.Analyzer.Level.Origin: 9
+    Alert.Analyzer.Level.Origin: 7
     Alert.Classification.Ident: 710005
