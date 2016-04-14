@@ -1,6 +1,6 @@
 pattern: CISCO_IOS_EVENTID
 data: "%LINK-3-UPDOWN"
 results:
-    "[Alert][Group][Text]": %LINK
+    "[Alert][Group][Text]": "%LINK"
     "[Alert][Analyzer][Level][Origin]": 3
     "[Alert][Classification][Ident]": UPDOWN
