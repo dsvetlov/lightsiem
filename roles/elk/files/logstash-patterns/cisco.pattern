@@ -2,7 +2,7 @@
 CISCO_ASA_EVENTID %ASA-%{INT:[Alert][Analyzer][Level][Origin]}-%{POSINT:[Alert][Classification][Ident]}
 
 #cisco-02
-CISCO_IOS_EVENTID %{DATA:[Alert][Group][Text]}-%{INT:[Alert][Analyzer][Level][Origin]}-(?:%{DATA:[Alert][Classification][Ident]})
+CISCO_IOS_EVENTID %{DATA:[Alert][Group][Text]}-%{INT:[Alert][Analyzer][Level][Origin]}-(?:%{GREEDYDATA:[Alert][Classification][Ident]})
 
 #cisco-03
 CISCO_TIMESTAMP %{MONTH} %{MONTHDAY} %{YEAR} %{TIME}
