@@ -3,4 +3,4 @@ data: "%LINK-3-UPDOWN"
 results:
     "[Alert][Group][Text]": "%LINK"
     "[Alert][Analyzer][Level][Origin]": "3"
-    "[Alert][Classification][Ident]": "UPDOWN"
+    "[Alert][Classification][Ident]": UPDOWN
