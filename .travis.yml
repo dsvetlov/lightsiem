@@ -30,12 +30,12 @@ script:
 
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup
   #Logstash
-
+  - sudo docker exec "$(cat /tmp/container_id)" netstat -lnup | grep "127.0.0.1:9020"
   #Elastcisearch
-  - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup | grep "127.0.0.1:9200"
-  - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup | grep "127.0.0.1:9300"
+  - sudo docker exec "$(cat /tmp/container_id)" netstat -lntp | grep "127.0.0.1:9200"
+  - sudo docker exec "$(cat /tmp/container_id)" netstat -lntp | grep "127.0.0.1:9300"
   #Dnsmasq
-  - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup | grep "127.0.0.1:53"
+  - sudo docker exec "$(cat /tmp/container_id)" netstat -lnup | grep "127.0.0.1:53"
   # Clean up
   - sudo docker stop "$(cat /tmp/container_id)"
 

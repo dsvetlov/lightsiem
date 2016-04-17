@@ -1,4 +1,4 @@
-pattern: CISCO_TIMESTAMP
+pattern: CISCO_IOS_TIMESTAMP
 data: '14:17:41 MSK Mon May 25 2015'
 results:
     "MONTH": 'May'
