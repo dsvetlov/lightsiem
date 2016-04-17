@@ -60,6 +60,7 @@
   firewalld: port={{item}} permanent=true state=enabled
   with_items:
     - 5601/tcp
+    - 9020/udp
   tags:
         - configuration
   notify:
