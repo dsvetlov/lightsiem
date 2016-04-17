@@ -64,6 +64,7 @@
         - configuration
   notify:
         - restart firewalld
+  ignore_errors: yes
 
 #- name: Create directory for LightIEM components
 #  file: path=/opt/lightsiem/ state=directory mode=0755
