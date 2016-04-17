@@ -32,6 +32,7 @@ script:
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup
   - sudo docker exec "$(cat /tmp/container_id)" ps aux | grep logstash
   - sudo docker exec "$(cat /tmp/container_id)" /etc/init.d/logstash status
+  - sudo docker exec "$(cat /tmp/container_id)" tail /var/log/logstash/logstash.*
   #Logstash
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lnup | grep "9020"
   #Elastcisearch
