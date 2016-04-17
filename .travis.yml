@@ -25,15 +25,15 @@ script:
   - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook  /etc/ansible/lightsiem/lightsiem-install.yml --syntax-check
   # Run ansible playbook
   - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook  /etc/ansible/lightsiem/lightsiem-install.yml
-#  - sudo docker exec "$(cat /tmp/container_id)" /etc/init.d/logstash start
+  - sudo docker exec "$(cat /tmp/container_id)" /etc/init.d/logstash start
   - sleep 100
 
 
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup
   - sudo docker exec "$(cat /tmp/container_id)" tail /var/log/logstash/logstash.*
-  - sudo docker exec "$(cat /tmp/container_id)" /etc/init.d/logstash status
-  - sudo docker exec "$(cat /tmp/container_id)" /opt/logstash/bin/logstash -f /etc/logstash/conf.d/ &
-  - sleep 100
+#  - sudo docker exec "$(cat /tmp/container_id)" /etc/init.d/logstash status
+#  - sudo docker exec "$(cat /tmp/container_id)" /opt/logstash/bin/logstash -f /etc/logstash/conf.d/ &
+#  - sleep 100
 #  - sudo docker exec "$(cat /tmp/container_id)" whereis java
 #  - sudo docker exec "$(cat /tmp/container_id)" export
   #Logstash
