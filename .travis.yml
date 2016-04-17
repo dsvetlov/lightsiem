@@ -39,3 +39,5 @@ script:
   # Clean up
   - sudo docker stop "$(cat /tmp/container_id)"
 
+notifications:
+  email: false

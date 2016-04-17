@@ -1,0 +1,9 @@
+pattern: CISCO_TIMESTAMP
+data: '14:17:41 MSK Mon May 25 2015'
+results:
+    "MONTH": 'May'
+    "MONTHDAY": 25
+    "YEAR": 2016
+    "TIME": '14:17:41'
+    "Timezone": MSK
+    "DAY": Mon
