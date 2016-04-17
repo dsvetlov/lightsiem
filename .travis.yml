@@ -26,11 +26,11 @@ script:
   # Run ansible playbook
   - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook  /etc/ansible/lightsiem/lightsiem-install.yml
 #  - sudo docker exec "$(cat /tmp/container_id)" /etc/init.d/logstash start
-  - sleep 100
+  - sleep 200
 
 
-#  - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup
-#  - sudo docker exec "$(cat /tmp/container_id)" ps aux | grep logstash
+  - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup
+  - sudo docker exec "$(cat /tmp/container_id)" tail /var/log/logstash/logstash.*
 #  - sudo docker exec "$(cat /tmp/container_id)" /etc/init.d/logstash status
 #  - sudo docker exec "$(cat /tmp/container_id)" /opt/logstash/bin/logstash -f /etc/logstash/conf.d/ &
 #  - sleep 100
