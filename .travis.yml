@@ -30,7 +30,7 @@ script:
 
 
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup
-  - sudo docker exec "$(cat /tmp/container_id)" tail /var/log/logstash/logstash.*
+#  - sudo docker exec "$(cat /tmp/container_id)" tail /var/log/logstash/logstash.*
 #  - sudo docker exec "$(cat /tmp/container_id)" /etc/init.d/logstash status
 
 #  - sleep 100
@@ -41,8 +41,13 @@ script:
   #Elastcisearch
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntp | grep "127.0.0.1:9200"
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntp | grep "127.0.0.1:9300"
+  #Kibana
+  - sudo docker exec "$(cat /tmp/container_id)" netstat -lntp | grep "5601"
   #Dnsmasq
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lnup | grep "127.0.0.1:53"
+  #Check iptables
+  #Kibana
+  - sudo docker exec "$(cat /tmp/container_id)" iptables -L -n | grep "tcp dpt:5601"
   # Clean up
   - sudo docker stop "$(cat /tmp/container_id)"
 

@@ -56,6 +56,15 @@
   tags:
         - configuration
 
+- name: Open ports in firewalld
+  firewalld: port={{item}} permanent=true state=enabled
+  with_items:
+    - 5601/tcp
+  tags:
+        - configuration
+  notify:
+        - restart firewalld
+
 #- name: Create directory for LightIEM components
 #  file: path=/opt/lightsiem/ state=directory mode=0755
 #
