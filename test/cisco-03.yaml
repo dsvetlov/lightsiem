@@ -1,0 +1,7 @@
+pattern: CISCO_TIMESTAMP
+data: 'Apr 17 2016 12:44:54'
+results:
+    "MONTH": 'Apr'
+    "MONTHDAY": 3
+    "YEAR": 2016
+    "TIME": '12:44:54'
