@@ -35,6 +35,23 @@
   notify:
     - restart dnsmasq
 
+- name: Add Logstash configs
+  copy: src=logstash-conf.d/{{item}} dest=/etc/logstash/conf.d/
+  with_items:
+    - 40-cisco.conf
+  tags:
+    - configuration
+  notify:
+    - restart logstash
+
+- name: Place Logstash patterns
+  copy: src=logstash-patterns/{{item}} dest=/opt/lightsiem/patterns/
+  with_items:
+    - cisco.pattern
+  notify:
+        - restart logstash
+  tags:
+        - configuration
 
 #- name: Create directory for LightIEM components
 #  file: path=/opt/lightsiem/ state=directory mode=0755
