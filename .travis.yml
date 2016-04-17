@@ -1,5 +1,4 @@
 language: ruby
-language: java
 sudo: required
 env:
   - CONTAINER_ID=$(mktemp)
@@ -33,8 +32,10 @@ script:
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup
   - sudo docker exec "$(cat /tmp/container_id)" ps aux | grep logstash
   - sudo docker exec "$(cat /tmp/container_id)" /etc/init.d/logstash status
-  - sleep 100
   - sudo docker exec "$(cat /tmp/container_id)" /opt/logstash/bin/logstash -f /etc/logstash/conf.d/ &
+  - sleep 100
+  - sudo docker exec "$(cat /tmp/container_id)" whereis java
+  - sudo docker exec "$(cat /tmp/container_id)" export
   #Logstash
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lnup | grep "9020"
   #Elastcisearch
