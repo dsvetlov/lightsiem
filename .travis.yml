@@ -29,7 +29,7 @@ script:
 
 
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntup
-  - sudo docker exec "$(cat /tmp/container_id)" ls -la /opt/
+  - sudo docker exec "$(cat /tmp/container_id)" ls -la /opt/lightsiem/patterns/
   #Logstash
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lnup | grep "9020"
   #Elastcisearch
