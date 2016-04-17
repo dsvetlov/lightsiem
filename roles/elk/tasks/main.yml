@@ -44,6 +44,9 @@
   notify:
     - restart logstash
 
+- name: Create patterns directory
+  file: path=/opt/lightsiem/patterns state=present
+
 - name: Place Logstash patterns
   copy: src=logstash-patterns/{{item}} dest=/opt/lightsiem/patterns/
   with_items:
