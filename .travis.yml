@@ -25,6 +25,7 @@ script:
   - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook  /etc/ansible/lightsiem/lightsiem-install.yml --syntax-check
   # Run ansible playbook
   - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook  /etc/ansible/lightsiem/lightsiem-install.yml
+  - sudo docker exec "$(cat /tmp/container_id)" /etc/init.d/logstash start
   - sleep 100
 
 
