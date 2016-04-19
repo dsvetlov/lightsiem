@@ -1,0 +1,129 @@
+OSSECCNF ossec.conf
+
+
+
+
+
+
+#Ossec_message_full
+
+OSSEC_MESSAGE_FULL (?m)%{OSSEC_MESSAGE_FULL_LINE1}\n%{OSSEC_MESSAGE_FULL_LINE2}\n%{OSSEC_MESSAGE_FULL_LINE3}\n(%{OSSEC_MESSAGE_USR_MSG}|%{OSSEC_MESSAGE_FULL_COMMDIFF_DIFF}|%{OSSEC_MESSAGE_FULL_LOGROT_FILE}|%{OSSEC_MESSAGE_AGENTLESS})\n%{GREEDYDATA:ossec_unparsed}
+
+
+#** Alert 1433185454.0: - syslog,sshd,authentication_success,WinEvtLog,Rootcheck,ossec
+#2016 Apr 18 03:57:24 (HPAD1) 10.27.18.10->logtype
+#Rule: 5715 (level 3) -> 'SSHD authentication success.'
+
+OSSEC_MESSAGE_FULL_LINE1 \*\* Alert %{NUMBER:[Alert][CreateTime]}: %{WORD}?%{SPACE}\- ?%{GREEDYDATA:[Alert][Group][Text]}
+
+OSSEC_MESSAGE_FULL_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} (%{USERNAME:[Alert][HostName]}|\(%{USERNAME:[Alert][HostName]}\))%{SPACE}((%{IP:[Alert][Sensor][Node][Address]}|ossec@%{IP:[Alert][Sensor][Node][Address]})->%{GREEDYDATA:[Alert][LogType]}|->%{GREEDYDATA:[Alert][LogType]})
+
+OSSEC_MESSAGE_FULL_LINE3 Rule: %{BASE10NUM:[Alert][Classification][Ident]} \(level %{BASE10NUM:[Alert][Analyzer][Level][Origin]}\) -> (?:%{GREEDYDATA:[Alert][Classification][Text]})
+
+
+
+
+#User and message
+
+OSSEC_MESSAGE_USR_MSG %{OSSEC_MESSAGE_FULL_LINE_USER}\n%{OSSEC_MESSAGE_FULL_LINE_MESSAGE}
+
+#User: _service_activeadmin
+
+OSSEC_MESSAGE_FULL_LINE_USER (User: (%{USERNAME:[Alert][User]}\$)|User: (%{USERNAME:[Alert][User]}))
+
+#Message
+
+OSSEC_MESSAGE_FULL_LINE_MESSAGE %{GREEDYDATA:[Alert][Message]}
+
+
+
+
+#Syscheck
+
+OSSEC_MESSAGE_FULL_SYSCHECK %{OSSEC_MESSAGE_FULL_SYSCHECK_FILE}\n(%{OSSEC_MESSAGE_FULL_SYSCHECK_SIZE}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_OLDMD5}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_CURMD5}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_OLDSHA}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_CURSHA}\n)?(%{OSSEC_MESSAGE_FULL_SYSCHECK_DIFF})?|%{OSSEC_MESSAGE_FULL_SYSCHECK_DELETE}|%{OSSEC_MESSAGE_FULL_SYSCHECK_READD}
+
+#Integrity checksum changed for: 'ossec.conf'
+#Size changed from '7896' to '7889'
+#Old md5sum was: '035182ab6f0c688260144ac08513fe00'
+#New md5sum is : 'ff541deeea8e01f671a961973f048ba4'
+#Old sha1sum was: '1263b2226d6e6e44f33b67bccc80ca76e9e614df'
+#New sha1sum is : '8a254b233c1b56479af4088feef82764c6c02eb9'
+
+#Integrity checksum changed for: '/etc/nsswitch.conf'
+OSSEC_MESSAGE_FULL_SYSCHECK_FILE Integrity checksum changed for: '(%{PATH:[Alert][Target][File][Path]}|%{OSSECCNF:[Alert][Target][File][Path]})'
+
+#Size changed from '1465' to '1336'
+OSSEC_MESSAGE_FULL_SYSCHECK_SIZE Size changed from '%{BASE10NUM:[Alert][Target][File][oldsize]}' to '%{BASE10NUM:[Alert][Target][File][newsize]}'
+
+#Old md5sum was: '3a38cfbb74aec4b3b011bb0ee3ce7828'
+OSSEC_MESSAGE_FULL_SYSCHECK_OLDMD5 Old md5sum was: '%{DATA:[Alert][Target][File][chksum][md5prev]}'
+
+#New md5sum is : '8a3cf0d94719677115db91589e73c54e'
+OSSEC_MESSAGE_FULL_SYSCHECK_CURMD5 New md5sum is : '%{DATA:[Alert][Target][File][chksum][md5cur]}'
+
+#Old sha1sum was: '63386c46e9f5dc88643ca09a731f7a8321287f2a'
+OSSEC_MESSAGE_FULL_SYSCHECK_OLDSHA Old sha1sum was: '%{DATA:[Alert][Target][File][chksum][SHAprev]}'
+
+#New sha1sum is : 'a19587b1386ac676ceebeff5a71d9e035fef4caf'
+OSSEC_MESSAGE_FULL_SYSCHECK_CURSHA New sha1sum is : '%{DATA:[Alert][Target][File][chksum][SHAcur]}'
+
+
+
+#What changed:
+#1,2c1,2
+#< # up nothing. Note that if the search failed due to some other reason
+#< # (like no NIS server responding) then the search continues with the
+#---
+#> #123
+#> #123
+
+
+OSSEC_MESSAGE_FULL_SYSCHECK_DIFF What changed:\n%{GREEDYDATA:[Alert][Target][File][Diff]}
+
+#File '%.756s' was deleted. Unable to retrieve checksum.
+OSSEC_MESSAGE_FULL_SYSCHECK_DELETE File '%{PATH:[Alert][Target][File][Path]}' was deleted. Unable to retrieve checksum.
+
+#File '%.756s' was re-added.
+OSSEC_MESSAGE_FULL_SYSCHECK_READD File '%{PATH:[Alert][Target][File][Path]}' was re-added.
+
+
+
+
+#** Alert 1435051355.484034070: mail  - ossec,
+#2015 Jun 23 12:22:35 (host) 1.2.1.1->netstat -tan |grep LISTEN |grep -v 127.0.0.1 | sort
+#Rule: 533 (level 7) -> 'Listened ports status (netstat) changed (new port opened or closed).'
+#ossec: output: 'netstat -tan |grep LISTEN |grep -v 127.0.0.1 | sort':
+#tcp6       0      0 :::22                   :::*                    LISTEN
+#Previous output:
+#ossec: output: 'netstat -tan |grep LISTEN |grep -v 127.0.0.1 | sort':
+#tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN
+#tcp6       0      0 :::22                   :::*                    LISTEN
+
+OSSEC_MESSAGE_FULL_COMMDIFF_DIFF ossec: output: %{GREEDYDATA:[Alert][Target][Command][Diff]}
+
+
+
+
+#** Alert 1434932371.94243012: - ossec,
+#2015 Jun 22 03:19:31 (hw1) 1.7.2.4->ossec-logcollector
+#Rule: 591 (level 3) -> 'Log file rotated.'
+#ossec: File rotated (inode changed): '/var/log/messages'.
+
+OSSEC_MESSAGE_FULL_LOGROT_FILE ossec\: File rotated \(inode changed\)\: '%{DATA:[Alert][Target][File][Path]}'.
+
+
+
+#Agentless
+#** Alert 1461069815.125470837: mail  - ossec,syscheck,agentless
+#2016 Apr 19 15:43:35 (ssh_pixconfig_diff) ossec@10.27.177.15->agentless
+#Rule: 555 (level 7) -> 'Integrity checksum for agentless device changed.'
+#ossec: agentless: Change detected:
+#1184d1183
+#< Connection to 10.27.177.15 closed by remote host.
+
+OSSEC_MESSAGE_AGENTLESS %{OSSEC_MESSAGE_AGENTLESS_LINE1}\n%{OSSEC_MESSAGE_AGENTLESS_LINE2}\n%{OSSEC_MESSAGE_AGENTLESS_MESSAGE}
+
+OSSEC_MESSAGE_AGENTLESS_LINE1 ossec\: agentless\: Change detected:
+OSSEC_MESSAGE_AGENTLESS_LINE2 %{BASE16NUM:[Alert][Agentless][NumChange]}
+OSSEC_MESSAGE_AGENTLESS_MESSAGE %{GREEDYDATA:[Alert][Agentless][Change]}
+
