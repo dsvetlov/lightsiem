@@ -45,9 +45,7 @@ script:
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntp | grep "5601"
   #Dnsmasq
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lnup | grep "127.0.0.1:53"
-  #Check iptables
-  #Kibana
-  - sudo docker exec "$(cat /tmp/container_id)" iptables -L -n | grep "tcp dpt:5601"
+
   # Clean up
   - sudo docker stop "$(cat /tmp/container_id)"
 
