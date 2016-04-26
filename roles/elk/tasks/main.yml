@@ -380,9 +380,9 @@
 #  tags: configuration security
 
 #- name: Apply sg_config
-#	shell: chmod +x /usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh && /tmp/apply_config.sh
-#    notify:
+#	 shell: chmod +x /usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh && /tmp/apply_config.sh
+#  notify:
 #       - restart elasticsearch
 #       - restart kibana
 #       - restart logstash
-#	tags: configuration security
+#	 tags: configuration security
