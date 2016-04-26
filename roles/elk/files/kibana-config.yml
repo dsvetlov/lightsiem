@@ -9,7 +9,8 @@ server.port: 80
 # server.basePath: ""
 
 # The Elasticsearch instance to use for all your queries.
-elasticsearch.url: "https://localhost:9200"
+# For Search-Guard
+# elasticsearch.url: "https://localhost:9200"
 
 # preserve_elasticsearch_host true will send the hostname specified in `elasticsearch`. If you set it to false,
 # then the host you use to connect to *this* Kibana instance will be sent.
@@ -26,8 +27,9 @@ elasticsearch.url: "https://localhost:9200"
 # used by the Kibana server to perform maintenance on the kibana_index at startup. Your Kibana
 # users will still need to authenticate with Elasticsearch (which is proxied through
 # the Kibana server)
-elasticsearch.username: "user"
-elasticsearch.password: "pass"
+# For Search-Guard
+#elasticsearch.username: "user"
+#elasticsearch.password: "pass"
 
 # SSL for outgoing requests from the Kibana Server to the browser (PEM formatted)
 # server.ssl.cert: /path/to/your/server.crt
@@ -43,7 +45,8 @@ elasticsearch.password: "pass"
 
 # Set to false to have a complete disregard for the validity of the SSL
 # certificate.
-elasticsearch.ssl.verify: false
+# For Search-Guard
+#elasticsearch.ssl.verify: false
 
 # Time in milliseconds to wait for elasticsearch to respond to pings, defaults to
 # request_timeout setting
