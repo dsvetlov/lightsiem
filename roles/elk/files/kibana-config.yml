@@ -28,8 +28,8 @@ server.port: 80
 # users will still need to authenticate with Elasticsearch (which is proxied through
 # the Kibana server)
 # For Search-Guard
-#elasticsearch.username: "user"
-#elasticsearch.password: "pass"
+# elasticsearch.username: "user"
+# elasticsearch.password: "pass"
 
 # SSL for outgoing requests from the Kibana Server to the browser (PEM formatted)
 # server.ssl.cert: /path/to/your/server.crt
@@ -46,7 +46,7 @@ server.port: 80
 # Set to false to have a complete disregard for the validity of the SSL
 # certificate.
 # For Search-Guard
-#elasticsearch.ssl.verify: false
+# elasticsearch.ssl.verify: false
 
 # Time in milliseconds to wait for elasticsearch to respond to pings, defaults to
 # request_timeout setting
