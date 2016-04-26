@@ -39,6 +39,7 @@
   copy: src=logstash-conf.d/{{item}} dest=/etc/logstash/conf.d/
   with_items:
     - 40-cisco.conf
+    - 99-output.conf
   tags:
     - configuration
   notify:
@@ -52,9 +53,16 @@
   with_items:
     - cisco.pattern
   notify:
-        - restart logstash
+    - restart logstash
   tags:
-        - configuration
+    - configuration
+
+- name: Place Logstash output template
+  copy: src=template.json dest=/etc/logstash/
+  tags:
+    - configuration
+  notify:
+    - restart logstash
 
 - name: Open ports in firewalld
   firewalld: port={{item}} permanent=true state=enabled
