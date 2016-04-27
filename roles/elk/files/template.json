@@ -52,6 +52,12 @@
                     },
                     "Port" : {"type" : "integer"}
                   }
+                },
+                "Process":{
+                  "type" : "object",
+                  "properties": {
+                    "Name" : {"type" : "string", "index":"not_analyzed" }
+                  }
                 }
               }
             },
@@ -93,11 +99,28 @@
                     "Normalized": {"type": "integer"},
                     "Origin": {"type": "integer"}
                   }
-                }
+                },
+                "Node":{
+                  "type": "object",
+                  "properties": {
+                    "Name": {"type" : "string", "index":"not_analyzed" }
+                  }
+                },
+                "Name": {"type" : "string", "index":"not_analyzed" },
+                "Reason": {"type" : "string", "index":"not_analyzed" }
+              }
+            },
+            "Classification" : {
+              "type" : "object",
+              "properties": {
+                "Ident": {"type" : "string", "index":"not_analyzed" },
+                "Text": {"type" : "string", "index":"not_analyzed" },
+                "Protocol": {"type" : "string", "index":"not_analyzed" }
               }
             }
           }
-        }
+        },
+        "type" : {"type": "string", "index":"not_analyzed" }
       }
     }
   }
