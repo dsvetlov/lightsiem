@@ -1,0 +1,4 @@
+pattern: OSSEC_MESSAGE_FULL_SYSCHECK_CURMD5
+data: "New md5sum is : '8a3cf0d94719677115db91589e73c54e'"
+results:
+	"[Alert][Target][File][chksum][md5cur]": "'8a3cf0d94719677115db91589e73c54e'"
