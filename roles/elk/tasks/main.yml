@@ -14,6 +14,7 @@
     - logstash
     - dnsmasq
     - kibana
+    - elasticdump
 
 - name: Add software to autostart to autostart
   command: systemctl enable {{item}}
@@ -74,6 +75,17 @@
   notify:
         - restart firewalld
   ignore_errors: yes
+
+- name: Copy Kibana dashboards
+  copy: src=kibana-dashboards/kibana.json dest=/tmp/
+  tags:
+        - configuration
+
+- name: Import dashboards
+  shell: elasticdump --input=/tmp/kibana.json --output=http://localhost:9200/.kibana --type=data
+  tags:
+        - configuration
+
 
 #- name: Create directory for LightIEM components
 #  file: path=/opt/lightsiem/ state=directory mode=0755
