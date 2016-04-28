@@ -77,7 +77,8 @@
                         "city_name": {"type": "string", "index":"not_analyzed" }
                       }
                     }
-                  }
+                  },
+                  "Name" : {"type":"string", "index":"not_analyzed"}
                 },
                 "Process":{
                   "type" : "object",
@@ -140,7 +141,8 @@
                     }
                   }
                 }
-              }
+              },
+              "Name" : {"type":"string", "index":"not_analyzed"}
             },
             "Analyzer": {
               "type": "object",
