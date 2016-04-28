@@ -371,5 +371,38 @@
 #  command: systemctl start kibana.service
 #  ignore_errors: yes
 
+- name: Install search-guard-ssl
+  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-ssl/2.3.1.8.1
+  tags: configuration security
 
-###
+- name: Install search-guard-2
+  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-2/2.3.1.0-beta1
+  tags: configuration security
+
+- name: Place search-guard-ssl pki scripts
+  copy: src=roles/elk/files/search-guard-ssl-pki-scripts/ dest=/tmp/
+  tags: configuration security
+
+- name: Create your own Root CA, Generate Keystores, Client node cert
+  shell: cd /tmp/ && chmod +x ./clean.sh && chmod +x ./gen_root_ca.sh && chmod +x ./gen_node_cert.sh &&  chmod +x ./gen_client_node_cert.sh  &&  chmod +x ./apply_config.sh &&  chmod +x ./example.sh && ./example.sh
+  tags: configuration security
+
+- name: Copy keystores
+  shell: cd /tmp/ && cp node-{{node_name}}-keystore.jks /etc/elasticsearch && cp node-{{node_name}}-keystore.p12 /etc/elasticsearch && cp truststore.jks /etc/elasticsearch
+  notify:
+       - restart elasticsearch
+       - restart kibana
+       - restart logstash
+  tags: configuration security
+
+- name: Add netty-tcnative to search-guard plugin
+  copy: src=/tmp/netty-tcnative-1.1.33.Fork13-linux-x86_64.jar dest=/usr/share/elasticsearch/plugins/search-guard-ssl/
+  tags: configuration security
+
+- name: Apply sg_config
+	 shell: chmod +x /usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh && /tmp/apply_config.sh
+  notify:
+       - restart elasticsearch
+       - restart kibana
+       - restart logstash
+	 tags: configuration security
