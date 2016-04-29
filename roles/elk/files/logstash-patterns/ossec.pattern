@@ -26,7 +26,7 @@ OSSEC_MESSAGE_USR_MSG %{OSSEC_MESSAGE_FULL_LINE_USER}\n%{OSSEC_MESSAGE_FULL_LINE
 
 #User: username
 
-OSSEC_MESSAGE_FULL_LINE_USER (User: (%{USERNAME:[Alert][User]}\$)|User: (%{USERNAME:[Alert][User]}))
+OSSEC_MESSAGE_FULL_LINE_USER (User: (%{USERNAME:[Alert][User]}\$)|User: (%{USERNAME:[Alert][User]})|User:%{GREEDYDATA::[Alert][User]})
 
 #Message
 
