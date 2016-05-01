@@ -1,0 +1,4 @@
+pattern: OSSEC_MESSAGE_FULL_COMMDIFF_DIFF
+data: "ossec: output: 'netstat -tan |grep LISTEN |grep -v 127.0.0.1 | sort'"
+results:
+	"[Alert][Target][Command][Diff]": "'netstat -tan |grep LISTEN |grep -v 127.0.0.1 | sort'"

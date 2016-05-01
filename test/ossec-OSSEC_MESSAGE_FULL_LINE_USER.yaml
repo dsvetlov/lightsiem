@@ -1,0 +1,4 @@
+pattern: OSSEC_MESSAGE_FULL_LINE_USER
+data: "User: username"
+results:
+	"[Alert][User]": "username"

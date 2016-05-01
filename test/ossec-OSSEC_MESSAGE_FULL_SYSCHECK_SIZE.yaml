@@ -1,0 +1,5 @@
+pattern: OSSEC_MESSAGE_FULL_SYSCHECK_SIZE
+data: "Size changed from '1465' to '1336'"
+results:
+	"[Alert][Target][File][oldsize]": "'1465'"
+	"[Alert][Target][File][newsize]": "'1336'"

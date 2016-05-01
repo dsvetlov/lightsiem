@@ -1,0 +1,4 @@
+pattern: OSSEC_MESSAGE_AGENTLESS_LINE2
+data: "1184d1155"
+results:
+	"[Alert][Agentless][NumChange]": "1184d1155"
