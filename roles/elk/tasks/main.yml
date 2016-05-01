@@ -77,6 +77,16 @@
         - restart firewalld
   ignore_errors: yes
 
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Waight for Logstash and Elasticsearch
+  wait_for: port={{item}} delay=10 connect_timeout=10
+  with_items:
+      - 9200
+      - 9300
+      - 5601
+
 - name: Copy Kibana dashboards
   copy: src=kibana-dashboards/kibana.json dest=/tmp/
   tags:
