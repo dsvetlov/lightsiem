@@ -24,6 +24,8 @@ class TestGrokPatterns < MiniTest::Unit::TestCase
     #
     # Adds the available upstream and local grok pattern files to
     # a new grok object, so it's ready for being used in a test.
+
+    puts "Start loading pattern files"
     def setup
         @grok = Grok.new
         Dir.new(@@upstream_pattern_dir).each do |file|
