@@ -1,4 +1,4 @@
 pattern: OSSEC_MESSAGE_FULL_SYSCHECK_READD
 data: "File '%.756s' was re-added."
 results:
-	"[Alert][Target][File][Path]": "'%.756s'"
+    "[Alert][Target][File][Path]": "'%.756s'"

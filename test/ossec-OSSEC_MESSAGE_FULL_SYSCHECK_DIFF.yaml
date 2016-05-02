@@ -1,4 +1,4 @@
 pattern: OSSEC_MESSAGE_FULL_SYSCHECK_DIFF
 data: "What changed: 1,2c1,2"
 results:
-	"[Alert][Target][File][Diff]": "1,2c1,2"
+    "[Alert][Target][File][Diff]": "1,2c1,2"

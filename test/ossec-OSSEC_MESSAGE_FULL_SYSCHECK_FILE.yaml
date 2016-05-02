@@ -1,4 +1,4 @@
 pattern: OSSEC_MESSAGE_FULL_SYSCHECK_FILE 
 data: "Integrity checksum changed for: '/etc/switch.conf'"
 results:
-	"[Alert][Target][File][Path]": "'/etc/switch.conf'"
+    "[Alert][Target][File][Path]": "'/etc/switch.conf'"

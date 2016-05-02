@@ -1,5 +1,5 @@
 pattern: OSSEC_MESSAGE_FULL_LINE1
 data: "** Alert 1461745444.5415712: - windows,authentication_success,"
 results:
-	"[Alert][CreateTime]": "April 27th 2016, 11:24:04.541"
-	"[Alert][Group][Text]": "windows,authentication_success,"
+    "[Alert][CreateTime]": "April 27th 2016, 11:24:04.541"
+    "[Alert][Group][Text]": "windows,authentication_success,"
