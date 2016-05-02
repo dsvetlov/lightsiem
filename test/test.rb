@@ -25,10 +25,8 @@ class TestGrokPatterns < MiniTest::Unit::TestCase
     # Adds the available upstream and local grok pattern files to
     # a new grok object, so it's ready for being used in a test.
 
-    puts "Start loading pattern files"
     def setup
         @grok = Grok.new
-        puts "file"
         Dir.new(@@upstream_pattern_dir).each do |file|
             next if file =~ /^\./
 
@@ -68,6 +66,7 @@ class TestGrokPatterns < MiniTest::Unit::TestCase
     Dir.new(@@test_dir).each do |file|
         next if file !~ /\.yaml$/
         test = File.basename(file, '.yaml')
+        puts "#{file}"
         conf = YAML.load(File.read(@@test_dir + '/' + file))
         tests[test] = conf
     end
