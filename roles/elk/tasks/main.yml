@@ -40,6 +40,7 @@
   copy: src=logstash-conf.d/{{item}} dest=/etc/logstash/conf.d/
   with_items:
     - 40-cisco.conf
+    - 95-common.conf
     - 99-output.conf
   tags:
     - configuration
@@ -75,6 +76,15 @@
   notify:
         - restart firewalld
   ignore_errors: yes
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Waight for Logstash and Elasticsearch
+  wait_for: port={{item}} delay=10 connect_timeout=10
+  with_items:
+      - 9200
+      - 9300
 
 - name: Copy Kibana dashboards
   copy: src=kibana-dashboards/kibana.json dest=/tmp/
