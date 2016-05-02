@@ -1,4 +1,4 @@
 pattern: OSSEC_MESSAGE_FULL_SYSCHECK_CURSHA
 data: "New sha1sum is : 'a19587b1386ac676ceebeff5a71d9e035fef4caf'"
 results:
-    "[Alert][Target][File][chksum][SHAcur]": "'a19587b1386ac676ceebeff5a71d9e035fef4caf'"
+    "[Alert][Target][File][chksum][SHAcur]": 'a19587b1386ac676ceebeff5a71d9e035fef4caf'
