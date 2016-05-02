@@ -28,9 +28,10 @@ class TestGrokPatterns < MiniTest::Unit::TestCase
     puts "Start loading pattern files"
     def setup
         @grok = Grok.new
+        puts "file"
         Dir.new(@@upstream_pattern_dir).each do |file|
             next if file =~ /^\./
-            puts "file"
+
             @grok.add_patterns_from_file(@@upstream_pattern_dir + '/' + file)
         end
         Dir.new(@@local_pattern_dir).each do |file|
