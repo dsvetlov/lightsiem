@@ -1,4 +1,4 @@
 pattern: OSSEC_MESSAGE_FULL_SYSCHECK_DELETE
-data: "File '%.756s' was deleted. Unable to retrieve checksum."
+data: "File '/etc/nsswitch.conf' was deleted. Unable to retrieve checksum."
 results:
-    "[Alert][Target][File][Path]": '%.756s'
+    "[Alert][Target][File][Path]": '/etc/nsswitch.conf'

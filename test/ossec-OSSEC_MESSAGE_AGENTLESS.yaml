@@ -2,4 +2,4 @@ pattern: OSSEC_MESSAGE_AGENTLESS
 data: "ossec: agentless: Change detected:\n1184d1155\n< Connection to 1.2.1.2 closed by remote host.\n"
 results:
     "[Alert][Agentless][NumChange]": "1184d1155"
-    "[Alert][Agentless][Change]": "< Connection to 1.2.1.2 closed by remote host."
+    "[Alert][Agentless][Change]": "< Connection to 1.2.1.2 closed by remote host.\n"
