@@ -1,5 +1,5 @@
 pattern: OSSEC_MESSAGE_FULL_SYSCHECK
-data: "Integrity checksum changed for: '/etc/switch.conf'\nSize changed from '7896' to '7889'\nOld md5sum was: '035182ab6f0c688260134ac08513fe00'\nNew md5sum is : 'ff541deeea8e01f6734961973f048ba4'\nOld sha1sum was: '1263b2226d6e6e44f33bbbbccc80ca76e9e614df'\nNew sha1sum is : '8a254b233c1b56479af4088fefff82764c6c02eb9'\nWhat changed:\n1,2c1,2\\n< # upnothing. Note that if the search failed due to some other reason\n< # (like no NIS server responding) then the search continues with the\n---\n> #123\n> #123"
+data: "Integrity checksum changed for: '/etc/switch.conf'\nSize changed from '7896' to '7889'\nOld md5sum was: '035182ab6f0c688260134ac08513fe00'\nNew md5sum is : 'ff541deeea8e01f6734961973f048ba4'\nOld sha1sum was: '1263b2226d6e6e44f33bbbbccc80ca76e9e614df'\nNew sha1sum is : '8a254b233c1b56479af4088fefff82764c6c02eb9'\nWhat changed:123"
 results:
     "[Alert][Target][File][Path]": '/etc/switch.conf'
     "[Alert][Target][File][oldsize]": '7896'
@@ -8,4 +8,4 @@ results:
     "[Alert][Target][File][chksum][md5cur]": 'ff541deeea8e01f6734961973f048ba4'
     "[Alert][Target][File][chksum][SHAprev]": '1263b2226d6e6e44f33bbbbccc80ca76e9e614df'
     "[Alert][Target][File][chksum][SHAcur]": '8a254b233c1b56479af4088fefff82764c6c02eb9'
-    "[Alert][Target][File][Diff]": '1,2c1,2\\\\n< # upnothing. Note that if the search failed due to some other reason\\n< # (like no NIS server responding) then the search continues with the\\n---\\n> #123\\n> #123'
+    "[Alert][Target][File][Diff]": '123'
