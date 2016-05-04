@@ -75,7 +75,7 @@ OSSEC_MESSAGE_FULL_SYSCHECK_CURSHA New sha1sum is : '%{DATA:[Alert][Target][File
 #> #123
 
 
-OSSEC_MESSAGE_FULL_SYSCHECK_DIFF What changed:\\n%{GREEDYDATA:[Alert][Target][File][Diff]}
+OSSEC_MESSAGE_FULL_SYSCHECK_DIFF What changed:\n%{GREEDYDATA:[Alert][Target][File][Diff]}
 
 #File '%.756s' was deleted. Unable to retrieve checksum.
 OSSEC_MESSAGE_FULL_SYSCHECK_DELETE File '%{PATH:[Alert][Target][File][Path]}' was deleted. Unable to retrieve checksum.
