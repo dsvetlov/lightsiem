@@ -1,6 +1,7 @@
 pattern: OSSEC_MESSAGE_FULL
 data: "** Alert 1461745444.5415712: - local,syslog,syscheck,\n2016 Apr 27 11:24:04 test->syscheck\nRule: 554 (level 11) -> 'File added to the system.'\nFile '/home/authorized_keys' was re-added."
 results:
+    "[Alert][CreateTime]": "1461745444.5415712"
     "[Alert][Group][Text]": "local,syslog,syscheck,"
     "MONTH": "Apr"
     "MONTHDAY": "27"
