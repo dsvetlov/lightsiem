@@ -1,5 +1,5 @@
 pattern: OSSEC_MESSAGE_FULL
-data: "** Alert 1462276773.70453249: - ossec,syscheck,\n2016 May 03 14:59:33 (user) 1.2.3.4->syscheck-registry\nRule: 595 (level 5) -> 'Registry Integrity Checksum Changed Again (2nd time)'\nIntegrity checksum changed for: 'HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\{AAA-123AA-ASDSD123}'\nOld md5sum was: '2407faa6736857f972cf949004124124'\nNew md5sum is : '5d64256732cc97824e09d9f59e124124'\nOld sha1sum was: 'cf6fee98160bbbe3987a44dae8f898061244124'\nNew sha1sum is : '5c368729d8515f0b8109245e9d75e879f1241241'"
+data: "** Alert 1462276773.70453249: - ossec,syscheck,\n2016 May 03 14:59:33 (user) 1.2.3.4->syscheck-registry\nRule: 595 (level 5) -> 'Registry Integrity Checksum Changed Again (2nd time)'\nIntegrity checksum changed for: 'HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\{AAA-123AA-ASDSD123}'\nOld md5sum was: '2407faa6736857f972cf949004124124'\nNew md5sum is : '5d64256732cc97824e09d9f59e124124'\nOld sha1sum was: 'cf6fee98160bbbe3987a44dae8f898061244124'\nNew sha1sum is : '5c368729d8515f0b8109245e9d75e879f1241241'\n"
 results:
     "[Alert][CreateTime]": "1462276773.70453249"
     "[Alert][Group][Text]": "ossec,syscheck,"
