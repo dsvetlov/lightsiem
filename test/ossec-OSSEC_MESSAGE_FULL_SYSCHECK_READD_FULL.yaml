@@ -1,0 +1,15 @@
+pattern: OSSEC_MESSAGE_FULL
+data: "** Alert 1458817776.483591: mail  - local,syslog,syscheck,\n2016 Mar 24 20:09:36 test->syscheck\nRule: 554 (level 11) -> 'File added to the system.'\nFile '/home/authorized_keys' was re-added."
+results:
+    "[Alert][CreateTime]": "1458817776.483591"
+    "[Alert][Group][Text]": "local,syslog,syscheck,"
+    "YEAR": "2016"
+    "MONTH": "Mar"
+    "MONTHDAY": "24"
+    "TIME": "20:09:36"
+    "[Alert][HostName]": "test"
+    "[Alert][LogType]": "syscheck"
+    "[Alert][Classification][Ident]": "554"
+    "[Alert][Analyzer][Level][Origin]": "11"
+    "[Alert][Classification][Text]": "'File added to the system.'"
+    "[Alert][Target][File][Path]": "/home/authorized_keys"
