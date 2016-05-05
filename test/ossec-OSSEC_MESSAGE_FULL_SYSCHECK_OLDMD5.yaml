@@ -1,0 +1,4 @@
+pattern: OSSEC_MESSAGE_FULL_SYSCHECK_OLDMD5
+data: "Old md5sum was: '035182ab6f0c688260134ac08513fe00'"
+results:
+    "[Alert][Target][File][chksum][md5prev]": '035182ab6f0c688260134ac08513fe00'

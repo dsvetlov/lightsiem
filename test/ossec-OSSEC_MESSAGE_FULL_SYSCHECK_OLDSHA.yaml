@@ -1,0 +1,4 @@
+pattern: OSSEC_MESSAGE_FULL_SYSCHECK_OLDSHA
+data: "Old sha1sum was: '1263b2226d6e6e44f33bbbbccc80ca76e9e614df'"
+results:
+    "[Alert][Target][File][chksum][SHAprev]": '1263b2226d6e6e44f33bbbbccc80ca76e9e614df'

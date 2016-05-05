@@ -1,0 +1,4 @@
+pattern: OSSEC_MESSAGE_FULL_LOGROT_FILE
+data: "ossec: File rotated (inode changed): '/var/log/messages'."
+results:
+    "[Alert][Target][File][Path]": '/var/log/messages'

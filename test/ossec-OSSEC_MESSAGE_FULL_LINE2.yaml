@@ -1,0 +1,10 @@
+pattern: OSSEC_MESSAGE_FULL_LINE2
+data: "2016 Apr 27 11:24:04 (host) 1.2.3.4->ExLog" 
+results:
+    "MONTH": "Apr"
+    "MONTHDAY": "27"
+    "YEAR": "2016"
+    "TIME": "11:24:04"
+    "[Alert][HostName]": "host"
+    "[Alert][Sensor][Node][Address]": "1.2.3.4"
+    "[Alert][LogType]": "ExLog"

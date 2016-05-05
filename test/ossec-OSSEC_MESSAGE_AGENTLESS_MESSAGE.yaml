@@ -1,0 +1,4 @@
+pattern: OSSEC_MESSAGE_AGENTLESS_MESSAGE
+data: "< Connection to 1.2.1.2 closed by remote host."
+results:
+    "[Alert][Agentless][Change]": "< Connection to 1.2.1.2 closed by remote host."
