@@ -1,0 +1,4 @@
+pattern: OSSEC_MESSAGE_FULL_SYSCHECK
+data: "File '/home/admin/.ssh/authorized_keys' was deleted. Unable to retrieve checksum."
+results:
+    "[Alert][Target][File][Path]": "/home/admin/.ssh/authorized_keys"
