@@ -1,4 +1,5 @@
 OSSECCNF ossec.conf
+WINPATHHKLM ((?>[\w_%!$@:.,-{}]+|\\.)*)+
 
 
 
@@ -47,7 +48,7 @@ OSSEC_MESSAGE_FULL_SYSCHECK (%{OSSEC_MESSAGE_FULL_SYSCHECK_FILE}\n(%{OSSEC_MESSA
 #New sha1sum is : '8a254b233c1b56479af4088fefff82764c6c02eb9'
 
 #Integrity checksum changed for: '/etc/switch.conf'
-OSSEC_MESSAGE_FULL_SYSCHECK_FILE Integrity checksum changed for: '(%{PATH:[Alert][Target][File][Path]}|%{OSSECCNF:[Alert][Target][File][Path]})'
+OSSEC_MESSAGE_FULL_SYSCHECK_FILE Integrity checksum changed for: '(%{PATH:[Alert][Target][File][Path]}|%{OSSECCNF:[Alert][Target][File][Path]}|%{WINPATHHKLM:[Alert][Target][File][Path]})'
 
 #Size changed from '1465' to '1336'
 OSSEC_MESSAGE_FULL_SYSCHECK_SIZE Size changed from '%{BASE10NUM:[Alert][Target][File][oldsize]}' to '%{BASE10NUM:[Alert][Target][File][newsize]}'
