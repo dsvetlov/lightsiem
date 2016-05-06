@@ -14,7 +14,7 @@ OSSEC_MESSAGE_FULL (?m)%{OSSEC_MESSAGE_FULL_LINE1}\n%{OSSEC_MESSAGE_FULL_LINE2}\
 
 OSSEC_MESSAGE_FULL_LINE1 \*\* Alert %{NUMBER:[Alert][CreateTime]}: %{WORD}?%{SPACE}\- ?%{GREEDYDATA:[Alert][Group][Text]}
 
-OSSEC_MESSAGE_FULL_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} (%{USERNAME:[Alert][HostName]}|\(%{USERNAME:[Alert][HostName]}\))%{SPACE}((%{IP:[Alert][Sensor][Node][Address]}|ossec@%{IP:[Alert][Sensor][Node][Address]})->%{GREEDYDATA:[Alert][LogType]}|->%{GREEDYDATA:[Alert][LogType]})
+OSSEC_MESSAGE_FULL_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} (%{USERNAME:[Alert][Sensor][Node][Name]}|\(%{USERNAME:[Alert][Sensor][Node][Name]}\))%{SPACE}((%{IP:[Alert][Sensor][Node][Address]}|ossec@%{IP:[Alert][Sensor][Node][Address]})->%{GREEDYDATA:[Alert][LogType]}|->%{GREEDYDATA:[Alert][LogType]})
 
 OSSEC_MESSAGE_FULL_LINE3 Rule: %{BASE10NUM:[Alert][Classification][Ident]} \(level %{BASE10NUM:[Alert][Analyzer][Level][Origin]}\) -> (?:%{GREEDYDATA:[Alert][Classification][Text]})
 
@@ -27,11 +27,11 @@ OSSEC_MESSAGE_USR_MSG %{OSSEC_MESSAGE_FULL_LINE_USER}\n%{OSSEC_MESSAGE_FULL_LINE
 
 #User: username
 
-OSSEC_MESSAGE_FULL_LINE_USER (User: (%{USERNAME:[Alert][User]}\$)|User: (%{USERNAME:[Alert][User]})|User:%{GREEDYDATA::[Alert][User]})
+OSSEC_MESSAGE_FULL_LINE_USER (User: (%{USERNAME:[Alert][Source][User][Ident]}\$)|User: (%{USERNAME:[Alert][Source][User][Ident]})|User:%{GREEDYDATA::[Alert][Source][User][Ident]})
 
 #Message
 
-OSSEC_MESSAGE_FULL_LINE_MESSAGE %{GREEDYDATA:[Alert][Message]}
+OSSEC_MESSAGE_FULL_LINE_MESSAGE %{GREEDYDATA:[Alert][Analyzer][rawmessage]}
 
 
 
