@@ -12,7 +12,7 @@ results:
     "[Alert][LogType]": "syscheck-registry"
     "[Alert][Classification][Ident]": "595"
     "[Alert][Analyzer][Level][Origin]": "5"
-    "[Alert][Classification][Text]": "'Registry Integrity Checksum Changed Again (2nd time)'"
+    "[Alert][Classification][Text]": "Registry Integrity Checksum Changed Again (2nd time)"
     "[Alert][Target][File][Path]": "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\{AAA-123AA-ASDSD123}"
     "[Alert][Target][File][chksum][md5prev]": "2407faa6736857f972cf949004124124"
     "[Alert][Target][File][chksum][md5cur]": "5d64256732cc97824e09d9f59e124124"
