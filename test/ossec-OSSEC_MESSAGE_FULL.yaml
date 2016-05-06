@@ -12,6 +12,6 @@ results:
     "[Alert][LogType]": "WinLog"
     "[Alert][Classification][Ident]": "18107"
     "[Alert][Analyzer][Level][Origin]": "3"
-    "[Alert][Classification][Text]": "'Windows Logon Success.'"
+    "[Alert][Classification][Text]": "Windows Logon Success."
     "[Alert][Source][User][Ident]": "username"
     "[Alert][Analyzer][rawmessage]": "Message Example Message Example Message Example Message Example Message 123 Example Message 123 Example Message5664 Example Message"
