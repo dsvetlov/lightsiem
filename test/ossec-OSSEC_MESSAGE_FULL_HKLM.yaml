@@ -7,7 +7,7 @@ results:
     "MONTHDAY": "03"
     "YEAR": "2016"
     "TIME": "14:59:33"
-    "[Alert][HostName]": "user"
+    "[Alert][Sensor][Node][Name]": "user"
     "[Alert][Sensor][Node][Address]": "1.2.3.4"
     "[Alert][LogType]": "syscheck-registry"
     "[Alert][Classification][Ident]": "595"
