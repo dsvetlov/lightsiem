@@ -3,4 +3,4 @@ data: "Rule: 18107 (level 3) -> 'Windows Logon Success.'"
 results:
     "[Alert][Classification][Ident]": "18107"
     "[Alert][Analyzer][Level][Origin]": "3"
-    "[Alert][Classification][Text]": "'Windows Logon Success.'"
+    "[Alert][Classification][Text]": "Windows Logon Success."
