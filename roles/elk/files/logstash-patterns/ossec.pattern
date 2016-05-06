@@ -16,7 +16,7 @@ OSSEC_MESSAGE_FULL_LINE1 \*\* Alert %{NUMBER:[Alert][CreateTime]}: %{WORD}?%{SPA
 
 OSSEC_MESSAGE_FULL_LINE2 %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} (%{USERNAME:[Alert][Sensor][Node][Name]}|\(%{USERNAME:[Alert][Sensor][Node][Name]}\))%{SPACE}((%{IP:[Alert][Sensor][Node][Address]}|ossec@%{IP:[Alert][Sensor][Node][Address]})->%{GREEDYDATA:[Alert][LogType]}|->%{GREEDYDATA:[Alert][LogType]})
 
-OSSEC_MESSAGE_FULL_LINE3 Rule: %{BASE10NUM:[Alert][Classification][Ident]} \(level %{BASE10NUM:[Alert][Analyzer][Level][Origin]}\) -> (?:%{GREEDYDATA:[Alert][Classification][Text]})
+OSSEC_MESSAGE_FULL_LINE3 Rule: %{BASE10NUM:[Alert][Classification][Ident]} \(level %{BASE10NUM:[Alert][Analyzer][Level][Origin]}\) -> '(?:%{GREEDYDATA:[Alert][Classification][Text]})'
 
 
 
