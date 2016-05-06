@@ -11,5 +11,5 @@ results:
     "[Alert][LogType]": "syscheck"
     "[Alert][Classification][Ident]": "554"
     "[Alert][Analyzer][Level][Origin]": "11"
-    "[Alert][Classification][Text]": "'File added to the system.'"
+    "[Alert][Classification][Text]": "File added to the system."
     "[Alert][Target][File][Path]": "/home/authorized_keys"
