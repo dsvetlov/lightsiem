@@ -1,4 +1,4 @@
 pattern: OSSEC_MESSAGE_FULL_LINE_MESSAGE
 data: "Message"
 results:
-    "[Alert][Message]": "Message"
+    "[Alert][Analyzer][rawmessage]": "Message"
