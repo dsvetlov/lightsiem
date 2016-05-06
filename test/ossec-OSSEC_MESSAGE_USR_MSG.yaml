@@ -1,5 +1,5 @@
 pattern: OSSEC_MESSAGE_USR_MSG
 data: "User: username\nMessage Example Message Example Message Example Message Example Message 123 Example Message 123 Example Message5664 Example Message\n"
 results:
-    "[Alert][User]": "username"
-    "[Alert][Message]": "Message Example Message Example Message Example Message Example Message 123 Example Message 123 Example Message5664 Example Message\n"
+    "[Alert][Source][User][Ident]": "username"
+    "[Alert][Analyzer][rawmessage]": "Message Example Message Example Message Example Message Example Message 123 Example Message 123 Example Message5664 Example Message\n"
