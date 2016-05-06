@@ -7,7 +7,7 @@ results:
     "MONTHDAY": "27"
     "YEAR": "2016"
     "TIME": "11:24:04"
-    "[Alert][HostName]": "test"
+    "[Alert][Sensor][Node][Name]": "test"
     "[Alert][LogType]": "syscheck"
     "[Alert][Classification][Ident]": "554"
     "[Alert][Analyzer][Level][Origin]": "11"
