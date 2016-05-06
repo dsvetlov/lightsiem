@@ -1,0 +1,17 @@
+pattern: OSSEC_MESSAGE_FULL
+data: "** Alert 1461745444.5415712: - windows,authentication_success,\n2016 Apr 27 11:24:04 (host) 1.2.3.4->WinLog\nRule: 18107 (level 3) -> 'Windows Logon Success.'\nUser: (no user)\nMessage Example Message Example Message Example Message Example Message 123 Example Message 123 Example Message5664 Example Message"
+results:
+    "[Alert][CreateTime]": "1461745444.5415712"
+    "[Alert][Group][Text]": "windows,authentication_success,"
+    "MONTH": "Apr"
+    "MONTHDAY": "27"
+    "YEAR": "2016"
+    "TIME": "11:24:04"
+    "[Alert][Sensor][Node][Name]": "host"
+    "[Alert][Sensor][Node][Address]": "1.2.3.4"
+    "[Alert][LogType]": "WinLog"
+    "[Alert][Classification][Ident]": "18107"
+    "[Alert][Analyzer][Level][Origin]": "3"
+    "[Alert][Classification][Text]": "'Windows Logon Success.'"
+    "[Alert][Source][User][Ident]": "(no user)"
+    "[Alert][Analyzer][rawmessage]": "Message Example Message Example Message Example Message Example Message 123 Example Message 123 Example Message5664 Example Message"
