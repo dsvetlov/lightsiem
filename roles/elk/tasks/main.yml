@@ -390,7 +390,7 @@
   tags: configuration security
 
 - name: Place search-guard-ssl pki scripts
-  copy: src=search-guard-ssl-pki-scripts/ dest=/tmp/
+  copy: src=/search-guard-ssl-pki-scripts/ dest=/tmp/
   tags: configuration security
 
 - name: Create your own Root CA, Generate Keystores, Client node cert
