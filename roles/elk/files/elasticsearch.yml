@@ -110,16 +110,16 @@ searchguard.ssl.transport.enabled: true
 ## JKS or PKCS12 (default: JKS)
 ##searchguard.ssl.transport.keystore_type: PKCS12
 ## Relative path to the keystore file (mandatory, this seores the server certificates), must be placed under the config/ dir
-searchguard.ssl.transport.keystore_filepath: node-name-keystore.jks
+searchguard.ssl.transport.keystore_filepath: ssl/node-name-keystore.jks
 ## Alias name (default: first alias which could be found)
 searchguard.ssl.transport.keystore_alias: node-name
 ## Keystore password (default: changeit)
 searchguard.ssl.transport.keystore_password: pass
 #
 ## JKS or PKCS12 (default: JKS)
-searchguard.ssl.transport.truststore_type: PKCS12
+#searchguard.ssl.transport.truststore_type: PKCS12
 ## Relative path to the truststore file (mandatory, this stores the client/root certificates), must be placed under the config/ dir
-searchguard.ssl.transport.truststore_filepath: truststore.jks
+searchguard.ssl.transport.truststore_filepath: ssl/truststore.jks
 ## Alias name (default: first alias which could be found)
 searchguard.ssl.transport.truststore_alias: root-ca-chain
 ## Truststore password (default: changeit)
@@ -141,7 +141,7 @@ searchguard.ssl.http.enabled: true
 #de
 searchguard.ssl.http.keystore_type: PKCS12
 ## Relative path to the keystore file (this stores the server certificates), must be placed under the config/ dir
-searchguard.ssl.http.keystore_filepath: node-name-keystore.p12
+searchguard.ssl.http.keystore_filepath: ssl/node-name-keystore.p12
 ## Alias name (default: first alias which could be found)
 #searchguard.ssl.http.keystore_alias: node-name
 ## Keystore password (default: changeit)
@@ -163,4 +163,3 @@ searchguard.ssl.http.clientauth_mode: NONE
 security.manager.enabled: false
 searchguard.authcz.admin_dn:
   - "CN=node-name.domain.local,OU=SSL,O=Test,L=Test,C=DE"
-

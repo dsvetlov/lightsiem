@@ -15,6 +15,7 @@
     - dnsmasq
     - kibana
     - elasticdump
+    - openssl
 
 - name: Add software to autostart to autostart
   command: systemctl enable {{item}}
@@ -76,6 +77,13 @@
   notify:
         - restart firewalld
   ignore_errors: yes
+
+- name: Place Elasticsearch config file
+  copy: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
+  notify:
+        - restart elasticsearch
+  tags:
+        - configuration
 
 - name: Flush handlers
   meta: flush_handlers
@@ -302,12 +310,6 @@
 #- name: Add logstash to autostart
 #  command: chkconfig logstash on
 #
-#- name: Place Elasticsearch config file
-#  copy: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
-#  notify:
-#        - restart elasticsearch
-#  tags:
-#        - configuration
 #
 #- name: Add elasticsearch to autostart
 #  command: chkconfig elasticsearch on
@@ -389,28 +391,31 @@
   command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-2/2.3.1.0-beta1
   tags: configuration security
 
+- name: Create ssl folder for elasticsearch
+  file: path=/etc/elasticsearch/ssl state=directory
+
 - name: Place search-guard-ssl pki scripts
-  copy: src=/search-guard-ssl-pki-scripts/ dest=/tmp/
+  copy: src=example-pki-scripts/ dest=/etc/elasticsearch/ssl/ mode="o+x"
   tags: configuration security
 
 - name: Create your own Root CA, Generate Keystores, Client node cert
-  shell: cd /tmp/ && chmod +x ./clean.sh && chmod +x ./gen_root_ca.sh && chmod +x ./gen_node_cert.sh &&  chmod +x ./gen_client_node_cert.sh  &&  chmod +x ./apply_config.sh &&  chmod +x ./example.sh && ./example.sh
+  shell: cd /etc/elasticsearch/ssl/ && /etc/elasticsearch/ssl/example.sh
   tags: configuration security
 
-- name: Copy keystores
-  shell: cd /tmp/ && cp node-{{node_name}}-keystore.jks /etc/elasticsearch && cp node-{{node_name}}-keystore.p12 /etc/elasticsearch && cp truststore.jks /etc/elasticsearch
-  notify:
-       - restart elasticsearch
-       - restart kibana
-       - restart logstash
-  tags: configuration security
+#- name: Copy keystores
+#  shell: cd /tmp/ && cp node-{{node_name}}-keystore.jks /etc/elasticsearch && cp node-{{node_name}}-keystore.p12 /etc/elasticsearch && cp truststore.jks /etc/elasticsearch
+#  notify:
+#       - restart elasticsearch
+#       - restart kibana
+#       - restart logstash
+#  tags: configuration security
 
 - name: Add netty-tcnative to search-guard plugin
-  copy: src=/tmp/netty-tcnative-1.1.33.Fork13-linux-x86_64.jar dest=/usr/share/elasticsearch/plugins/search-guard-ssl/
+  copy: src=netty-tcnative-1.1.33.Fork13-linux-x86_64.jar dest=/usr/share/elasticsearch/plugins/search-guard-ssl/
   tags: configuration security
 
 - name: Apply sg_config
-  shell: chmod +x /usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh && /tmp/apply_config.sh
+  shell: chmod +x /usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh && /etc/elasticsearch/ssl/apply_config.sh
   notify:
        - restart elasticsearch
        - restart kibana
