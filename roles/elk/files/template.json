@@ -77,7 +77,9 @@
                         "city_name": {"type": "string", "index":"not_analyzed" }
                       }
                     },
-                    "Name" : {"type":"string", "index":"not_analyzed"}
+                    "Name" : {"type":"string", "index":"not_analyzed"},
+		    "AS" : {"type" : "integer"},
+		    "Mask" : {"type" : "integer"}
                   }
                 },
                 "Process":{
@@ -140,7 +142,9 @@
                         "city_name": {"type": "string", "index":"not_analyzed" }
                       }
                     },
-                    "Name" : {"type":"string", "index":"not_analyzed"}
+                    "Name" : {"type":"string", "index":"not_analyzed"},
+		    "AS" : {"type" : "integer"},
+	 	    "Mask" : {"type" : "integer"}
                   }
                 }
               }
@@ -158,7 +162,11 @@
                 "Node":{
                   "type": "object",
                   "properties": {
-                    "Name": {"type" : "string", "index":"not_analyzed" }
+                    "Name": {"type" : "string", "index":"not_analyzed" },
+		    "Address": {
+                      "type": "ip",
+                      "doc_values": true
+                    }
                   }
                 },
                 "Name": {"type" : "string", "index":"not_analyzed" },
@@ -167,6 +175,29 @@
                 "tcpflags": {"type": "string", "index":"not_analyzed" }
               }
             },
+		"Netflow":{
+		  "type": "object",
+                  "properties": {
+			"Direction": {"type": "integer"},
+			"FlowSamplerId": {"type": "integer"},
+			"FlowSeqNum": {"type": "integer"},
+			"FlowsetId": {"type": "integer"},
+			"InBytes": {"type": "integer"},
+			"InPkts": {"type": "integer"},
+			"InputSNMP": {"type": "integer"},
+			"OutputSNMP": {"type": "integer"},
+			"ToS": {"type": "integer"},
+			"TCPFlags": {"type": "integer"},
+			"NetflowVersion": {"type": "integer"},
+			"NextHop":{
+                      	  "type": "ip",
+                      	  "doc_values": true
+                    			}
+				}
+			}
+				
+          }
+        },
             "Classification" : {
               "type" : "object",
               "properties": {
