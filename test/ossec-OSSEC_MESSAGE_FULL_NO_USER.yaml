@@ -1,5 +1,5 @@
 pattern: OSSEC_MESSAGE_FULL
-data: "** Alert 1461745444.5415712: - windows,authentication_success,\n2016 Apr 27 11:24:04 (host) 1.2.3.4->WinLog\nRule: 18107 (level 3) -> 'Windows Logon Success.'\nUser: (no user)\nMessage Example Message Example Message Example Message Example Message 123 Example Message 123 Example Message5664 Example Message"
+data: "** Alert 1461745444.5415712: - windows,authentication_success,\n2016 Apr 27 11:24:04 (host) 1.2.3.4->WinLog\nRule: 18107 (level 3) -> 'Windows Logon Success.'\nUser: (no user)\nMessage Example Message Example Message Example Message Example Message 123 Example Message 123 Example Message5664 Example Message\n"
 results:
     "[Alert][CreateTime]": "1461745444.5415712"
     "[Alert][Group][Text]": "windows,authentication_success,"
