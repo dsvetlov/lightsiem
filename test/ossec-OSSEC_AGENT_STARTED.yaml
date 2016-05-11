@@ -1,0 +1,16 @@
+pattern: OSSEC_MESSAGE_FULL
+data: "** Alert 1462946354.41483391: mail  - ossec,\n2016 May 1 08:59:14 (user) 1.2.3.4->ossec\nRule: 503 (level 3) -> 'Ossec agent started.'\nossec: Agent started: 'user->1.2.3.4'."
+results:
+    "[Alert][CreateTime]": "1462946354.41483391"
+    "[Alert][Group][Text]": "ossec,"
+    "YEAR": "2016"
+    "MONTH": "May"
+    "MONTHDAY": "1"
+    "TIME": "08:59:14"
+    "[Alert][Sensor][Node][Name]": "user"
+    "[Alert][Sensor][Node][Address]": "1.2.3.4"
+    "[Alert][LogType]": "ossec"
+    "[Alert][Classification][Ident]": "503"
+    "[Alert][Analyzer][Level][Origin]": "3"
+    "[Alert][Classification][Text]": "Ossec agent started."
+    "[Alert][Analyzer][rawmessage]": "ossec: Agent started: 'user->1.2.3.4'."
