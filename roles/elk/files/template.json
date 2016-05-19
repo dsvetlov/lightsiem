@@ -173,7 +173,7 @@
                   "properties": {
                         "Direction": {"type": "integer"},
                         "FlowSamplerId": {"type": "integer"},
-										    "FlowSeqNum": {"type": "integer"},
+			"FlowSeqNum": {"type": "integer"},
                         "FlowsetId": {"type": "integer"},
                         "InBytes": {"type": "integer"},
                         "InPkts": {"type": "integer"},
