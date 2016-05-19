@@ -51,6 +51,8 @@
                       "doc_values": true
                     },
                     "Port" : {"type" : "integer"},
+                    "AS" : {"type" : "integer"},
+                    "Mask" : {"type" : "integer"},
                     "Geoip": {
                       "type": "object",
                       "properties": {
@@ -114,6 +116,8 @@
                       "doc_values": true
                     },
                     "Port" : {"type" : "integer"},
+                    "AS" : {"type" : "integer"},
+                    "Mask" : {"type" : "integer"},
                     "Geoip": {
                       "type": "object",
                       "properties": {
@@ -164,7 +168,26 @@
                 "Name": {"type" : "string", "index":"not_analyzed" },
                 "Reason": {"type" : "string", "index":"not_analyzed" },
                 "Protocol": {"type": "string", "index":"not_analyzed" },
-                "tcpflags": {"type": "string", "index":"not_analyzed" }
+                "tcpflags": {"type": "string", "index":"not_analyzed" },
+                "Netflow":{ "type": "object",
+                  "properties": {
+                        "Direction": {"type": "integer"},
+                        "FlowSamplerId": {"type": "integer"},
+										    "FlowSeqNum": {"type": "integer"},
+                        "FlowsetId": {"type": "integer"},
+                        "InBytes": {"type": "integer"},
+                        "InPkts": {"type": "integer"},
+                        "InputSNMP": {"type": "integer"},
+                        "OutputSNMP": {"type": "integer"},
+                        "ToS": {"type": "integer"},
+                        "TCPFlags": {"type": "integer"},
+                        "NetflowVersion": {"type": "integer"},
+                        "Flow_ID": {"type" : "string", "index":"not_analyzed"},
+                        "NextHop":{
+                              "type": "ip",
+                              "doc_values": true
+                    }
+                }
               }
             },
             "Classification" : {
