@@ -1,40 +1,40 @@
-SNORT_MESSAGE (%{SYSLOG5424BASE}|%{SYSLOGBASE2}) \[%{DATA:Alert.Classification.Ident}\] %{DATA:Alert.Classification.Text} \[Classification: %{DATA:Alert.Group.Text}\] \[Priority: %{BASE10NUM:Alert.Analyzer.Level}\] \{%{DATA:Alert.Protocol}\} %{IPORHOST:Alert.Source.Node.Address}(?::%{NONNEGINT:Alert.Source.Node.Port})? -> %{IPORHOST:Alert.Target.Node.Address}(?::%{NONNEGINT:Alert.Target.Node.Port})?
+SNORT_MESSAGE (%{SYSLOG5424BASE}|%{SYSLOGBASE2}) \[%{DATA:[Alert][Classification][Ident]}\] %{DATA:[Alert][Classification][Text]} \[Classification: %{DATA:[Alert][Group][Text]}\] \[Priority: %{BASE10NUM:[Alert][Analyzer][Level][Origin]}\] \{%{DATA:[Alert][Protocol]}\} %{IPORHOST:[Alert][Source][Node][Address]}(?::%{NONNEGINT:[Alert][Source][Node][Port]})? -> %{IPORHOST:[Alert][Target][Node][Address]}(?::%{NONNEGINT:[Alert][Target][Node][Port]})?
 
-SNORT_S5_ERROR (%{SYSLOG5424BASE}|%{SYSLOGBASE2}) %{DATA:Alert.Classification.Ident}: %{DATA:Alert.Classification.Text} %{IPORHOST:Alert.Source.Node.Address} %{NONNEGINT:Alert.Source.Node.Port} --> %{IPORHOST:Alert.Target.Node.Address}
+SNORT_S5_ERROR (%{SYSLOG5424BASE}|%{SYSLOGBASE2}) %{DATA:[Alert][Classification][Ident]}: %{DATA:[Alert][Classification][Text]} %{IPORHOST:[Alert][Source][Node][Address]} %{NONNEGINT:[Alert][Source][Node][Port]} --> %{IPORHOST:[Alert][Target][Node][Address]}
 
 SNORT_DATE %{MONTHNUM}/%{MONTHDAY}-%{TIME}
-SNORT_MESSAGE_LINE1 \[\*\*\] \[%{DATA:Alert.Classification.Ident}\] %{DATA:Alert.Classification.Text} \[\*\*\]
-SNORT_MESSAGE_LINE2 \[Classification: %{DATA:Alert.Group.Text}\] \[Priority: %{BASE10NUM:Alert.Analyzer.Level}\]
-SNORT_MESSAGE_LINE3 %{DATA:Snort_date} %{IPORHOST:Alert.Source.Node.Address}(?::%{NONNEGINT:Alert.Source.Node.Port})? -> %{IPORHOST:Alert.Target.Node.Address}(?::%{NONNEGINT:Alert.Target.Node.Port})?
-SNORT_MESSAGE_LINES_CAPTURE %{GREEDYDATA:Alert.Additional.Capture}
-SNORT_MESSAGE_LINE_REFERENCE \[Xref =\> %{DATA:Alert.Classification.Reference}\]
+SNORT_MESSAGE_LINE1 \[\*\*\] \[%{DATA:[Alert][Classification][Ident]}\] %{DATA:[Alert][Classification][Text]} \[\*\*\]
+SNORT_MESSAGE_LINE2 \[Classification: %{DATA:[Alert][Group][Text]}\] \[Priority: %{BASE10NUM:[Alert][Analyzer][Level][Origin]}\]
+SNORT_MESSAGE_LINE3 %{DATA:Snort_date} %{IPORHOST:[Alert][Source][Node][Address]}(?::%{NONNEGINT:[Alert][Source][Node][Port]})? -> %{IPORHOST:[Alert][Target][Node][Address]}(?::%{NONNEGINT:[Alert][Target][Node][Port]})?
+SNORT_MESSAGE_LINES_CAPTURE %{GREEDYDATA:[Alert][Additional][Capture]}
+SNORT_MESSAGE_LINE_REFERENCE \[Xref =\> %{DATA:[Alert][Classification][Reference]}\]
 SNORT_MESSAGE_FULL (?m)%{SNORT_MESSAGE_LINE1}[.\r\n]%{SNORT_MESSAGE_LINE2}[.\r\n]*%{SNORT_MESSAGE_LINE3}[.\r\n](%{SNORT_MESSAGE_LINES_CAPTURE}%{SNORT_MESSAGE_LINE_REFERENCE}|%{SNORT_MESSAGE_LINES_CAPTURE})
 
 
 #Use this line in barnyrd.conf output log_syslog_full: sensor_name snortIds1-eth2, server 192.168.1.15, protocol tcp, port 9012, operation_mode complete, payload_encoding ascii
 #|| [SNORTIDS[LOG]: [snortIds1-eth2] ] || 2015-06-20 13:46:27.541+003 2 [129:12:1] stream5: TCP Small Segment Threshold Exceeded || bad-unknown || 6 2.8.1.2 2.8.1.1 4 20 0 81 45056 2 0 1831 0 || 43395 9011 3638166799 3232151186 8 0 24 137 5660 0 || 95 ..&gt;..K.P.Y....E..Q..@.@..'... ......#3....................-L..-L.$.....t...SH..iOC~.K`..s=..... ||
 
-SNORT_BARNYARD_MESSAGE \| %{SNORT_BARNYARD_HEADER} \|\| %{SNORT_BARNYARD_ALERT} \|\| %{SNORT_BARNYARD_GROUP} \|\| %{SNORT_BARNYARD_IPHEADER} \|\| (?:%{GREEDYDATA:Snort.Transport.Header} \|\| )?%{DATA:Alert.Additional.Capture} \|\| %{GREEDYDATA}
+SNORT_BARNYARD_MESSAGE \| %{SNORT_BARNYARD_HEADER} \|\| %{SNORT_BARNYARD_ALERT} \|\| %{SNORT_BARNYARD_GROUP} \|\| %{SNORT_BARNYARD_IPHEADER} \|\| (?:%{GREEDYDATA:[Snort][Transport][Header]} \|\| )?%{DATA:[Alert][Additional][Capture]} \|\| %{GREEDYDATA}
 
 #[SNORTIDS[LOG]: [snortIds1-eth2] ]
-SNORT_BARNYARD_HEADER \[SNORTIDS\[LOG\]: \[%{DATA:Alert.Sensor.Node.Name}\] \]
+SNORT_BARNYARD_HEADER \[SNORTIDS\[LOG\]: \[%{DATA:[Alert][Sensor][Node][Name]}\] \]
 
 #2015-06-20 13:46:27.541+003 2 [129:12:1] stream5: TCP Small Segment Threshold Exceeded
-SNORT_BARNYARD_ALERT %{TIMESTAMP_ISO8601:syslog5424_ts} %{BASE10NUM:Alert.Analyzer.Level} \[%{DATA:Alert.Classification.Ident}\] (?:%{DATA:Alert.Classification.Text})?
+SNORT_BARNYARD_ALERT %{TIMESTAMP_ISO8601:syslog5424_ts} %{BASE10NUM:[Alert][Analyzer][Level][Origin]} \[%{DATA:[Alert][Classification][Ident]}\] (?:%{DATA:[Alert][Classification][Text]})?
 
 #bad-unknown
-SNORT_BARNYARD_GROUP %{DATA:Alert.Group.Text}
+SNORT_BARNYARD_GROUP %{DATA:[Alert][Group][Text]}
 
 #6 2.8.1.2 2.8.1.1 4 20 0 81 45056 2 0 1831 0
-SNORT_BARNYARD_IPHEADER %{BASE10NUM:Alert.Protocol.Number} %{IPORHOST:Alert.Source.Node.Address} %{IPORHOST:Alert.Target.Node.Address} %{DATA:Alert.Protocol.Ip.Options}
+SNORT_BARNYARD_IPHEADER %{BASE10NUM:[Alert][Protocol][Number]} %{IPORHOST:[Alert][Source][Node][Address]} %{IPORHOST:[Alert][Target][Node][Address]} %{DATA:[Alert][Protocol][Ip][Options]}
 
 #43395 9011 3638166799 3232151186 8 0 24 137 5660 0
-SNORT_BARNYARD_TCPHEADER %{NONNEGINT:Alert.Source.Node.Port} %{NONNEGINT:Alert.Target.Node.Port} %{DATA:Alert.Protocol.Tcp.Options}
+SNORT_BARNYARD_TCPHEADER %{NONNEGINT:[Alert][Source][Node][Port]} %{NONNEGINT:[Alert][Target][Node][Port]} %{DATA:[Alert][Protocol][Tcp][Options]}
 
 #35691 60000 75 44849
-SNORT_BARNYARD_UDPHEADER %{NONNEGINT:Alert.Source.Node.Port} %{NONNEGINT:Alert.Target.Node.Port} %{DATA:Alert.Protocol.Udp.Options}
+SNORT_BARNYARD_UDPHEADER %{NONNEGINT:[Alert][Source][Node][Port]} %{NONNEGINT:[Alert][Target][Node][Port]} %{DATA:[Alert][Protocol][Udp][Options]}
 
-SNORT_BARNYARD_ICMPHEADER %{NONNEGINT:Alert.Source.Icmp.Type} %{NONNEGINT:Alert.Source.Icmp.Code} %{DATA:Alert.Protocol.Icmp.Options}
+SNORT_BARNYARD_ICMPHEADER %{NONNEGINT:[Alert][Source][Icmp][Type]} %{NONNEGINT:[Alert][Source][Icmp][Code]} %{DATA:[Alert][Protocol][Icmp][Options]}
 
 #default protocol header
-SNORT_BARNYARD_DEFAULTHEADER %{GREEDYDATA:Alert.Header}
+SNORT_BARNYARD_DEFAULTHEADER %{GREEDYDATA:[Alert][Header]}
