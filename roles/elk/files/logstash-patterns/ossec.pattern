@@ -32,7 +32,7 @@ OSSEC_MESSAGE_FULL_LINE_USER (User: (%{USERNAME:[Alert][Source][User][Ident]}\$)
 
 #Message
 
-OSSEC_MESSAGE_FULL_LINE_MESSAGE %{GREEDYDATA:[Alert][Analyzer][rawmessage]}
+OSSEC_MESSAGE_FULL_LINE_MESSAGE %{YEAR} %{MONTH} %{MONTHDAY} %{TIME} WinEvtLog: %{DATA}: %{DATA}\(%{BASE10NUM:[Alert][Classification][WinEvtID]}\):%{GREEDYDATA:[Alert][Analyzer][rawmessage]}|%{GREEDYDATA:[Alert][Analyzer][rawmessage]}
 
 
 
