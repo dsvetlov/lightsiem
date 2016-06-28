@@ -20,7 +20,7 @@ SNORT_BARNYARD_MESSAGE \| %{SNORT_BARNYARD_HEADER} \|\| %{SNORT_BARNYARD_ALERT} 
 SNORT_BARNYARD_HEADER \[SNORTIDS\[LOG\]: \[%{DATA:[Alert][Sensor][Node][Name]}\] \]
 
 #2015-06-20 13:46:27.541+003 2 [129:12:1] stream5: TCP Small Segment Threshold Exceeded
-SNORT_BARNYARD_ALERT %{TIMESTAMP_ISO8601:syslog5424_ts} %{BASE10NUM:[Alert][Analyzer][Level][Origin]} \[%{DATA:[Alert][Classification][Ident]}\] (?:%{DATA:[Alert][Classification][Text]})?
+SNORT_BARNYARD_ALERT %{TIMESTAMP_ISO8601:[syslog5424_ts]} %{BASE10NUM:[Alert][Analyzer][Level][Origin]} \[%{DATA:[Alert][Classification][Ident]}\] (?:%{DATA:[Alert][Classification][Text]})?
 
 #bad-unknown
 SNORT_BARNYARD_GROUP %{DATA:[Alert][Group][Text]}
