@@ -79,7 +79,7 @@
   ignore_errors: yes
 
 - name: Place Elasticsearch config file
-  copy: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
+  template: src=elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml
   notify:
         - restart elasticsearch
   tags:
@@ -395,16 +395,30 @@
   copy: src=netty-tcnative-1.1.33.Fork13-linux-x86_64.jar dest=/usr/share/elasticsearch/plugins/search-guard-ssl/
   tags: configuration security
 
-- name: Create ssl folder for elasticsearch
-  file: path=/etc/elasticsearch/sg state=directory
+- name: Create ssl folder for searchguard
+  file: path=/opt/lightsiem/sg/ state=directory
 
 - name: Place search-guard-ssl pki scripts
-  copy: src=example-pki-scripts/ dest=/etc/elasticsearch/sg/ mode="o+x"
+  copy: src=example-pki-scripts/ dest=/opt/lightsiem/sg/ mode="o+x"
   tags: configuration security
 
 - name: Create your own Root CA, Generate Keystores, Client node cert
-  shell: cd /etc/elasticsearch/sg/ && /etc/elasticsearch/sg/example.sh
+  shell: cd /opt/lightsiem/sg/ && /opt/lightsiem/sg/example.sh
   tags: configuration security
+
+- name: Create folder for ssl certificates
+  file: path=/etc/elasticsearch/sg/ state=directory
+
+- name: Copy keystores
+  copy: src=/opt/lightsiem/sg/{{item}} dest=/etc/elasticsearch/sg/
+  with_items:
+        - node-{{ansible_nodename}}-keystore.jks
+        - node-{{ansible_nodename}}-keystore.p12
+        - truststore.jks
+  notify:
+        - restart elasticsearch
+
+
 
 #- name: Copy keystores
 #  shell: cd /tmp/ && cp node-{{node_name}}-keystore.jks /etc/elasticsearch && cp node-{{node_name}}-keystore.p12 /etc/elasticsearch && cp truststore.jks /etc/elasticsearch
