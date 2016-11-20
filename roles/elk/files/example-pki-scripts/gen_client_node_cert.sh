@@ -25,7 +25,7 @@ keytool -genkey \
         -validity  712 \
         -keypass $KS_PASS \
         -storepass $KS_PASS \
-        -dname "CN=$CLIENT_NAME, OU=client, O=client, L=Test, C=DE"
+        -dname "CN=$CLIENT_NAME, OU=SSL, O=Test, L=Test, C=DE"
 
 echo Generating certificate signing request for node $CLIENT_NAME
 
@@ -47,7 +47,7 @@ openssl ca \
     -extensions v3_req \
     -batch \
 	-passin pass:$CA_PASS \
-	-extensions server_ext 
+	-extensions server_ext
 
 echo "Import back to keystore (including CA chain)"
 

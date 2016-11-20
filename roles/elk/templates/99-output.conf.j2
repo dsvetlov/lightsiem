@@ -6,13 +6,13 @@ output {
        # https protocol (use with search-guard)
         hosts => ["https://127.0.0.1:9200"]
         ssl => true
-        truststore => '/etc/elasticsearch/truststore.jks'
-        truststore_password => "trust_pass"
+        truststore => '/etc/logstash/ssl/truststore.jks'
+        truststore_password => "capass"
         ssl_certificate_verification => true
-        keystore => "/etc/elasticsearch/{{node-name}}-keystore.jks"
-        keystore_password => "key_pass"
-        user => "logstash_user"
-        password => "pass_logstash_user"
+        keystore => "/etc/logstash/ssl/node-{{ansible_nodename}}-keystore.jks"
+        keystore_password => "changeit"
+        user => "usr_logstash"
+        password => "23shjY67"
 
        # template
        template => "/etc/logstash/template.json"

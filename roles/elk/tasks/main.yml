@@ -42,7 +42,13 @@
   with_items:
     - 40-cisco.conf
     - 95-common.conf
-    - 99-output.conf
+  tags:
+    - configuration
+  notify:
+    - restart logstash
+
+- name: Add Logstash output config
+  template: src=99-output.conf.j2 dest=/etc/logstash/conf.d/99-output.conf
   tags:
     - configuration
   notify:
@@ -415,21 +421,51 @@
         - node-{{ansible_nodename}}-keystore.jks
         - node-{{ansible_nodename}}-keystore.p12
         - truststore.jks
+        - admin-keystore.jks
   notify:
         - restart elasticsearch
 
+- name: Flush handlers
+  meta: flush_handlers
 
+- name: Waight for Logstash and Elasticsearch
+  wait_for: port={{item}} delay=10 connect_timeout=10
+  with_items:
+      - 9200
+      - 9300
+
+- name: Create folder for SG ssl certificates
+  file: path=/etc/logstash/ssl/ state=directory
+
+- name: Copy keystores for logstash
+  copy: src=/opt/lightsiem/sg/{{item}} dest=/etc/logstash/ssl/
+  with_items:
+        - node-{{ansible_nodename}}-keystore.jks
+        - node-{{ansible_nodename}}-keystore.p12
+        - truststore.jks
+
+- name: Copy SG config
+  copy: src={{item}} dest=/usr/share/elasticsearch/plugins/search-guard-2/sgconfig/
+  with_items:
+        - sg_internal_users.yml
+        - sg_roles_mapping.yml
+        - sg_roles.yml
+
+- name: Apply sg_config
+  shell: chmod +x /usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh && /opt/lightsiem/sg/apply_config.sh
+  notify:
+       - restart elasticsearch
+       - restart kibana
+       - restart logstash
+  tags: configuration security
+
+- name: Place Kibana 4 config
+  copy: src=kibana-config.yml dest=/opt/kibana/config/kibana.yml
+  tags:
+        - configuration
 
 #- name: Copy keystores
 #  shell: cd /tmp/ && cp node-{{node_name}}-keystore.jks /etc/elasticsearch && cp node-{{node_name}}-keystore.p12 /etc/elasticsearch && cp truststore.jks /etc/elasticsearch
-#  notify:
-#       - restart elasticsearch
-#       - restart kibana
-#       - restart logstash
-#  tags: configuration security
-
-#- name: Apply sg_config
-#  shell: chmod +x /usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh && /etc/elasticsearch/sg/apply_config.sh
 #  notify:
 #       - restart elasticsearch
 #       - restart kibana

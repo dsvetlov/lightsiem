@@ -1,0 +1,14 @@
+usr_kibana:
+  username: usr_kibana
+  hash: $2a$12$mN6BBxQQRq6ldHAowrMaMelROuNusvmr7jkZIt9BDWVhRXSDwsD4C
+# password: 2FgeR37e1
+
+kibanaro:
+  username: kibanaro
+  hash: $2a$12$mN6BBxQQRq6ldHAowrMaMelROuNusvmr7jkZIt9BDWVhRXSDwsD4C
+# password: 2FgeR37e1
+
+usr_logstash:
+  username: usr_logstash
+  hash: $2a$12$ZrNLfRzb2DPvx9wohoA1U.hU2v70xXOsRVNfWlt4yRjfVjtK9ExY2
+# password: 23shjY67
