@@ -8,9 +8,6 @@ sg_kibana4_server:
         - ALL
 
 sg_kibana4:
-  cluster:
-      - cluster:monitor/nodes/info
-      - cluster:monitor/health
   indices:
     '*':
       '*':
@@ -36,9 +33,25 @@ sg_logstash:
   cluster:
     - indices:admin/template/get
     - indices:admin/template/put
-    - CLUSTER_ALL
   indices:
     'lightsiem-*':
       '*':
+      - CRUD
+      - CREATE_INDEX
+    'logstash-*':
+      '*':
         - CRUD
         - CREATE_INDEX
+    '*beat*':
+      '*':
+        - CRUD
+        - CREATE_INDEX
+
+
+sg_all_access:
+  cluster:
+    - '*'
+  indices:
+    '*':
+      '*':
+        - '*'

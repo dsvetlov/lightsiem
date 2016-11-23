@@ -49,7 +49,7 @@ openssl ca \
     -extensions v3_req \
     -batch \
 	-passin pass:$CA_PASS \
-	-extensions server_ext 
+	-extensions server_ext
 
 echo "Import back to keystore (including CA chain)"
 
@@ -59,7 +59,7 @@ cat ca/chain-ca.pem $NODE_NAME-signed.pem | keytool \
     -storepass $KS_PASS \
     -noprompt \
     -alias $NODE_NAME
-    
+
 keytool -importkeystore -srckeystore $NODE_NAME-keystore.jks -srcstorepass $KS_PASS -srcstoretype JKS -deststoretype PKCS12 -deststorepass $KS_PASS -destkeystore $NODE_NAME-keystore.p12
 
 echo All done for $NODE_NAME

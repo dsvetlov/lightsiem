@@ -7,7 +7,7 @@
 - name: Install packages
   yum: name={{item}} state=present
   with_items:
-    - elasticsearch-2.3.1
+    - elasticsearch-2.3.4
     - java
     - wget
     - epel-release
@@ -40,6 +40,7 @@
 - name: Add Logstash configs
   copy: src=logstash-conf.d/{{item}} dest=/etc/logstash/conf.d/
   with_items:
+    - 20-ossec.conf
     - 40-cisco.conf
     - 95-common.conf
   tags:
@@ -61,6 +62,7 @@
   copy: src=logstash-patterns/{{item}} dest=/opt/lightsiem/patterns/
   with_items:
     - cisco.pattern
+    - ossec.pattern
   notify:
     - restart logstash
   tags:
@@ -99,17 +101,6 @@
   with_items:
       - 9200
       - 9300
-
-- name: Copy Kibana dashboards
-  copy: src=kibana-dashboards/kibana.json dest=/tmp/
-  tags:
-        - configuration
-
-- name: Import dashboards
-  shell: elasticdump --input=/tmp/kibana.json --output=http://localhost:9200/.kibana --type=data
-  tags:
-        - configuration
-
 
 #- name: Create directory for LightIEM components
 #  file: path=/opt/lightsiem/ state=directory mode=0755
@@ -390,11 +381,11 @@
 #  ignore_errors: yes
 
 - name: Install search-guard-ssl
-  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-ssl/2.3.1.8.1
+  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-ssl/2.3.4.16
   tags: configuration security
 
 - name: Install search-guard-2
-  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-2/2.3.1.0-beta1
+  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-2/2.3.4.8
   tags: configuration security
 
 - name: Add netty-tcnative to search-guard plugin
@@ -451,8 +442,12 @@
         - sg_roles_mapping.yml
         - sg_roles.yml
 
+- name: Add execution right for sgadmin script
+  file: path=/usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh mode="o+x"
+
 - name: Apply sg_config
-  shell: chmod +x /usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh && /opt/lightsiem/sg/apply_config.sh
+  #shell: chmod +x /usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh && /opt/lightsiem/sg/apply_config.sh
+  shell: /opt/lightsiem/sg/apply_config.sh
   notify:
        - restart elasticsearch
        - restart kibana
@@ -464,6 +459,15 @@
   tags:
         - configuration
 
+- name: Copy Kibana dashboards
+  copy: src=kibana-dashboards/kibana.json dest=/tmp/
+  tags:
+        - configuration
+
+# - name: Import dashboards
+#   shell: NODE_TLS_REJECT_UNAUTHORIZED=0 elasticdump --input=/tmp/kibana.json --output=https://usr_kibana:2FgeR37e1@localhost:9200/.kibana --type=data
+#   tags:
+#         - configuration
 #- name: Copy keystores
 #  shell: cd /tmp/ && cp node-{{node_name}}-keystore.jks /etc/elasticsearch && cp node-{{node_name}}-keystore.p12 /etc/elasticsearch && cp truststore.jks /etc/elasticsearch
 #  notify:
