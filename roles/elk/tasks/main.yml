@@ -464,6 +464,16 @@
   tags:
         - configuration
 
+# - name: Setup Kibana index-mapping
+#   shell: curl --insecure -XPUT https://usr_kibana:2FgeR37e1@localhost:9200/.kibana/index-pattern/lightsiem-* -d "{"title" : "lightsiem-*",  "timeFieldName": "Alert.ReceiveTime"}"
+#
+#   tags:
+#   - configuration
+# - name: Setup Kibana default index
+#   shell: "curl --insecure -XPUT https://usr_kibana:2FgeR37e1@localhost:9200/.kibana/config/4.5.0 -d "{"defaultIndex" : "lightsiem-*"}"
+#   tags:
+#         - configuration
+#
 # - name: Import dashboards
 #   shell: NODE_TLS_REJECT_UNAUTHORIZED=0 elasticdump --input=/tmp/kibana.json --output=https://usr_kibana:2FgeR37e1@localhost:9200/.kibana --type=data
 #   tags:
