@@ -7,7 +7,7 @@
 - name: Install packages
   yum: name={{item}} state=present
   with_items:
-    - elasticsearch
+    - elasticsearch-2.3.4
     - java
     - wget
     - epel-release
@@ -15,6 +15,7 @@
     - dnsmasq
     - kibana
     - elasticdump
+    - openssl
 
 - name: Add software to autostart to autostart
   command: systemctl enable {{item}}
@@ -39,9 +40,16 @@
 - name: Add Logstash configs
   copy: src=logstash-conf.d/{{item}} dest=/etc/logstash/conf.d/
   with_items:
+    - 20-ossec.conf
     - 40-cisco.conf
     - 95-common.conf
-    - 99-output.conf
+  tags:
+    - configuration
+  notify:
+    - restart logstash
+
+- name: Add Logstash output config
+  template: src=99-output.conf.j2 dest=/etc/logstash/conf.d/99-output.conf
   tags:
     - configuration
   notify:
@@ -54,6 +62,7 @@
   copy: src=logstash-patterns/{{item}} dest=/opt/lightsiem/patterns/
   with_items:
     - cisco.pattern
+    - ossec.pattern
   notify:
     - restart logstash
   tags:
@@ -77,6 +86,13 @@
         - restart firewalld
   ignore_errors: yes
 
+- name: Place Elasticsearch config file
+  template: src=elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml
+  notify:
+        - restart elasticsearch
+  tags:
+        - configuration
+
 - name: Flush handlers
   meta: flush_handlers
 
@@ -85,17 +101,6 @@
   with_items:
       - 9200
       - 9300
-
-- name: Copy Kibana dashboards
-  copy: src=kibana-dashboards/kibana.json dest=/tmp/
-  tags:
-        - configuration
-
-- name: Import dashboards
-  shell: elasticdump --input=/tmp/kibana.json --output=http://localhost:9200/.kibana --type=data
-  tags:
-        - configuration
-
 
 #- name: Create directory for LightIEM components
 #  file: path=/opt/lightsiem/ state=directory mode=0755
@@ -302,12 +307,6 @@
 #- name: Add logstash to autostart
 #  command: chkconfig logstash on
 #
-#- name: Place Elasticsearch config file
-#  copy: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
-#  notify:
-#        - restart elasticsearch
-#  tags:
-#        - configuration
 #
 #- name: Add elasticsearch to autostart
 #  command: chkconfig elasticsearch on
@@ -380,3 +379,109 @@
 #- name: Start Kiabana
 #  command: systemctl start kibana.service
 #  ignore_errors: yes
+
+- name: Install search-guard-ssl
+  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-ssl/2.3.4.16
+  tags: configuration security
+
+- name: Install search-guard-2
+  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-2/2.3.4.8
+  tags: configuration security
+
+- name: Add netty-tcnative to search-guard plugin
+  copy: src=netty-tcnative-1.1.33.Fork13-linux-x86_64.jar dest=/usr/share/elasticsearch/plugins/search-guard-ssl/
+  tags: configuration security
+
+- name: Create ssl folder for searchguard
+  file: path=/opt/lightsiem/sg/ state=directory
+
+- name: Place search-guard-ssl pki scripts
+  copy: src=example-pki-scripts/ dest=/opt/lightsiem/sg/ mode="o+x"
+  tags: configuration security
+
+- name: Create your own Root CA, Generate Keystores, Client node cert
+  shell: cd /opt/lightsiem/sg/ && /opt/lightsiem/sg/example.sh
+  tags: configuration security
+
+- name: Create folder for ssl certificates
+  file: path=/etc/elasticsearch/sg/ state=directory
+
+- name: Copy keystores
+  copy: src=/opt/lightsiem/sg/{{item}} dest=/etc/elasticsearch/sg/
+  with_items:
+        - node-{{ansible_nodename}}-keystore.jks
+        - node-{{ansible_nodename}}-keystore.p12
+        - truststore.jks
+        - admin-keystore.jks
+  notify:
+        - restart elasticsearch
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Waight for Logstash and Elasticsearch
+  wait_for: port={{item}} delay=10 connect_timeout=10
+  with_items:
+      - 9200
+      - 9300
+
+- name: Create folder for SG ssl certificates
+  file: path=/etc/logstash/ssl/ state=directory
+
+- name: Copy keystores for logstash
+  copy: src=/opt/lightsiem/sg/{{item}} dest=/etc/logstash/ssl/
+  with_items:
+        - node-{{ansible_nodename}}-keystore.jks
+        - node-{{ansible_nodename}}-keystore.p12
+        - truststore.jks
+
+- name: Copy SG config
+  copy: src={{item}} dest=/usr/share/elasticsearch/plugins/search-guard-2/sgconfig/
+  with_items:
+        - sg_internal_users.yml
+        - sg_roles_mapping.yml
+        - sg_roles.yml
+
+- name: Add execution right for sgadmin script
+  file: path=/usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh mode="o+x"
+
+- name: Apply sg_config
+  #shell: chmod +x /usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh && /opt/lightsiem/sg/apply_config.sh
+  shell: /opt/lightsiem/sg/apply_config.sh
+  notify:
+       - restart elasticsearch
+       - restart kibana
+       - restart logstash
+  tags: configuration security
+
+- name: Place Kibana 4 config
+  copy: src=kibana-config.yml dest=/opt/kibana/config/kibana.yml
+  tags:
+        - configuration
+
+- name: Copy Kibana dashboards
+  copy: src=kibana-dashboards/kibana.json dest=/tmp/
+  tags:
+        - configuration
+
+# - name: Setup Kibana index-mapping
+#   shell: curl --insecure -XPUT https://usr_kibana:2FgeR37e1@localhost:9200/.kibana/index-pattern/lightsiem-* -d "{"title" : "lightsiem-*",  "timeFieldName": "Alert.ReceiveTime"}"
+#
+#   tags:
+#   - configuration
+# - name: Setup Kibana default index
+#   shell: "curl --insecure -XPUT https://usr_kibana:2FgeR37e1@localhost:9200/.kibana/config/4.5.0 -d "{"defaultIndex" : "lightsiem-*"}"
+#   tags:
+#         - configuration
+#
+# - name: Import dashboards
+#   shell: NODE_TLS_REJECT_UNAUTHORIZED=0 elasticdump --input=/tmp/kibana.json --output=https://usr_kibana:2FgeR37e1@localhost:9200/.kibana --type=data
+#   tags:
+#         - configuration
+#- name: Copy keystores
+#  shell: cd /tmp/ && cp node-{{node_name}}-keystore.jks /etc/elasticsearch && cp node-{{node_name}}-keystore.p12 /etc/elasticsearch && cp truststore.jks /etc/elasticsearch
+#  notify:
+#       - restart elasticsearch
+#       - restart kibana
+#       - restart logstash
+#  tags: configuration security

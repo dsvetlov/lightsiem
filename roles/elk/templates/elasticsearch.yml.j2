@@ -110,9 +110,9 @@ searchguard.ssl.transport.enabled: true
 ## JKS or PKCS12 (default: JKS)
 ##searchguard.ssl.transport.keystore_type: PKCS12
 ## Relative path to the keystore file (mandatory, this seores the server certificates), must be placed under the config/ dir
-searchguard.ssl.transport.keystore_filepath: sg/node-{{ansible_hostname}}-keystore.jks
+searchguard.ssl.transport.keystore_filepath: sg/node-{{ansible_nodename}}-keystore.jks
 ## Alias name (default: first alias which could be found)
-searchguard.ssl.transport.keystore_alias: node-{{ansible_hostname}}
+searchguard.ssl.transport.keystore_alias: node-{{ansible_nodename}}
 ## Keystore password (default: changeit)
 searchguard.ssl.transport.keystore_password: changeit
 #
@@ -136,19 +136,19 @@ searchguard.ssl.transport.enable_openssl_if_available: true
 ##                                                                                           #
 ##############################################################################################
 ## Enable or disable rest layer security - https, (default: false)
-#searchguard.ssl.http.enabled: true
+searchguard.ssl.http.enabled: true
 ## JKS or PKCS12 (default: JKS)
 #de
-#searchguard.ssl.http.keystore_type: PKCS12
+searchguard.ssl.http.keystore_type: PKCS12
 ## Relative path to the keystore file (this stores the server certificates), must be placed under the config/ dir
-#searchguard.ssl.http.keystore_filepath: ssl/node-name-keystore.p12
+searchguard.ssl.http.keystore_filepath: sg/node-{{ansible_nodename}}-keystore.p12
 ## Alias name (default: first alias which could be found)
-#searchguard.ssl.http.keystore_alias: node-name
+searchguard.ssl.http.keystore_alias: node-{{ansible_nodename}}
 ## Keystore password (default: changeit)
-#searchguard.ssl.http.keystore_password: pass
+searchguard.ssl.http.keystore_password: changeit
 ## Do the clients (typically the browser or the proxy) have to authenticate themself to the http server, default is OPTIONAL
 ## To enforce authentication use REQUIRE, to completely disable client certificates use NONE
-#searchguard.ssl.http.clientauth_mode: NONE
+searchguard.ssl.http.clientauth_mode: NONE
 ## JKS or PKCS12 (default: JKS)
 ##searchguard.ssl.http.truststore_type: PKCS12
 ## Relative path to the truststore file (this stores the client certificates), must be placed under the config/ dir
@@ -160,6 +160,6 @@ searchguard.ssl.transport.enable_openssl_if_available: true
 ## Use native Open SSL instead of JDK SSL if available (default: true)
 ##searchguard.ssl.http.enable_openssl_if_available: false
 
-#security.manager.enabled: false
-#searchguard.authcz.admin_dn:
-#  - "CN=node-name.domain.local,OU=SSL,O=Test,L=Test,C=DE"
+security.manager.enabled: true
+searchguard.authcz.admin_dn:
+  - "CN=admin, OU=client, O=client, L=Test, C=DE"

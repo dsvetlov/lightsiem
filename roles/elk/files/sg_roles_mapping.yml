@@ -1,0 +1,23 @@
+sg_logstash:
+  users:
+    - usr_logstash
+
+sg_kibana4_server:
+  users:
+    - usr_kibana
+
+sg_kibana4:
+  users:
+    - kibanaro
+    - usr_tv
+    - usr_svetlov
+
+sg_all_access:
+  users:
+    - admin
+    - kibanaro
+    - usr_kibana
+
+sg_public:
+  users:
+    - '*'
