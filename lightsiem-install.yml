@@ -2,7 +2,5 @@
   hosts: localhost
   sudo: yes
   gather_facts: yes
-  vars:
-     - node_name: "node_name"
   roles:
      - elk
