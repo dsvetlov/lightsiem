@@ -1,6 +1,6 @@
 - name: Install and configure Elasticsearch, Logstash, Kibana
   hosts: localhost
-  sudo: yes
+  become: root
   gather_facts: yes
   roles:
      - elk
