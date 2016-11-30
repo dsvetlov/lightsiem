@@ -14,7 +14,8 @@ require 'yaml'
 
 class TestGrokPatterns < MiniTest::Unit::TestCase
 
-    @@test_dir = File.dirname(__FILE__) + '/pattern_tests'
+    @@test_dir = File.dirname(__FILE__)
+    @@tests_dir = File.dirname(__FILE__) + '/pattern_tests'
     @@upstream_pattern_dir = @@test_dir + '/logstash-patterns-core/patterns'
     @@local_pattern_dir = File.dirname(File.expand_path(@@test_dir))
     @@local_pattern_dir = @@local_pattern_dir + '/roles/elk/files/logstash-patterns'
@@ -63,11 +64,11 @@ class TestGrokPatterns < MiniTest::Unit::TestCase
 
     # collect all tests
     tests = Hash.new()
-    Dir.new(@@test_dir).each do |file|
+    Dir.new(@@tests_dir).each do |file|
         next if file !~ /\.yaml$/
         test = File.basename(file, '.yaml')
         puts "#{file}"
-        conf = YAML.load(File.read(@@test_dir + '/' + file))
+        conf = YAML.load(File.read(@@tests_dir + '/' + file))
         tests[test] = conf
     end
 
