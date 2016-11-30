@@ -41,6 +41,10 @@ script:
   #Logstash Ossec
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lnup | grep "9000"
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntp | grep "9001"
+  #Logstash snort
+  - sudo docker exec "$(cat /tmp/container_id)" netstat -lntp | grep "9010"
+  #Logstash Cisco
+  - sudo docker exec "$(cat /tmp/container_id)" netstat -lnup | grep "9999"
   #Elastcisearch
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntp | grep "127.0.0.1:9200"
   - sudo docker exec "$(cat /tmp/container_id)" netstat -lntp | grep "127.0.0.1:9300"

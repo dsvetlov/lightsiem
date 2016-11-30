@@ -116,6 +116,8 @@
   with_items:
       - 9200
       - 9300
+      - 9001
+      - 9010
 
 - name: Install search-guard-ssl
   command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-ssl/2.3.4.16
