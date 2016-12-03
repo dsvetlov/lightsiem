@@ -196,8 +196,3 @@
   copy: src=kibana-config.yml dest=/opt/kibana/config/kibana.yml
   tags:
         - configuration
-
-- name: Copy Kibana dashboards
-  copy: src=kibana-dashboards/kibana.json dest=/tmp/
-  tags:
-        - configuration
