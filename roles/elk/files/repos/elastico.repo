@@ -6,9 +6,9 @@ gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
 enabled=1
 includepkgs=elasticsearch
 
-[logstash-2.3]
-name=Logstash repository for 2.3.x packages
-baseurl=http://packages.elastic.co/logstash/2.3/centos
+[logstash-2.4]
+name=Logstash repository for 2.4.x packages
+baseurl=http://packages.elastic.co/logstash/2.4/centos
 gpgcheck=1
 gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
 enabled=1

@@ -24,11 +24,77 @@
     - logstash
     - dnsmasq
     - kibana
+
+- name: Place Elasticsearch config file
+  template: src=elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml
   notify:
-    - restart elasticsearch
-    - restart logstash
-    - restart kibana
-    - restart dnsmasq
+        - restart elasticsearch
+  tags:
+        - configuration
+
+- name: Install search-guard-ssl
+  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-ssl/2.3.4.16
+  tags: configuration security
+
+- name: Install search-guard-2
+  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-2/2.3.4.8
+  tags: configuration security
+
+- name: Add netty-tcnative to search-guard plugin
+  copy: src=netty-tcnative-1.1.33.Fork13-linux-x86_64.jar dest=/usr/share/elasticsearch/plugins/search-guard-ssl/
+  tags: configuration security
+
+- name: Create ssl folder for searchguard
+  file: path=/opt/lightsiem/sg/ state=directory
+
+- name: Place search-guard-ssl pki scripts
+  copy: src=example-pki-scripts/ dest=/opt/lightsiem/sg/ mode="o+x"
+  tags: configuration security
+
+- name: Create your own Root CA, Generate Keystores, Client node cert
+  shell: cd /opt/lightsiem/sg/ && /opt/lightsiem/sg/example.sh
+  tags: configuration security
+
+- name: Create folder for ssl certificates
+  file: path=/etc/elasticsearch/sg/ state=directory
+
+- name: Copy keystores
+  copy: src=/opt/lightsiem/sg/{{item}} dest=/etc/elasticsearch/sg/
+  with_items:
+        - node-{{ansible_nodename}}-keystore.jks
+        - node-{{ansible_nodename}}-keystore.p12
+        - truststore.jks
+        - admin-keystore.jks
+  notify:
+        - restart elasticsearch
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Copy SG config
+  copy: src={{item}} dest=/usr/share/elasticsearch/plugins/search-guard-2/sgconfig/
+  with_items:
+        - sg_internal_users.yml
+        - sg_roles_mapping.yml
+        - sg_roles.yml
+
+- name: Add execution right for sgadmin script
+  file: path=/usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh mode="o+x"
+
+- name: Waight for Elasticsearch
+  wait_for: port={{item}} delay=10 connect_timeout=10
+  with_items:
+      - 9200
+      - 9300
+
+- name: Apply sg_config
+  shell: /opt/lightsiem/sg/apply_config.sh
+  notify:
+       - restart elasticsearch
+       - restart kibana
+       - restart logstash
+  tags: configuration security
+
 
 - name: Add dnsmasq config
   copy: src=dnsmasq.conf dest=/etc/dnsmasq.d/lightsiem.conf
@@ -36,6 +102,16 @@
     - configuration
   notify:
     - restart dnsmasq
+
+- name: Create folder for SG ssl certificates
+  file: path=/etc/logstash/ssl/ state=directory
+
+- name: Copy keystores for logstash
+  copy: src=/opt/lightsiem/sg/{{item}} dest=/etc/logstash/ssl/
+  with_items:
+        - node-{{ansible_nodename}}-keystore.jks
+        - node-{{ansible_nodename}}-keystore.p12
+        - truststore.jks
 
 - name: Add Logstash configs
   copy: src=logstash-conf.d/{{item}} dest=/etc/logstash/conf.d/
@@ -101,96 +177,27 @@
         - restart firewalld
   ignore_errors: yes
 
-- name: Place Elasticsearch config file
-  template: src=elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml
-  notify:
-        - restart elasticsearch
-  tags:
-        - configuration
 
-- name: Flush handlers
-  meta: flush_handlers
+# - name: Flush handlers
+#   meta: flush_handlers
+#
+# - name: Waight for Logstash and Elasticsearch
+#   wait_for: port={{item}} delay=10 connect_timeout=10
+#   with_items:
+#       - 9200
+#       - 9300
+#       - 9001
+#       - 9010
 
-- name: Waight for Logstash and Elasticsearch
-  wait_for: port={{item}} delay=10 connect_timeout=10
-  with_items:
-      - 9200
-      - 9300
-      - 9001
-      - 9010
 
-- name: Install search-guard-ssl
-  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-ssl/2.3.4.16
-  tags: configuration security
-
-- name: Install search-guard-2
-  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-2/2.3.4.8
-  tags: configuration security
-
-- name: Add netty-tcnative to search-guard plugin
-  copy: src=netty-tcnative-1.1.33.Fork13-linux-x86_64.jar dest=/usr/share/elasticsearch/plugins/search-guard-ssl/
-  tags: configuration security
-
-- name: Create ssl folder for searchguard
-  file: path=/opt/lightsiem/sg/ state=directory
-
-- name: Place search-guard-ssl pki scripts
-  copy: src=example-pki-scripts/ dest=/opt/lightsiem/sg/ mode="o+x"
-  tags: configuration security
-
-- name: Create your own Root CA, Generate Keystores, Client node cert
-  shell: cd /opt/lightsiem/sg/ && /opt/lightsiem/sg/example.sh
-  tags: configuration security
-
-- name: Create folder for ssl certificates
-  file: path=/etc/elasticsearch/sg/ state=directory
-
-- name: Copy keystores
-  copy: src=/opt/lightsiem/sg/{{item}} dest=/etc/elasticsearch/sg/
-  with_items:
-        - node-{{ansible_nodename}}-keystore.jks
-        - node-{{ansible_nodename}}-keystore.p12
-        - truststore.jks
-        - admin-keystore.jks
-  notify:
-        - restart elasticsearch
-
-- name: Flush handlers
-  meta: flush_handlers
-
-- name: Waight for Logstash and Elasticsearch
-  wait_for: port={{item}} delay=10 connect_timeout=10
-  with_items:
-      - 9200
-      - 9300
-
-- name: Create folder for SG ssl certificates
-  file: path=/etc/logstash/ssl/ state=directory
-
-- name: Copy keystores for logstash
-  copy: src=/opt/lightsiem/sg/{{item}} dest=/etc/logstash/ssl/
-  with_items:
-        - node-{{ansible_nodename}}-keystore.jks
-        - node-{{ansible_nodename}}-keystore.p12
-        - truststore.jks
-
-- name: Copy SG config
-  copy: src={{item}} dest=/usr/share/elasticsearch/plugins/search-guard-2/sgconfig/
-  with_items:
-        - sg_internal_users.yml
-        - sg_roles_mapping.yml
-        - sg_roles.yml
-
-- name: Add execution right for sgadmin script
-  file: path=/usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh mode="o+x"
-
-- name: Apply sg_config
-  shell: /opt/lightsiem/sg/apply_config.sh
-  notify:
-       - restart elasticsearch
-       - restart kibana
-       - restart logstash
-  tags: configuration security
+# - name: Flush handlers
+#   meta: flush_handlers
+#
+# - name: Waight for Logstash and Elasticsearch
+#   wait_for: port={{item}} delay=10 connect_timeout=10
+#   with_items:
+#       - 9200
+#       - 9300
 
 - name: Place Kibana 4 config
   copy: src=kibana-config.yml dest=/opt/kibana/config/kibana.yml
