@@ -7,7 +7,7 @@
 - name: Install packages
   yum: name={{item}} state=present
   with_items:
-    - elasticsearch-2.3.4
+    - elasticsearch-5.1.1
     - java
     - wget
     - epel-release
@@ -32,17 +32,17 @@
   tags:
         - configuration
 
-- name: Install search-guard-ssl
-  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-ssl/2.3.4.16
-  tags: configuration security
+# - name: Install search-guard-ssl
+#   command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-ssl/2.3.4.16
+#   tags: configuration security
 
 - name: Install search-guard-2
-  command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-2/2.3.4.8
+  command: /usr/share/elasticsearch/bin/elasticsearch-plugin install -b com.floragunn:search-guard-5:5.1.1-9
   tags: configuration security
 
-- name: Add netty-tcnative to search-guard plugin
-  copy: src=netty-tcnative-1.1.33.Fork13-linux-x86_64.jar dest=/usr/share/elasticsearch/plugins/search-guard-ssl/
-  tags: configuration security
+# - name: Add netty-tcnative to search-guard plugin
+#   copy: src=netty-tcnative-1.1.33.Fork13-linux-x86_64.jar dest=/usr/share/elasticsearch/plugins/search-guard-ssl/
+#   tags: configuration security
 
 - name: Create ssl folder for searchguard
   file: path=/opt/lightsiem/sg/ state=directory
@@ -72,14 +72,14 @@
   meta: flush_handlers
 
 - name: Copy SG config
-  copy: src={{item}} dest=/usr/share/elasticsearch/plugins/search-guard-2/sgconfig/
+  copy: src={{item}} dest=/usr/share/elasticsearch/plugins/search-guard-5/sgconfig/
   with_items:
         - sg_internal_users.yml
         - sg_roles_mapping.yml
         - sg_roles.yml
 
 - name: Add execution right for sgadmin script
-  file: path=/usr/share/elasticsearch/plugins/search-guard-2/tools/sgadmin.sh mode="o+x"
+  file: path=/usr/share/elasticsearch/plugins/search-guard-5/tools/sgadmin.sh mode="o+x"
 
 - name: Waight for Elasticsearch
   wait_for: port={{item}} delay=10 connect_timeout=10
@@ -89,6 +89,8 @@
 
 - name: Apply sg_config
   shell: /opt/lightsiem/sg/apply_config.sh
+  retries: 10
+  delay: 1
   notify:
        - restart elasticsearch
        - restart kibana
@@ -156,6 +158,11 @@
   notify:
     - restart logstash
 
+- name: Install email output for logstash
+  command: /usr/share/logstash/bin/logstash-plugin install logstash-output-email
+  notify:
+    - restart logstash
+
 - name: Open ports in firewalld
   firewalld: port={{item}} permanent=true state=enabled
   with_items:
@@ -199,7 +206,7 @@
 #       - 9200
 #       - 9300
 
-- name: Place Kibana 4 config
-  copy: src=kibana-config.yml dest=/opt/kibana/config/kibana.yml
+- name: Place Kibana 5 config
+  copy: src=kibana-config.yml dest=/etc/kibana/kibana.yml
   tags:
         - configuration
