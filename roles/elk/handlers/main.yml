@@ -5,7 +5,7 @@
   service: name=elasticsearch state=restarted
 
 - name: restart kibana
-  service: name=kibana state=restarted
+  command: killall -9 node
 
 - name: restart dnsmasq
   service: name=dnsmasq state=restarted

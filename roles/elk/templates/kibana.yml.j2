@@ -74,3 +74,5 @@ elasticsearch.ssl.verify: false
 
 # Set this to true to log all events, including system usage information and all requests.
 # logging.verbose: false
+
+searchguard.cookie.password: "{{ lookup('password', 'chars=ascii_letters,digits,hexdigits,punctuation length=32') }}"

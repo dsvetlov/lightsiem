@@ -13,9 +13,10 @@
     - epel-release
     - logstash
     - dnsmasq
-    - kibana
+    - kibana-5.1.1
     - elasticdump
     - openssl
+    - psmisc
 
 - name: Add software to autostart to autostart
   command: systemctl enable {{item}}
@@ -36,13 +37,19 @@
 #   command: /usr/share/elasticsearch/bin/plugin install com.floragunn/search-guard-ssl/2.3.4.16
 #   tags: configuration security
 
-- name: Install search-guard-2
+- name: Check search-guard-5 is installed
+  command: /usr/share/elasticsearch/bin/elasticsearch-plugin list | grep search-guard-5
+  register: sg_installed
+
+- name: Install search-guard-5
   command: /usr/share/elasticsearch/bin/elasticsearch-plugin install -b com.floragunn:search-guard-5:5.1.1-9
   tags: configuration security
+  when: sg_installed.stdout != "search-guard-5"
 
-# - name: Add netty-tcnative to search-guard plugin
-#   copy: src=netty-tcnative-1.1.33.Fork13-linux-x86_64.jar dest=/usr/share/elasticsearch/plugins/search-guard-ssl/
-#   tags: configuration security
+
+- name: Add netty-tcnative to search-guard plugin
+  copy: src=netty-tcnative-1.1.33.Fork13-linux-x86_64.jar dest=/usr/share/elasticsearch/plugins/search-guard-5/
+  tags: configuration security
 
 - name: Create ssl folder for searchguard
   file: path=/opt/lightsiem/sg/ state=directory
@@ -206,7 +213,14 @@
 #       - 9200
 #       - 9300
 
+- name: Install searchGuard plugin for Kibana
+  command: /usr/share/kibana/bin/kibana-plugin install https://github.com/floragunncom/search-guard-kibana-plugin/releases/download/v5.1.1-alpha/searchguard-kibana-alpha-5.1.1.zip
+  notify:
+       - restart kibana
+
 - name: Place Kibana 5 config
-  copy: src=kibana-config.yml dest=/etc/kibana/kibana.yml
+  template: src=kibana.yml.j2 dest=/etc/kibana/kibana.yml
   tags:
         - configuration
+  notify:
+       - restart kibana

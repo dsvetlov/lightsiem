@@ -33,6 +33,8 @@ sg_logstash:
   cluster:
     - indices:admin/template/get
     - indices:admin/template/put
+    - cluster:monitor/main
+    - "indices:data/write/bulk*"
   indices:
     'lightsiem-*':
       '*':
