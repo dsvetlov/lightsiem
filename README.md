@@ -50,4 +50,4 @@ if $programname == 'snort' then {
    &stop
 }
 ```
-Now point your web-browser to port 80 of your LightSIEM server. Default login and password is admin/admin.
+Now point your web-browser to port 5601 of your LightSIEM server. Default login and password is admin/admin.
