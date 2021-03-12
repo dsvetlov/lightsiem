@@ -1,9 +1,7 @@
 # LightSIEM
 Lightweight and sexy Security Information and Event Managment system for OSSEC, Snort and other IDS/IPS
-![Screenshot of LightSIEM]
-(https://github.com/dsvetlov/lightsiem/blob/master/screenshot.png)
-![Screenshot of LightSIEM GeoIP map]
-(https://github.com/dsvetlov/lightsiem/blob/master/screenshot2.png)
+![Screenshot of LightSIEM](https://github.com/dsvetlov/lightsiem/blob/master/screenshot.png?raw=true)
+![Screenshot of LightSIEM GeoIP map](https://github.com/dsvetlov/lightsiem/blob/master/screenshot2.png?raw=true)
 # Installation
 LightSIEM now distributing as ansible playbook for RHEL/CentOS/Oracle Linix 7.x.
 Install EPEL repository
